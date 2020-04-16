@@ -2,7 +2,9 @@
   <div id="app">
     <div id="nav">
       <h1>Homeless Link</h1>
-      <router-link to="/">Home</router-link>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/search">Search</router-link> |
+      <router-link to="/about">About</router-link>
     </div>
     <b-container id="content">
       <router-view/>
@@ -23,6 +25,7 @@
 
 #content {
   width: 95%;
+  height: 80vh;
   margin: 1rem auto;
 }
 
