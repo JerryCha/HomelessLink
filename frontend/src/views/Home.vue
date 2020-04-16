@@ -11,15 +11,14 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import Map from '@/components/Map.vue'
 import SearchForm from '@/components/SearchForm.vue'
 
 export default {
-  name: 'Home',
-  components: {
-    Map,
-    SearchForm
-  }
+	name: 'Home',
+	components: {
+		Map,
+		SearchForm
+	}
 }
 </script>

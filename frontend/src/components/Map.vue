@@ -6,31 +6,31 @@
 import MapBox from 'mapbox-gl'
 
 export default {
-  name: 'Map',
-  components: {
-    MapBox
-  },
-  props: {
-    centerLat: Number,
-    centerLong: Number
-  },
-  data () {
-    return {}
-  },
-  methods: {
-    initMapBox: function () {
-      MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA';
-      var map = new MapBox.Map({
-        container: 'map-container',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [this.centerLong, this.centerLat],
-        zoom: 11
-      })
-    }
-  },
-  mounted () {
-    this.initMapBox()
-  }
+	name: 'Map',
+	components: {
+		MapBox
+	},
+	props: {
+		centerLat: Number,
+		centerLong: Number
+	},
+	data () {
+		return {}
+	},
+	methods: {
+		initMapBox: function () {
+			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
+			var map = new MapBox.Map({
+				container: 'map-container',
+				style: 'mapbox://styles/mapbox/streets-v11',
+				center: [this.centerLong, this.centerLat],
+				zoom: 11
+			})
+		}
+	},
+	mounted () {
+		this.initMapBox()
+	}
 }
 </script>
 
