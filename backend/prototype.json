@@ -1,9 +1,25 @@
+For Help Location ==>
+
 {
-  "Name" :,
-  "Type" :,
-  "Address" :,
-  "Contact Details" :{
-    "Website" :,
-    "Location" :
+  "id": 1,
+  "Name" :"xzy",
+  "Type" : 2,
+  "Address" : "lorem ipsum",
+  "Website" :"xyz.com",
+  "Location" : {
+    "type": "Point",
+    "coordinates": [
+      144.959054,
+      -37.799926
+    ]
   }
+}
+
+
+For Type ==>
+
+{
+  "id": 2,
+  "name": "lorem ipsum",
+  
 }
