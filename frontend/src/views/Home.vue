@@ -4,7 +4,8 @@
       <Map :centerLat="-37.840935" :centerLong="144.946457"/>
     </b-col>
     <b-col cols="4">
-      <SearchForm />
+      <router-view />
+      <!--<SearchForm />-->
     </b-col>
   </b-row>
 </template>

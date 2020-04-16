@@ -1,14 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
+import SearchList from '@/components/SearchList.vue'
+import SearchForm from '@/components/SearchForm.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
 		path: '/',
-		name: 'Home',
-		component: Home
+		component: Home,
+		children: [
+			{
+				path: '',
+				component: SearchForm
+			},
+			{
+				path: 'search',
+				component: SearchList
+			}
+		]
 	},
 	{
 		path: '/about',
