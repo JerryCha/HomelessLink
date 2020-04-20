@@ -12,7 +12,7 @@ services:
     volumes:
       - ./backend:/app
     command: /start.sh
-    entrypoint: /entrypoint.sh
+    # entrypoint: /entrypoint.sh
     restart: on-failure
     env_file: .env
 
@@ -26,7 +26,7 @@ services:
     restart: on-failure
 
   postgres:
-    image: postgres:10-alpine
+    image: mdillon/postgis:10
     volumes:
       - mateshelp_data:/var/lib/postgresql/data
     env_file: .env

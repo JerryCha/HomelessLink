@@ -1,4 +1,23 @@
-FROM python:3.6
+FROM python:3.6-alpine
+
+RUN apk update && apk upgrade \
+    && apk add postgresql-client \
+        bash \
+        postgresql-dev \
+        musl-dev \
+        gcc \
+        libxml2-dev \
+        libxslt-dev \
+        linux-headers \
+        gettext-dev \
+        jpeg-dev \
+    && apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+        libcrypto1.1 \
+    && apk add \
+        --no-cache \
+        gdal \
+        geos \
+        proj
 
 # python envs
 ENV PYTHONFAULTHANDLER=1 \

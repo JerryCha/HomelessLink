@@ -27,9 +27,9 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    
+
     'rest_framework',
-    
+
     'django_extensions',
 ]
 
@@ -82,7 +82,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': env.str('POSTGRES_DB'),
         'USER': env.str('POSTGRES_USER'),
         'PASSWORD': env.str('POSTGRES_PASSWORD'),
@@ -197,7 +197,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
-    
+
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -223,7 +223,3 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FileUploadParser'
     ]
 }
-
-
-
-

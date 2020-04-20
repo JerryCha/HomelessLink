@@ -1,4 +1,4 @@
-For Help Location ==>
+For 'relief_location'  ==>
 
 {
   "id": 1,
@@ -16,10 +16,9 @@ For Help Location ==>
 }
 
 
-For Type ==>
+For 'type' ==>
 
 {
   "id": 2,
   "name": "lorem ipsum",
-  
 }
