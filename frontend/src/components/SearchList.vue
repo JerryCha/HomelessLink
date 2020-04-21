@@ -96,6 +96,7 @@ export default {
   margin: 0.5em 0.2em;
 	/* x offset | y offset | blur radius | spread radius | color */
 	box-shadow: 0px 0px 0px 0px rgba(255,255,255,0);
+	transition: box-shadow .3s;
 }
 .result-card:hover {
 	z-index: 0;

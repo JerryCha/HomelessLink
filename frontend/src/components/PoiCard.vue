@@ -2,10 +2,10 @@
   <b-card
     :title="name">
     <b-card-text>
-      <p>{{desc}}</p>
-      <p>Address: {{getAddress}}</p>
-      <p>Email: {{email}}</p>
-			<router-link to="/detail/111">Detail</router-link>
+      <p>{{ desc }}</p>
+      <p>Address: {{ getAddress }}</p>
+      <p>Email: {{ email }}</p>
+			<router-link to="/itr1/detail/111">Detail</router-link>
     </b-card-text>
   </b-card>
 </template>
@@ -14,6 +14,7 @@
 export default {
 	name: 'poi-card',
 	props: {
+		id: String,
 		name: String,
 		desc: String,
 		street: String,

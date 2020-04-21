@@ -1,5 +1,5 @@
 <template>
-  <div id="map-container"></div>
+  <div id="map-container" :style="styleObj"></div>
 </template>
 
 <script>
@@ -12,10 +12,26 @@ export default {
 	},
 	props: {
 		centerLat: Number,
-		centerLong: Number
+		centerLng: Number,
+		mapWidth: {
+			type: String,
+			default: '100%'
+		},
+		mapHeight: {
+			type: String,
+			default: '100%'
+		}
 	},
 	data () {
-		return {}
+		return {
+			poiList: [],
+			styleObj: {
+				'min-width': this.mapWidth,
+				'max-width': this.mapWidth,
+				'min-height': this.mapHeight,
+				'max-height': this.mapHeight
+			}
+		}
 	},
 	methods: {
 		initMapBox: function () {
@@ -23,7 +39,7 @@ export default {
 			var map = new MapBox.Map({
 				container: 'map-container',
 				style: 'mapbox://styles/mapbox/streets-v11',
-				center: [this.centerLong, this.centerLat],
+				center: [this.centerLng, this.centerLat],
 				zoom: 11
 			})
 		}
@@ -36,8 +52,4 @@ export default {
 
 <style>
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
-
-#map-container {
-    height: 100%;
-}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col id="map" xs="12" sm="8">
-      <Map :centerLat="-37.840935" :centerLong="144.946457"/>
+      <Map :centerLat="-37.840935" :centerLng="144.946457"/>
     </b-col>
     <b-col id="subview" xs="12" sm="4">
       <router-view />
@@ -10,21 +10,8 @@
 </template>
 
 <style scoped>
-@media screen and (min-width: 576px) {
-  #map {
-    max-height: 80vh;
-  }
-  #subview {
-    max-height: 80vh;
-  }
-}
-@media screen and (max-width: 575px) {
-  #map {
-    max-height: 30vh;
-  }
-  #subview {
-    max-height: 50vh;
-  }
+.row {
+  max-height: 100%;
 }
 </style>
 
