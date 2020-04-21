@@ -38,6 +38,6 @@ export default {
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
 
 #map-container {
-    height: 80vh;
+    height: 100%;
 }
 </style>

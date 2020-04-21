@@ -3,12 +3,18 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import SearchList from '@/components/SearchList.vue'
 import SearchForm from '@/components/SearchForm.vue'
+import Detail from '@/views/Detail.vue'
+import Homepage from '@/views/HomePage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
 		path: '/',
+		component: Homepage
+	},
+	{
+		path: '/itr1',
 		component: Home,
 		children: [
 			{
@@ -18,6 +24,11 @@ const routes = [
 			{
 				path: 'search',
 				component: SearchList
+			},
+			{
+				path: 'detail/:id',
+				component: Detail,
+				props: true
 			}
 		]
 	},
