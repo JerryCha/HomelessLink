@@ -12,7 +12,7 @@
                 :phone="poi.phone"
       />
     </div>
-    <b-button id="back-button" block variant="outline-dark">Back</b-button>
+    <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
   </div>
 </template>
 
@@ -22,6 +22,11 @@ export default {
 	name: 'search-list',
 	components: {
 		PoiCard
+	},
+	methods: {
+		goBack: function () {
+			this.$router.go(-1)
+		}
 	},
 	data () {
 		return {
@@ -88,6 +93,12 @@ export default {
   overflow-y: auto;
 }
 .result-card {
-  margin: 0.5em auto;
+  margin: 0.5em 0.2em;
+	/* x offset | y offset | blur radius | spread radius | color */
+	box-shadow: 0px 0px 0px 0px rgba(255,255,255,0);
+}
+.result-card:hover {
+	z-index: 0;
+	box-shadow: 4px 4px 8px 0px rgba(128,128,128,.5);
 }
 </style>

@@ -54,7 +54,7 @@ export default {
 		onSubmit: function (evt) {
 			evt.preventDefault()
 			window.alert(JSON.stringify(this.form))
-			this.$router.push('/search')
+			this.$router.push(this.$route.path + '/search')
 		}
 	}
 }

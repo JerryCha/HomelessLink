@@ -5,6 +5,7 @@
       <p>{{desc}}</p>
       <p>Address: {{getAddress}}</p>
       <p>Email: {{email}}</p>
+			<router-link to="/detail/111">Detail</router-link>
     </b-card-text>
   </b-card>
 </template>
@@ -29,6 +30,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
