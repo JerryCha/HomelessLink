@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="result-list">
-      <PoiCard class="result-card" v-for="(poi, idx) in result"
+      <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
                 :name="poi.name"
                 :desc="poi.desc"
@@ -28,56 +28,59 @@ export default {
 			this.$router.go(-1)
 		}
 	},
-	data () {
-		return {
-			result: [
-				{
-					name: '11111',
-					desc: '111111111111111111111111111111111111111111111111',
-					street: '233 Funny road',
-					suburb: 'Melbourne',
-					postcode: 'VIC3000',
-					email: 'mail@example.com',
-					phone: '+61233334444'
-				},
-				{
-					name: '22222',
-					desc: '222222222222222222222222222222222222222222222222',
-					street: '233 Funny road',
-					suburb: 'Melbourne',
-					postcode: 'VIC3000',
-					email: 'mail@example.com',
-					phone: '+61233334444'
-				},
-				{
-					name: '22222',
-					desc: '222222222222222222222222222222222222222222222222',
-					street: '233 Funny road',
-					suburb: 'Melbourne',
-					postcode: 'VIC3000',
-					email: 'mail@example.com',
-					phone: '+61233334444'
-				},
-				{
-					name: '22222',
-					desc: '222222222222222222222222222222222222222222222222',
-					street: '233 Funny road',
-					suburb: 'Melbourne',
-					postcode: 'VIC3000',
-					email: 'mail@example.com',
-					phone: '+61233334444'
-				},
-				{
-					name: '22222',
-					desc: '222222222222222222222222222222222222222222222222',
-					street: '233 Funny road',
-					suburb: 'Melbourne',
-					postcode: 'VIC3000',
-					email: 'mail@example.com',
-					phone: '+61233334444'
-				}
-			]
+	computed: {
+		results () {
+			return this.$store.state.locations.locations
 		}
+	},
+	beforeMount () {
+		this.$store.commit('locations/setLocations', [
+			{
+				name: '11111',
+				desc: '111111111111111111111111111111111111111111111111',
+				street: '233 Funny road',
+				suburb: 'Melbourne',
+				postcode: 'VIC3000',
+				email: 'mail@example.com',
+				phone: '+61233334444'
+			},
+			{
+				name: '22222',
+				desc: '222222222222222222222222222222222222222222222222',
+				street: '233 Funny road',
+				suburb: 'Melbourne',
+				postcode: 'VIC3000',
+				email: 'mail@example.com',
+				phone: '+61233334444'
+			},
+			{
+				name: '22222',
+				desc: '222222222222222222222222222222222222222222222222',
+				street: '233 Funny road',
+				suburb: 'Melbourne',
+				postcode: 'VIC3000',
+				email: 'mail@example.com',
+				phone: '+61233334444'
+			},
+			{
+				name: '22222',
+				desc: '222222222222222222222222222222222222222222222222',
+				street: '233 Funny road',
+				suburb: 'Melbourne',
+				postcode: 'VIC3000',
+				email: 'mail@example.com',
+				phone: '+61233334444'
+			},
+			{
+				name: '22222',
+				desc: '222222222222222222222222222222222222222222222222',
+				street: '233 Funny road',
+				suburb: 'Melbourne',
+				postcode: 'VIC3000',
+				email: 'mail@example.com',
+				phone: '+61233334444'
+			}
+		])
 	}
 }
 </script>

@@ -11,9 +11,6 @@
     <b-container id="content" :style="containerStyle">
       <router-view/>
     </b-container>
-    <div id="footer">
-      <p>Team: B9-Prophetic</p>
-    </div>
   </div>
 </template>
 
