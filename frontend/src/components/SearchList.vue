@@ -34,10 +34,12 @@ export default {
 		}
 	},
 	beforeMount () {
+		// Manually add mock-data for frontend development
 		this.$store.commit('locations/setLocations', [
 			{
 				name: '11111',
 				desc: '111111111111111111111111111111111111111111111111',
+				type: 'relief',
 				street: '233 Funny road',
 				suburb: 'Melbourne',
 				postcode: 'VIC3000',
@@ -47,6 +49,7 @@ export default {
 			{
 				name: '22222',
 				desc: '222222222222222222222222222222222222222222222222',
+				type: 'relief',
 				street: '233 Funny road',
 				suburb: 'Melbourne',
 				postcode: 'VIC3000',
@@ -56,6 +59,7 @@ export default {
 			{
 				name: '22222',
 				desc: '222222222222222222222222222222222222222222222222',
+				type: 'organization',
 				street: '233 Funny road',
 				suburb: 'Melbourne',
 				postcode: 'VIC3000',
@@ -65,6 +69,7 @@ export default {
 			{
 				name: '22222',
 				desc: '222222222222222222222222222222222222222222222222',
+				type: 'organization',
 				street: '233 Funny road',
 				suburb: 'Melbourne',
 				postcode: 'VIC3000',
@@ -74,6 +79,7 @@ export default {
 			{
 				name: '22222',
 				desc: '222222222222222222222222222222222222222222222222',
+				type: 'homelessness',
 				street: '233 Funny road',
 				suburb: 'Melbourne',
 				postcode: 'VIC3000',

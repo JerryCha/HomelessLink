@@ -4,8 +4,8 @@
       <h1>MatesHelp</h1>
       <router-link to="/">Home</router-link> |
       <router-link to="/itr1">Iteration 1</router-link> |
-      <router-link to="/search">Search</router-link> |
-      <router-link to="/about">About</router-link>
+      <!--<router-link to="/search">Search</router-link> |-->
+      <router-link to="/about">Experiment</router-link>
       <p>Above nav is for debugging</p>
     </div>
     <b-container id="content" :style="containerStyle">
