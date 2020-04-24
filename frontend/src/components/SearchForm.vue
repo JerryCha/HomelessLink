@@ -63,6 +63,7 @@ export default {
 	methods: {
 		onSubmit: function (evt) {
 			evt.preventDefault()
+			this.$store.dispatch('locations/searchLocations', this.form)
 			window.alert(JSON.stringify(this.form))
 			this.$router.push(this.$route.path + '/search')
 		},

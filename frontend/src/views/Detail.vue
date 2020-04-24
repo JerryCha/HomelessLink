@@ -15,6 +15,12 @@ export default {
 	props: {
 		id: String
 	},
+	mounted () {
+		this.$store.dispatch('locations/getLocation', this.id)
+	},
+	destroyed () {
+		this.$store.dispatch('locations/flushLocation')
+	},
 	data () {
 		return {
 			name: this.id,

@@ -10,9 +10,7 @@
 </template>
 
 <style scoped>
-.row {
-  max-height: 100%;
-}
+
 </style>
 
 <script>

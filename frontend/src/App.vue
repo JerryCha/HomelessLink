@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <h1>MatesHelp</h1>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/itr1">Iteration 1</router-link> |
-      <!--<router-link to="/search">Search</router-link> |-->
-      <router-link to="/about">Experiment</router-link>
-      <p>Above nav is for debugging</p>
-    </div>
+    <Nav />
     <b-container id="content" :style="containerStyle">
       <router-view/>
     </b-container>
@@ -15,8 +8,12 @@
 </template>
 
 <script>
+import Nav from '@/components/Nav.vue'
 export default {
 	name: 'app',
+	components: {
+		Nav
+	},
 	mounted () {
 	},
 	data () {
@@ -51,10 +48,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-@media screen and (max-width: 575px) {
-  #nav {
-    display: none;
-  }}/*
+#content {
+  margin: 1rem auto;  /* vertical horizontal */
+}
+@media screen and (max-width: 575px) {}
+/*
   #content {
     width: 95%;
     height: 60vh;
@@ -68,18 +66,7 @@ body {
     margin: 1rem auto;
   }
 }*/
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 /*
 #footer {
   position: relative;

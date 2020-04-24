@@ -28,65 +28,13 @@ export default {
 			this.$router.go(-1)
 		}
 	},
+	mounted () {
+		this.$store.dispatch('locations/getLocationsList')
+	},
 	computed: {
 		results () {
 			return this.$store.state.locations.locations
 		}
-	},
-	beforeMount () {
-		// Manually add mock-data for frontend development
-		this.$store.commit('locations/setLocations', [
-			{
-				name: '11111',
-				desc: '111111111111111111111111111111111111111111111111',
-				type: 'relief',
-				street: '233 Funny road',
-				suburb: 'Melbourne',
-				postcode: 'VIC3000',
-				email: 'mail@example.com',
-				phone: '+61233334444'
-			},
-			{
-				name: '22222',
-				desc: '222222222222222222222222222222222222222222222222',
-				type: 'relief',
-				street: '233 Funny road',
-				suburb: 'Melbourne',
-				postcode: 'VIC3000',
-				email: 'mail@example.com',
-				phone: '+61233334444'
-			},
-			{
-				name: '22222',
-				desc: '222222222222222222222222222222222222222222222222',
-				type: 'organization',
-				street: '233 Funny road',
-				suburb: 'Melbourne',
-				postcode: 'VIC3000',
-				email: 'mail@example.com',
-				phone: '+61233334444'
-			},
-			{
-				name: '22222',
-				desc: '222222222222222222222222222222222222222222222222',
-				type: 'organization',
-				street: '233 Funny road',
-				suburb: 'Melbourne',
-				postcode: 'VIC3000',
-				email: 'mail@example.com',
-				phone: '+61233334444'
-			},
-			{
-				name: '22222',
-				desc: '222222222222222222222222222222222222222222222222',
-				type: 'homelessness',
-				street: '233 Funny road',
-				suburb: 'Melbourne',
-				postcode: 'VIC3000',
-				email: 'mail@example.com',
-				phone: '+61233334444'
-			}
-		])
 	}
 }
 </script>

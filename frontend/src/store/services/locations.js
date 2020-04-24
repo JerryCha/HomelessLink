@@ -1,5 +1,9 @@
+import axios from 'axios'
+import API from '@/api/api'
+
 const state = {
-	locations: []
+	locations: [],
+	location: null
 }
 
 const getters = {
@@ -15,15 +19,31 @@ const mutations = {
 	},
 	setLocation (state, location) {
 		state.location = location
+	},
+	setQueryForm (state, form) {
+		state.queryForm = form
 	}
 }
 
 const actions = {
-	getLocationsList (context) {
-		return null
+	searchLocations (context, form) {
+		window.console.log(JSON.stringify(form))
+		return axios.post(API.LOCATION.SEARCH_LOCATIONS(), form)
+			.then(res => {
+				console.log(res)
+				context.commit('setLocation', res.data)
+			})
+			.catch(e => { window.console.error(e) })
 	},
 	getLocation (context, id) {
-		return null
+		return axios.get(API.LOCATION.GET_LOCATION(id))
+			.then(res => {
+				console.log(res)
+				context.commit('setLocation', res.data)
+			}).catch(e => { window.console.error(e) })
+	},
+	flushLocation (context) {
+		context.commit('setLocation', null)
 	}
 }
 
