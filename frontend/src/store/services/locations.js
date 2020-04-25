@@ -4,7 +4,8 @@ import API from '@/api/api'
 const state = {
 	locations: [],
 	location: null,
-	currentLocation: null
+	currentLocation: null,
+	viewBound: []	// southern-west, northern-east
 }
 
 const getters = {
@@ -26,6 +27,9 @@ const mutations = {
 	},
 	setCurrentLocation (state, coord) {
 		state.currentLocation = coord
+	},
+	setViewBound (state, bound) {
+		state.viewBound = bound
 	}
 }
 
@@ -54,6 +58,9 @@ const actions = {
 		const coord = [geoLocationCoords.longitude, geoLocationCoords.latitude]
 		window.console.log('$store.currentLocations: ' + coord)
 		context.commit('setCurrentLocation', coord)
+	},
+	updateViewBound (context, newViewBound) {
+		context.commit('setViewBound', newViewBound)
 	}
 }
 

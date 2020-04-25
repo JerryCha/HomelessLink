@@ -63,7 +63,8 @@ export default {
 		poiLocations: {
 			handler: function (newLocations, oldLocations) {
 
-			}
+			},
+			deep: false	// temporary false
 		}
 	},
 	methods: {
@@ -75,6 +76,7 @@ export default {
 				center: this.initCenter,
 				zoom: 12
 			})
+			map.on('load', this.updateViewBound)
 			this.map = map
 		},
 		changeMapCenter: function (destCoord) {
@@ -97,6 +99,8 @@ export default {
 					}
 				})
 			})
+			// Update the boundary of viewing area after moved.
+			this.map.on('moveend', () => { this.updateViewBound() })
 			this.map.flyTo({
 				center: destCoord,
 				essential: true
@@ -105,8 +109,33 @@ export default {
 			// 	.setLngLat(this.$store.state.locations.currentLocation)
 			// 	.addTo(this.map)
 		},
+		updateViewBound: function () {
+			var bound = [
+				this.map.getBounds().getNorthWest().toArray(),
+				this.map.getBounds().getSouthEast().toArray()
+			]
+			this.$store.dispatch('locations/updateViewBound', bound)
+		},
 		setPoiOnMap: function () {
-
+			const poiLocations = this.$store.state.locations.locations
+			// TODO: optimize the replacement process in next iteration
+			if (this.map.getLayer('poiLocations')) { this.map.removeLayer('poiLocations') }
+			if (this.map.getSource('poiLocations')) { this.map.removeSource('poiLocations') }
+			if (this.map.hasImage('poiLocations')) { this.map.removeImage('poiLocations') }
+			this.map.loadImage(poiIcon, (err, img) => {
+				if (err) throw err
+				this.map.addImage('poiLocations', img)
+				this.map.addSource('poiLocations', geobox.buildMapboxSource(poiLocations))
+				this.map.addLayer({
+					'id': 'poiLocations',
+					'type': 'symbol',
+					'source': 'poiLocations',
+					'layout': {
+						'icon-image': 'poiLocations',
+						'icon-size': 0.5
+					}
+				})
+			})
 		}
 	},
 	mounted () {
