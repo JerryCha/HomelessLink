@@ -2,7 +2,7 @@
   <div id="app">
     <Nav />
     <b-container id="content" :style="containerStyle">
-      <router-view/>
+      <router-view :mobile="mobile"/>
     </b-container>
   </div>
 </template>
@@ -18,11 +18,15 @@ export default {
 	},
 	data () {
 		return {
+			mobile: ((width) => {
+				if (width < 576) return true
+				return false
+			})(document.body.clientWidth),
 			containerStyle: {
 				'width': '100%',
 				'height': ((width) => {
-					if (width < 575) {
-						return '60vh'
+					if (width < 576) {
+						return '80vh'
 					} else {
 						return '80vh'
 					}
@@ -32,7 +36,6 @@ export default {
 		}
 	},
 	methods: {
-
 	}
 }
 </script>

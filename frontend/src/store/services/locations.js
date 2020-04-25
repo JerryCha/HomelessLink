@@ -3,7 +3,8 @@ import API from '@/api/api'
 
 const state = {
 	locations: [],
-	location: null
+	location: null,
+	currentLocation: null
 }
 
 const getters = {
@@ -22,6 +23,9 @@ const mutations = {
 	},
 	setQueryForm (state, form) {
 		state.queryForm = form
+	},
+	setCurrentLocation (state, coord) {
+		state.currentLocation = coord
 	}
 }
 
@@ -44,6 +48,12 @@ const actions = {
 	},
 	flushLocation (context) {
 		context.commit('setLocation', null)
+	},
+	setCurrentLocation (context, geoLocationCoords) {
+		// Argument coord is in format of [lat, lng]
+		const coord = [geoLocationCoords.longitude, geoLocationCoords.latitude]
+		window.console.log('$store.currentLocations: ' + coord)
+		context.commit('setCurrentLocation', coord)
 	}
 }
 
