@@ -54,10 +54,10 @@ const actions = {
 		context.commit('setLocation', null)
 	},
 	setCurrentLocation (context, geoLocationCoords) {
-		// Argument coord is in format of [lat, lng]
-		const coord = [geoLocationCoords.longitude, geoLocationCoords.latitude]
-		window.console.log('$store.currentLocations: ' + coord)
-		context.commit('setCurrentLocation', coord)
+		// Argument coord is in format of [lng, lat]
+		// const coord = [geoLocationCoords.longitude, geoLocationCoords.latitude]
+		window.console.log('$store.currentLocations: ' + geoLocationCoords)
+		context.commit('setCurrentLocation', geoLocationCoords)
 	},
 	updateViewBound (context, newViewBound) {
 		context.commit('setViewBound', newViewBound)

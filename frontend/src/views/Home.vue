@@ -1,10 +1,10 @@
 <template>
   <b-row>
     <b-col id="map" xs="12" sm="9">
-      <Map :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
+      <Map ref="mapbox" :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
     </b-col>
     <b-col id="subview" xs="12" sm="3">
-      <router-view />
+      <router-view v-on:on-locate-pressed="handleOnLocatePressed"/>
     </b-col>
   </b-row>
 </template>
@@ -30,8 +30,12 @@ export default {
 	},
 	methods: {
 		getMapContainerHeight: function () {
-			if (this.mobile) return '20vh'
+			if (this.mobile) return '40vh'
 			return '80vh'
+		},
+		handleOnLocatePressed: function (coord) {
+			window.console.log('parent: ' + coord)
+			this.$refs.mapbox.setUserLocation()
 		}
 	},
 	mounted () {

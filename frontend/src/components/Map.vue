@@ -81,6 +81,15 @@ export default {
 		},
 		changeMapCenter: function (destCoord) {
 			window.console.log(`flying to ${destCoord}`)
+			// Update the boundary of viewing area after moved.
+			this.map.on('moveend', () => { this.updateViewBound() })
+			this.map.flyTo({
+				center: destCoord,
+				essential: true
+			})
+		},
+		setUserLocation: function () {
+			window.console.log('setUserLocation invoked ' + this.$store.state.locations.currentLocation)
 			// TODO: optimize the replacement process in next iteration
 			if (this.map.getLayer('userLocation')) { this.map.removeLayer('userLocation') }
 			if (this.map.getSource('userLocation')) { this.map.removeSource('userLocation') }
@@ -88,7 +97,7 @@ export default {
 			this.map.loadImage(locationIcon, (err, img) => {
 				if (err) throw err
 				this.map.addImage('userLocation', img)
-				this.map.addSource('userLocation', geobox.buildMapboxSource([destCoord]))
+				this.map.addSource('userLocation', geobox.buildMapboxSource(this.$store.state.locations.currentLocation))
 				this.map.addLayer({
 					'id': 'userLocation',
 					'type': 'symbol',
@@ -99,15 +108,6 @@ export default {
 					}
 				})
 			})
-			// Update the boundary of viewing area after moved.
-			this.map.on('moveend', () => { this.updateViewBound() })
-			this.map.flyTo({
-				center: destCoord,
-				essential: true
-			})
-			// const userLocationMarker = new MapBox.Marker()
-			// 	.setLngLat(this.$store.state.locations.currentLocation)
-			// 	.addTo(this.map)
 		},
 		updateViewBound: function () {
 			var bound = [
@@ -140,6 +140,7 @@ export default {
 	},
 	mounted () {
 		this.initMapBox()
+		this.$store.dispatch('locations/setCurrentLocation', this.initCenter)
 	}
 }
 </script>
