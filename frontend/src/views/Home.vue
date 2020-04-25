@@ -1,9 +1,9 @@
 <template>
   <b-row>
-    <b-col id="map" xs="12" sm="8">
-      <Map :center="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight"/>
+    <b-col id="map" xs="12" sm="9">
+      <Map :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
     </b-col>
-    <b-col id="subview" xs="12" sm="4">
+    <b-col id="subview" xs="12" sm="3">
       <router-view />
     </b-col>
   </b-row>
@@ -30,7 +30,7 @@ export default {
 	},
 	methods: {
 		getMapContainerHeight: function () {
-			if (this.mobile) return '0vh'
+			if (this.mobile) return '20vh'
 			return '80vh'
 		}
 	},

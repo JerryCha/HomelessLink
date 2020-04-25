@@ -52,7 +52,8 @@ body {
   color: #2c3e50;
 }
 #content {
-  margin: 1rem auto;  /* vertical horizontal */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 @media screen and (max-width: 575px) {}
 /*
