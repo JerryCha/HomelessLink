@@ -4,12 +4,8 @@
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
                 :name="poi.name"
-                :desc="poi.desc"
-                :street="poi.street"
                 :suburb="poi.suburb"
-                :postcode="poi.postcode"
-                :email="poi.email"
-                :phone="poi.phone"
+								:website="poi.website"
       />
     </div>
     <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
@@ -18,6 +14,7 @@
 
 <script>
 import PoiCard from '@/components/PoiCard.vue'
+
 export default {
 	name: 'search-list',
 	components: {
@@ -26,14 +23,26 @@ export default {
 	methods: {
 		goBack: function () {
 			this.$router.go(-1)
+		},
+		retriveData: function () {
+			window.console.log(this.results)
 		}
 	},
 	mounted () {
-		this.$store.dispatch('locations/getLocationsList')
+		this.$store.dispatch('locations/searchLocations')
 	},
 	computed: {
-		results () {
-			return this.$store.state.locations.locations
+		results: function () {
+			return this.$store.state.locations.resultsList !== null
+				? this.$store.state.locations.resultsList.map(loc => {
+					return {
+						name: loc.name,
+						suburb: loc.suburb,
+						type: loc.type[loc.type.length - 2],
+						coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
+						website: loc.website
+					}
+				}) : []
 		}
 	}
 }

@@ -1,10 +1,8 @@
 <template>
   <div>
-    <h2>{{ name }}</h2>
-    <p>{{ desc }}</p>
-    <p>Address: {{ getAddress }}</p>
-    <p>Email: {{ email }}</p>
-    <p>Phone: {{ phone }}</p>
+    <h2>{{ poi.name }}</h2>
+    <p>Suburb: {{ poi.suburb }}</p>
+    <p>Website: {{ getWebsiteLink }}</p>
     <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
   </div>
 </template>
@@ -16,6 +14,7 @@ export default {
 		id: String
 	},
 	mounted () {
+		window.console.log(`id=${this.$route.params.id}`)
 		this.$store.dispatch('locations/getLocation', this.id)
 	},
 	destroyed () {
@@ -24,22 +23,48 @@ export default {
 	data () {
 		return {
 			name: this.id,
-			desc: this.id + this.id + this.id,
-			street: this.id + this.id,
 			suburb: this.id,
-			postcode: this.id,
-			email: this.id + '@example.com',
-			phone: '+61 45' + this.id + this.id
+			postcode: this.id
 		}
 	},
 	computed: {
 		getAddress: function () {
 			return this.street + ', ' + this.suburb + ', ' + this.postcode
+		},
+		poi: function () {
+			var loc = this.$store.state.locations.location
+			return loc !== null
+				? {
+					name: loc.name,
+					suburb: loc.suburb,
+					type: loc.type[loc.type.length - 2],
+					website: loc.website
+				} : {}
+		},
+		coord: function () {
+			var loc = this.$store.state.locations.location
+			if (loc === null || loc === undefined)	{ return loc }
+			var foo = loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
+				.split(' ')
+				.map(p => Number(p))
+			window.console.log(foo)
+			return foo
+		},
+		getWebsiteLink: function () {
+			return this.poi.website === null ? 'N/A' : this.poi.website
 		}
 	},
 	methods: {
 		goBack: function () {
 			this.$router.go(-1)
+		}
+	},
+	watch: {
+		coord: {
+			handler: function (newVal, oldVal) {
+				this.$store.dispatch('locations/setCenterLocation', newVal)
+			},
+			deep: true
 		}
 	}
 }

@@ -73,18 +73,24 @@ export default {
 				{ value: '1', text: 'Relief Center' },
 				{ value: '2', text: 'Organization' },
 				{ value: '3', text: 'Homelessness' }
-			],
-			status: 'ready'
+			]
 		}
 	},
 	mounted () {
 		this.initMapBoxGeoCoder()
 	},
+	computed: {
+		currentBound () {
+			return this.$store.state.locations.currentBound
+		}
+	},
 	methods: {
 		onSubmit: function (evt) {
 			evt.preventDefault()
-			this.$store.dispatch('locations/searchLocations', this.form)
-			window.alert(JSON.stringify(this.form))
+			var submitJson = {}
+			submitJson.bound = this.$store.state.locations.viewBound
+			submitJson.queryForm = this.form
+			this.$store.dispatch('locations/setQueryForm', submitJson)
 			this.$router.push(this.$route.path + '/search')
 		},
 		onLocate: function (evt) {
@@ -102,12 +108,16 @@ export default {
 			const geocoder = new MapboxGeocoder({
 				'accessToken': accessToken,
 				'types': 'country,region,place,postcode,locality,neighborhood',
-				language: 'en-AU',
-				countries: 'au'
+				'language': 'en-AU',
+				'countries': 'au'
 			})
 			geocoder.addTo('#geocoder')
 			geocoder.on('result', (e) => {
-				window.console.log(e.result.center)
+				window.console.log(e)
+				this.form.location = ((placeName) => {
+					// TODO: edge cases handling
+					return placeName.split(',')[0]
+				})(e.result.place_name)
 				this.$store.dispatch('locations/setCurrentLocation', e.result.center)
 			})
 		}

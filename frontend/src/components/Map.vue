@@ -44,7 +44,7 @@ export default {
 	},
 	computed: {
 		center () {
-			var coord = this.$store.state.locations.currentLocation
+			var coord = this.$store.state.locations.centerLocation
 			window.console.log(`computed: ${coord}`)
 			return coord === null ? coord : this.initCenter
 		},
@@ -56,15 +56,9 @@ export default {
 		center: {
 			handler: function (newCenter, oldCenter) {
 				window.console.log(`location change detected: ${oldCenter} -> ${newCenter}`)
-				this.changeMapCenter(this.$store.state.locations.currentLocation)
+				this.changeMapCenter(this.$store.state.locations.centerLocation)
 			},
 			deep: true
-		},
-		poiLocations: {
-			handler: function (newLocations, oldLocations) {
-
-			},
-			deep: false	// temporary false
 		}
 	},
 	methods: {
@@ -74,13 +68,12 @@ export default {
 				container: 'map-container',
 				style: 'mapbox://styles/mapbox/streets-v11',
 				center: this.initCenter,
-				zoom: 12
+				zoom: 13
 			})
 			map.on('load', this.updateViewBound)
 			this.map = map
 		},
 		changeMapCenter: function (destCoord) {
-			window.console.log(`flying to ${destCoord}`)
 			// Update the boundary of viewing area after moved.
 			this.map.on('moveend', () => { this.updateViewBound() })
 			this.map.flyTo({
@@ -89,7 +82,6 @@ export default {
 			})
 		},
 		setUserLocation: function () {
-			window.console.log('setUserLocation invoked ' + this.$store.state.locations.currentLocation)
 			// TODO: optimize the replacement process in next iteration
 			if (this.map.getLayer('userLocation')) { this.map.removeLayer('userLocation') }
 			if (this.map.getSource('userLocation')) { this.map.removeSource('userLocation') }
@@ -140,7 +132,7 @@ export default {
 	},
 	mounted () {
 		this.initMapBox()
-		this.$store.dispatch('locations/setCurrentLocation', this.initCenter)
+		this.$store.dispatch('locations/setCenterLocation', this.initCenter)
 	}
 }
 </script>

@@ -2,28 +2,44 @@ import axios from 'axios'
 import API from '@/api/api'
 
 const state = {
-	locations: [],
+	resultsList: null,
 	location: null,
+	centerLocation: null,
 	currentLocation: null,
-	viewBound: []	// southern-west, northern-east
+	viewBound: [],	// southern-west, northern-east
+	queryForm: {}
 }
 
 const getters = {
 	getReliefCenter (state) {
 		// TODO: Confirm type
-		return state.locations.filter(loc => loc.type === 'relief')
+		return state.resultsList.filter(loc => loc.type === '1')
+	},
+	getLocations (state) {
+		return state.resultsList.map(loc => {
+			return {
+				name: loc.name,
+				suburb: loc.suburb,
+				type: loc.type[loc.type.length - 2],
+				coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
+				website: loc.website
+			}
+		})
 	}
 }
 
 const mutations = {
-	setLocations (state, locations) {
-		state.locations = locations
+	setResultsList (state, locations) {
+		state.resultsList = locations
 	},
 	setLocation (state, location) {
 		state.location = location
 	},
 	setQueryForm (state, form) {
 		state.queryForm = form
+	},
+	setCenterLocation (state, coord) {
+		state.centerLocation = coord
 	},
 	setCurrentLocation (state, coord) {
 		state.currentLocation = coord
@@ -34,12 +50,13 @@ const mutations = {
 }
 
 const actions = {
-	searchLocations (context, form) {
-		window.console.log(JSON.stringify(form))
-		return axios.post(API.LOCATION.SEARCH_LOCATIONS(), form)
+	searchLocations (context) {
+		window.console.log(JSON.stringify(context.state.queryForm))
+		window.alert(API.LOCATION.SEARCH_LOCATIONS() + '?bound=' + context.state.queryForm)
+		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?bound=' + context.state.queryForm)
 			.then(res => {
 				console.log(res)
-				context.commit('setLocation', res.data)
+				context.commit('setResultsList', res.data)
 			})
 			.catch(e => { window.console.error(e) })
 	},
@@ -48,19 +65,26 @@ const actions = {
 			.then(res => {
 				console.log(res)
 				context.commit('setLocation', res.data)
-			}).catch(e => { window.console.error(e) })
+			})
+			.catch(e => { window.console.error(e) })
 	},
 	flushLocation (context) {
 		context.commit('setLocation', null)
 	},
+	setCenterLocation (context, geoLocationCoords) {
+		// Argument coord is in format of [lng, lat]
+		context.commit('setCenterLocation', geoLocationCoords)
+	},
 	setCurrentLocation (context, geoLocationCoords) {
 		// Argument coord is in format of [lng, lat]
-		// const coord = [geoLocationCoords.longitude, geoLocationCoords.latitude]
-		window.console.log('$store.currentLocations: ' + geoLocationCoords)
 		context.commit('setCurrentLocation', geoLocationCoords)
+		context.commit('setCenterLocation', geoLocationCoords)
 	},
 	updateViewBound (context, newViewBound) {
 		context.commit('setViewBound', newViewBound)
+	},
+	setQueryForm (context, form) {
+		context.commit('setQueryForm', form)
 	}
 }
 

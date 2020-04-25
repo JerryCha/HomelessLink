@@ -2,10 +2,9 @@
   <b-card
     :title="name">
     <b-card-text>
-      <p>{{ desc }}</p>
-      <p>Address: {{ getAddress }}</p>
-      <p>Email: {{ email }}</p>
-			<router-link to="/itr1/detail/111">Detail</router-link>
+      <p>Suburb: {{ suburb }}</p>
+      <p :class="hasNoLink(website)?'is-invisible':''">Website: <a :href="website">{{ website }}</a></p>
+			<router-link :to="detailLink">Detail</router-link>
     </b-card-text>
   </b-card>
 </template>
@@ -16,21 +15,24 @@ export default {
 	props: {
 		id: String,
 		name: String,
-		desc: String,
-		street: String,
 		suburb: String,
-		postcode: String,
-		email: String,
-		phone: String
+		website: String
 	},
 	computed: {
-		getAddress: function () {
-			return this.street + ', ' + this.suburb + ', ' + this.postcode
+		detailLink: function () {
+			return '/itr1/detail/' + this.id
+		}
+	},
+	methods: {
+		hasNoLink: function (url) {
+			return url === null
 		}
 	}
 }
 </script>
 
 <style scoped>
-
+.is-invisible {
+	display: none;
+}
 </style>
