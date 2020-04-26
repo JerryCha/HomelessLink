@@ -1,9 +1,22 @@
-const convertToGeoJson = function (coord) {
-	return {
-		'type': 'Feature',
-		'geometry': {
-			'type': 'Point',
-			'coordinates': coord
+const convertToGeoJson = function (loc) {
+	if (Array.isArray(loc)) {
+		return {
+			'type': 'Feature',
+			'geometry': {
+				'type': 'Point',
+				'coordinates': loc
+			}
+		}
+	} else if (typeof loc === 'object') {
+		return {
+			'type': 'Feature',
+			'properties': {
+				'description': loc.name
+			},
+			'geometry': {
+				'type': 'Point',
+				'coordinates': loc.coord
+			}
 		}
 	}
 }

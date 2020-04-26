@@ -13,14 +13,14 @@
 export default {
 	name: 'poi-card',
 	props: {
-		id: String,
+		id: Number,
 		name: String,
 		suburb: String,
 		website: String
 	},
 	computed: {
 		detailLink: function () {
-			return '/itr1/detail/' + this.id
+			return '/itr1/detail/' + String(this.id)
 		}
 	},
 	methods: {

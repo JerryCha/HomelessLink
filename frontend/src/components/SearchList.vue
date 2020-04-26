@@ -8,6 +8,7 @@
     <div id="result-list">
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
+								:id="poi.id"
                 :name="poi.name"
                 :suburb="poi.suburb"
 								:website="poi.website"
@@ -50,6 +51,7 @@ export default {
 			return this.$store.state.locations.resultsList !== null
 				? this.$store.state.locations.resultsList.map(loc => {
 					return {
+						id: loc.id,
 						name: loc.name,
 						suburb: loc.suburb,
 						type: loc.type[loc.type.length - 2],

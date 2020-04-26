@@ -70,6 +70,7 @@ export default {
 				center: this.initCenter,
 				zoom: 13
 			})
+			map.addControl(new MapBox.NavigationControl())
 			map.on('load', () => {
 				this.updateViewBound()
 			})
@@ -110,7 +111,6 @@ export default {
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
 		updateViewBound: function () {
-			window.console.log('++++++++++++++++++++++++++++++++')
 			// Get bound
 			var bound = {
 				'ne': this.map.getBounds().getNorthEast().toArray(),
@@ -119,7 +119,6 @@ export default {
 			this.$store.dispatch('locations/updateViewBound', bound)
 		},
 		updateCenterCoord: function () {
-			window.console.log('============================================')
 			// Get center coord of current view
 			this.$store.dispatch('locations/setCenterLocation', this.map.getCenter().toArray())
 		},
@@ -127,10 +126,14 @@ export default {
 			var poiLocations =
 				this.$store.state.locations.resultsList
 					.map(loc => {
-						return loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
-							.split(' ')
-							.map(p => Number(p))
+						return {
+							name: loc.name,
+							coord: loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
+								.split(' ')
+								.map(p => Number(p))
+						}
 					})
+			// window.console.log('poiLocations[0]: ' + JSON.stringify(poiLocations[0]))
 			// TODO: optimize the replacement process in next iteration
 			this.removeMarker('poiLocations')
 			this.map.loadImage(poiIcon, (err, img) => {
@@ -142,6 +145,10 @@ export default {
 					'type': 'symbol',
 					'source': 'poiLocations',
 					'layout': {
+						'text-field': ['get', 'description'],
+						'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+						'text-justify': 'auto',
+						'text-radial-offset': 0.5,
 						'icon-image': 'poiLocations',
 						'icon-allow-overlap': true,
 						'icon-size': 0.5
