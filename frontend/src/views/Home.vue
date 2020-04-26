@@ -36,9 +36,11 @@ export default {
 			if (this.mobile) return '40vh'
 			return '80vh'
 		},
+		// Accepting onLocate emitted from SearchForm, informing map to change the location.
 		handleOnLocatePressed: function (coord) {
 			this.$refs.mapbox.setUserLocation()
 		},
+		// Accepting onSubmit emitted from SearchForm, informing map to update the center coordinate.
 		handleOnSubmit: function () {
 			this.$refs.mapbox.updateCenterCoord()
 		}

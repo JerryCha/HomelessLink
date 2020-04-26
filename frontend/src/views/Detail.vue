@@ -17,6 +17,7 @@ export default {
 		this.$store.dispatch('locations/getLocation', this.id)
 	},
 	destroyed () {
+		// Setting location to null once the view is destroyed
 		this.$store.dispatch('locations/flushLocation')
 	},
 	data () {
@@ -27,11 +28,10 @@ export default {
 		}
 	},
 	computed: {
-		getAddress: function () {
-			return this.street + ', ' + this.suburb + ', ' + this.postcode
-		},
+		// Retrive the location from store, if it is null return an empty object ({})
 		poi: function () {
 			var loc = this.$store.state.locations.location
+			// loc is null ? reformated object : empty object
 			return loc !== null
 				? {
 					name: loc.name,
@@ -40,6 +40,7 @@ export default {
 					website: loc.website
 				} : {}
 		},
+		// Coordinate of location. Extracted specially for map shown.
 		coord: function () {
 			var loc = this.$store.state.locations.location
 			if (loc === null || loc === undefined)	{ return loc }
@@ -48,6 +49,7 @@ export default {
 				.map(p => Number(p))
 			return coord
 		},
+		// website link. 'N/A' if null.
 		getWebsiteLink: function () {
 			return this.poi.website === null ? 'N/A' : this.poi.website
 		}
@@ -58,6 +60,7 @@ export default {
 		}
 	},
 	watch: {
+		// Watching center coordinate change and update in time. Implemented due to async.
 		coord: {
 			handler: function (newVal, oldVal) {
 				this.$store.dispatch('locations/setCenterLocation', newVal)

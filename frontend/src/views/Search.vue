@@ -1,4 +1,5 @@
 <template>
+  <!-- This View currently not in use -->
   <b-row>
     <b-col cols="8">
       <!--<Map :centerLat="-37.840935" :centerLong="144.946457"/>-->

@@ -1,4 +1,9 @@
+/**
+ * Convert coordinate to GeoJson format
+ * @param {Array | Object} loc location coordinate
+ */
 const convertToGeoJson = function (loc) {
+	// Assuming an array is a coordinate in format of [lng, lat]
 	if (Array.isArray(loc)) {
 		return {
 			'type': 'Feature',
@@ -7,7 +12,10 @@ const convertToGeoJson = function (loc) {
 				'coordinates': loc
 			}
 		}
-	} else if (typeof loc === 'object') {
+	// eslint-disable-next-line brace-style
+	}
+	// Assuming an object is a coordinate with name in format of {name: '', coord: [lng, lat]}.
+	else if (typeof loc === 'object') {
 		return {
 			'type': 'Feature',
 			'properties': {
@@ -21,6 +29,10 @@ const convertToGeoJson = function (loc) {
 	}
 }
 
+/**
+ * Build location source for mapbox
+ * @param {Array} locations locations in format of array or object.
+ */
 const buildMapboxSource = function (locations) {
 	return {
 		'type': 'geojson',

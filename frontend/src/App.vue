@@ -18,10 +18,12 @@ export default {
 	},
 	data () {
 		return {
+			// data field to indicate browsing device is mobile phone or desktop
 			mobile: ((width) => {
 				if (width < 576) return true
 				return false
 			})(document.body.clientWidth),
+			// style object for container
 			containerStyle: {
 				'width': '100%',
 				'height': ((width) => {
@@ -31,7 +33,6 @@ export default {
 						return '80vh'
 					}
 				})(document.body.clientWidth)
-				// 'overflow-y': 'hidden'
 			}
 		}
 	},
@@ -56,25 +57,4 @@ body {
   margin-bottom: 1rem;
 }
 @media screen and (max-width: 575px) {}
-/*
-  #content {
-    width: 95%;
-    height: 60vh;
-    margin: 1rem auto;
-  }
-}
-@media screen and (min-width: 576px) {
-  #content {
-    width: 95%;
-    height: 80vh;
-    margin: 1rem auto;
-  }
-}*/
-
-/*
-#footer {
-  position: relative;
-  bottom: 2rem;
-}
-*/
 </style>

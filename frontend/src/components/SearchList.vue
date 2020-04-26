@@ -1,16 +1,21 @@
 <template>
   <div>
+		<!-- list top block -->
 		<div>
+			<!-- Type select -->
 			<b-form-group label="Type" v-if="filterOptionsList.length > 0">
 					<b-form-select v-model="filterType" :options="filterOptionsList"></b-form-select>
 				</b-form-group>
 		</div>
+		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
 			<p id="searching-text">Searching</p>
 		</div>
+		<!-- No result block -->
 		<div :class="hasNoResult()?'':'invisible'">
 			<p id="searching-text">Not Found</p>
 		</div>
+		<!-- Result block -->
     <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
 			<p>{{ resultsCount }} results found.</p>
       <PoiCard class="result-card" v-for="(poi, idx) in results"
@@ -21,6 +26,7 @@
 								:website="poi.website"
       />
     </div>
+		<!-- back to previous page button -->
     <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
   </div>
 </template>
@@ -37,6 +43,7 @@ export default {
 	data () {
 		return {
 			filterType: '0',
+			// filterOptions is dynamically loaded from backend
 			filterOptions: [
 
 			]
@@ -55,11 +62,13 @@ export default {
 		}
 	},
 	mounted () {
+		// Query once components mounted
 		this.$store.dispatch('locations/searchLocations')
-    const that = this;
-    axios.get('/api/types/').then(function(response) {
-      that.filterOptions = response.data;
-    });
+		const that = this
+		// Get location type from backend
+		axios.get('/api/types/').then(function (response) {
+			that.filterOptions = response.data
+		})
 	},
 	watch: {
 		filterType (newVal, oldVal) {
@@ -67,23 +76,25 @@ export default {
 		}
 	},
 	computed: {
-    filterOptionsList: function(){
-      var temp_array = [];
+		filterOptionsList: function () {
+			var temp_array = []
+			// If filterOptions is not empty, create a new one
+			if (this.filterOptions.length > 0) {
+				// Add 'ALL' manually
+				var filter = { value: '0', text: 'All' }
+				temp_array.push(filter)
+				// Adding other options from retrived data.
+				for (var key in this.filterOptions) {
+					var option = this.filterOptions[key]
+					var filter = {
+						value: option.id, text: option.name
+					}
+					temp_array.push(filter)
+				}
+			}
 
-      if (this.filterOptions.length > 0){
-        var filter = {value: '0', text: 'All'}
-        temp_array.push(filter);
-        for(var key in this.filterOptions){
-          var option = this.filterOptions[key];
-          var filter = {
-            value: option.id, text: option.name
-          }
-          temp_array.push(filter);
-        }
-      }
-
-      return temp_array;
-    },
+			return temp_array
+		},
 		results: function () {
 			return this.$store.state.locations.resultsList
 		},

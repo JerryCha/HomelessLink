@@ -90,39 +90,55 @@ export default {
 		}
 	},
 	methods: {
+		// submiting query form.
 		onSubmit: function (evt) {
 			evt.preventDefault()
+			// Emit event to parent component
 			this.$emit('on-submit-fired')
+			// Create submit json form
 			var submitJson = {}
+			// Add map bound as area restriction
 			submitJson.bound = this.$store.state.locations.viewBound
+			// Add form as query conditions
 			submitJson.queryForm = this.form
+			// Set query params to store
 			this.$store.dispatch('locations/setQueryParams', submitJson)
+			// Set status to searching
 			this.$store.dispatch('locations/setResultsCountToSearching')
+			// Go to searching page.
 			this.$router.push(this.$route.path + '/search')
 		},
+		// Set current location to user location
 		onLocate: function (evt) {
 			navigator.geolocation.getCurrentPosition((pos) => {
+				// Extract coordinate from GeolocationPosition
 				var coord = [pos.coords.longitude, pos.coords.latitude]
+				// Emit event to parent component
 				this.$emit('on-locate-pressed', coord)
+				// Update current location
 				this.$store.dispatch('locations/setCurrentLocation', coord)
 			}, (err) => {
 				window.console.error(err)
 			})
 		},
+		// GeoCoder initialization
 		initMapBoxGeoCoder: function () {
 			const accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const geocoder = new MapboxGeocoder({
 				'accessToken': accessToken,
 				'types': 'country,region,place,postcode,locality,neighborhood',
-				'language': 'en-AU',
-				'countries': 'au'
+				'language': 'en-AU',	// Set language to Australian English
+				'countries': 'au'	// Restrict region to Australia
 			})
+			// Add geocoder plugin to DOM
 			geocoder.addTo('#geocoder')
+			// Setting result changed listener
 			geocoder.on('result', (e) => {
 				this.form.location = ((placeName) => {
 					// TODO: edge cases handling
 					return placeName.split(',')[0]
 				})(e.result.place_name)
+				// Update current location
 				this.$store.dispatch('locations/setCurrentLocation', e.result.center)
 			})
 		}

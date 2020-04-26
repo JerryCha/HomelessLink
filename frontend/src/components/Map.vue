@@ -31,24 +31,29 @@ export default {
 		}
 	},
 	computed: {
+		// Map center coordinate
 		center () {
 			var coord = this.$store.state.locations.centerLocation
 			return coord === null ? coord : this.initCenter
 		},
+		// Point of interests
 		poiLocations () {
 			return this.$store.state.locations.resultsList
 		},
+		// Number of points of interests
 		poiLocationsCount () {
 			return this.$store.state.locations.resultsCount
 		}
 	},
 	watch: {
+		// Center coordinate watcher
 		center: {
 			handler: function (newCenter, oldCenter) {
 				this.changeMapCenter(this.$store.state.locations.centerLocation)
 			},
 			deep: true
 		},
+		// Count of POI change watcher. Once updated, remove the marker and set the new ones
 		poiLocationsCount (newState, oldState) {
 			this.removeMarker('poiLocations')
 			if (newState !== 0) {
@@ -57,6 +62,7 @@ export default {
 		}
 	},
 	methods: {
+		// Mapbox-gl initialization
 		initMapBox: function () {
 			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const map = new MapBox.Map({
@@ -65,10 +71,13 @@ export default {
 				center: this.initCenter,
 				zoom: 13
 			})
+			// Adding zoom control
 			map.addControl(new MapBox.NavigationControl())
+			// Once loaded, update the view bound
 			map.on('load', () => {
 				this.updateViewBound()
 			})
+			// Once resized, update the center coordinate and view bound
 			map.on('resize', () => {
 				this.updateViewBound()
 				this.updateCenterCoord()
@@ -83,14 +92,18 @@ export default {
 			this.map.on('moveend', () => {
 				this.updateViewBound()
 			})
+			// Fly to the new coordinate
 			this.map.flyTo({
 				center: destCoord,
 				essential: true
 			})
 		},
+		// Set user's current location marker
 		setUserLocation: function () {
 			// TODO: optimize the replacement process in next iteration
+			// Remove the marker if already has one
 			this.removeMarker('userLocation')
+			// Adding new makrer
 			this.map.loadImage(locationIcon, (err, img) => {
 				if (err) throw err
 				this.map.addImage('userLocation', img)
@@ -112,19 +125,24 @@ export default {
 			if (this.map.getSource(name)) { this.map.removeSource(name) }
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
+		// Update the view bound
 		updateViewBound: function () {
 			// Get bound
 			var bound = {
 				'ne': this.map.getBounds().getNorthEast().toArray(),
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
+			// Update
 			this.$store.dispatch('locations/updateViewBound', bound)
 		},
+		// Update center coordination
 		updateCenterCoord: function () {
-			// Get center coord of current view
+			// Get center coord of current view, and update to store
 			this.$store.dispatch('locations/setCenterLocation', this.map.getCenter().toArray())
 		},
+		// Set POI marker on map
 		setPoiOnMap: function () {
+			// Extracting the locations from shown results list
 			var poiLocations =
 				this.$store.state.locations.resultsList
 					.map(loc => {
@@ -151,7 +169,7 @@ export default {
 						'text-justify': 'auto',
 						'text-radial-offset': 0.5,
 						'icon-image': 'poiLocations',
-						'icon-allow-overlap': true,
+						'icon-allow-overlap': true,	// Allow overlapping, avoid marker hidden at different zoom levels
 						'icon-size': 0.5
 					}
 				})
@@ -160,6 +178,7 @@ export default {
 	},
 	mounted () {
 		this.initMapBox()
+		// update center location after mounted
 		this.$store.dispatch('locations/setCenterLocation', this.initCenter)
 	}
 }
