@@ -3,6 +3,7 @@ import API from '@/api/api'
 
 const state = {
 	resultsList: null,
+	resultsCount: 0,
 	location: null,
 	centerLocation: null,
 	currentLocation: null,
@@ -32,6 +33,9 @@ const mutations = {
 	setResultsList (state, locations) {
 		state.resultsList = locations
 	},
+	setResultsCount (state) {
+		state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
+	},
 	setLocation (state, location) {
 		state.location = location
 	},
@@ -57,8 +61,12 @@ const actions = {
 			.then(res => {
 				console.log(res)
 				context.commit('setResultsList', res.data)
+				context.commit('setResultsCount')
 			})
 			.catch(e => { window.console.error(e) })
+	},
+	flushResultsList (context) {
+		context.commit('setResultsList', null)
 	},
 	getLocation (context, id) {
 		return axios.get(API.LOCATION.GET_LOCATION(id))

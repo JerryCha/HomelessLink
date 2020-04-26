@@ -22,6 +22,7 @@ export default {
 	},
 	methods: {
 		goBack: function () {
+			this.$store.dispatch('locations/set')
 			this.$router.go(-1)
 		},
 		retriveData: function () {

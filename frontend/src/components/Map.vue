@@ -49,7 +49,10 @@ export default {
 			return coord === null ? coord : this.initCenter
 		},
 		poiLocations () {
-			return this.$store.state.locations.locations
+			return this.$store.state.locations.resultsList
+		},
+		poiLocationsCount () {
+			return this.$store.state.locations.resultsCount
 		}
 	},
 	watch: {
@@ -59,6 +62,9 @@ export default {
 				this.changeMapCenter(this.$store.state.locations.centerLocation)
 			},
 			deep: true
+		},
+		poiLocationsCount (newState, oldState) {
+			this.setPoiOnMap()
 		}
 	},
 	methods: {
@@ -83,9 +89,7 @@ export default {
 		},
 		setUserLocation: function () {
 			// TODO: optimize the replacement process in next iteration
-			if (this.map.getLayer('userLocation')) { this.map.removeLayer('userLocation') }
-			if (this.map.getSource('userLocation')) { this.map.removeSource('userLocation') }
-			if (this.map.hasImage('userLocation')) { this.map.removeImage('userLocation') }
+			this.removeMarker('userLocation')
 			this.map.loadImage(locationIcon, (err, img) => {
 				if (err) throw err
 				window.console.log(`setting marker to ${this.$store.state.locations.currentLocation}`)
@@ -97,10 +101,15 @@ export default {
 					'source': 'userLocation',
 					'layout': {
 						'icon-image': 'userLocation',
-						'icon-size': 0.5
+						'icon-size': 0.25
 					}
 				})
 			})
+		},
+		removeMarker: function (name) {
+			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
+			if (this.map.getSource(name)) { this.map.removeSource(name) }
+			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
 		updateViewBound: function () {
 			var bound = [
@@ -110,7 +119,13 @@ export default {
 			this.$store.dispatch('locations/updateViewBound', bound)
 		},
 		setPoiOnMap: function () {
-			var poiLocations = this.$store.state.locations.locations
+			var poiLocations =
+				this.$store.state.locations.resultsList
+					.map(loc => {
+						return loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
+							.split(' ')
+							.map(p => Number(p))
+					})
 			// TODO: optimize the replacement process in next iteration
 			if (this.map.getLayer('poiLocations')) { this.map.removeLayer('poiLocations') }
 			if (this.map.getSource('poiLocations')) { this.map.removeSource('poiLocations') }

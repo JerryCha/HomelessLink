@@ -44,11 +44,11 @@ export default {
 		coord: function () {
 			var loc = this.$store.state.locations.location
 			if (loc === null || loc === undefined)	{ return loc }
-			var foo = loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
+			var coord = loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
 				.split(' ')
 				.map(p => Number(p))
-			window.console.log(foo)
-			return foo
+			window.console.log(coord)
+			return coord
 		},
 		getWebsiteLink: function () {
 			return this.poi.website === null ? 'N/A' : this.poi.website
