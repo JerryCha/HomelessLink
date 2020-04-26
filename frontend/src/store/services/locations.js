@@ -5,6 +5,7 @@ import queryHelper from '@/util/query'
 const state = {
 	resultsList: [],
 	resultsCount: 0,
+	fetchedLocations: [],
 	location: null,
 	centerLocation: null,
 	currentLocation: null,
@@ -50,6 +51,9 @@ const mutations = {
 			state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
 		}
 	},
+	setFetchedLocations (state, locations) {
+		state.fetchedLocations = locations
+	},
 	setLocation (state, location) {
 		state.location = location
 	},
@@ -71,14 +75,34 @@ const actions = {
 	searchLocations (context) {
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
 			.then(res => {
+				context.commit('setFetchedLocations', res.data)
 				context.commit('setResultsList', res.data)
 				context.commit('setResultsCount')
 			})
 			.catch(e => { window.console.error(e) })
 	},
+	filterResultsList (context, type) {
+		// TODO: Optimize update strategy
+		switch (type) {
+		case '1':
+			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '1'))
+			context.commit('setResultsCount')
+			break
+		case '2':
+			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '2'))
+			context.commit('setResultsCount')
+			break
+		case '3':
+			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '3'))
+			context.commit('setResultsCount')
+			break
+		}
+	},
+	// temporary flush both resultsList and fetchedResults
 	flushResultsList (context) {
-		context.commit('setResultsList', null)
+		context.commit('setResultsList', [])
 		context.commit('setResultsCount')
+		context.commit('setFetchedLocations', [])
 	},
 	getLocation (context, id) {
 		return axios.get(API.LOCATION.GET_LOCATION(id))

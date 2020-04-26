@@ -11,7 +11,8 @@
 		<div :class="hasNoResult()?'':'invisible'">
 			<p id="searching-text">Not Found</p>
 		</div>
-    <div id="result-list">
+    <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
+			<p>{{ resultsCount }} results found.</p>
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
 								:id="poi.id"
@@ -58,22 +59,17 @@ export default {
 	mounted () {
 		this.$store.dispatch('locations/searchLocations')
 	},
+	watch: {
+		filterType (newVal, oldVal) {
+			this.$store.dispatch('locations/filterResultsList', newVal)
+		}
+	},
 	computed: {
 		results: function () {
-			return this.$store.state.locations.resultsList !== null
-				? this.$store.state.locations.resultsList.map(loc => {
-					return {
-						id: loc.id,
-						name: loc.name,
-						suburb: loc.suburb,
-						type: loc.type[loc.type.length - 2],
-						coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
-						website: loc.website
-					}
-				}).filter(loc => {
-					if (this.filterType === '0') { return true }
-					return loc.type === this.filterType
-				}) : []
+			return this.$store.state.locations.resultsList
+		},
+		resultsCount: function () {
+			return this.$store.state.locations.resultsCount
 		}
 	}
 }

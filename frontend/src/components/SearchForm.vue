@@ -8,7 +8,13 @@
 				</b-form-group>
 			</b-form-row>
 			<b-form-row>
-				<b-button @click="onLocate" variant="outline-secondary"><b-icon-cursor></b-icon-cursor>Where am I?</b-button>
+				<b-col>
+					<b-button @click="onLocate" variant="outline-secondary"><b-icon-cursor></b-icon-cursor> My Location</b-button>
+				</b-col>
+				<b-col>
+					<b-button type="submit"
+										variant="primary">Search</b-button>
+				</b-col>
 			</b-form-row>
 			<!--Already replaced by geocoder -->
 			<!-- <b-form-group label="Location">
@@ -19,13 +25,12 @@
 						<b-button @click="onLocate" variant="outline-secondary"><b-icon-cursor></b-icon-cursor></b-button>
 					</b-input-group-append>
 				</b-input-group>
-			</b-form-group> -->
+			</b-form-group>
 			<b-form-row>
 				<b-form-group label="Type">
 					<b-form-select v-model="form.interest" :options="interestOptions"></b-form-select>
 				</b-form-group>
 			</b-form-row>
-			<!--
 			<b-form-group label="Street">
 				<b-form-input v-model="form.street"></b-form-input>
 			</b-form-group>
@@ -45,8 +50,6 @@
 				<b-form-input v-model="form.name"></b-form-input>
 			</b-form-group>
 			-->
-			<b-button type="submit"
-								variant="primary">Search</b-button>
 		</b-form>
 	</div>
 </template>

@@ -1,4 +1,4 @@
-const HOST = 'https://localhost:8080'
+const HOST = 'https://mateshelp.herokuapp.com'
 
 const LOCATION = {
 	'GET_LOCATION': (id) => HOST + '/api/locations/' + id,
