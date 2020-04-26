@@ -5,6 +5,12 @@
 					<b-form-select v-model="filterType" :options="filterOptions"></b-form-select>
 				</b-form-group>
 		</div>
+		<div :class="isSearching()?'':'invisible'">
+			<p id="searching-text">Searching</p>
+		</div>
+		<div :class="hasNoResult()?'':'invisible'">
+			<p id="searching-text">Not Found</p>
+		</div>
     <div id="result-list">
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
@@ -41,6 +47,12 @@ export default {
 		goBack: function () {
 			this.$store.dispatch('locations/flushResultsList')
 			this.$router.go(-1)
+		},
+		isSearching: function () {
+			return this.$store.state.locations.resultsCount === -1
+		},
+		hasNoResult: function () {
+			return this.$store.state.locations.resultsCount === 0
 		}
 	},
 	mounted () {
@@ -86,5 +98,11 @@ export default {
 .result-card:hover {
 	z-index: 0;
 	box-shadow: 4px 4px 8px 0px rgba(128,128,128,.5);
+}
+.invisible {
+	display: none;
+}
+#searching-text {
+	font-size: 2em;
 }
 </style>

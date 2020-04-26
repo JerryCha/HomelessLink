@@ -37,7 +37,6 @@ export default {
 			return '80vh'
 		},
 		handleOnLocatePressed: function (coord) {
-			window.console.log('parent: ' + coord)
 			this.$refs.mapbox.setUserLocation()
 		},
 		handleOnSubmit: function () {
@@ -45,7 +44,9 @@ export default {
 		}
 	},
 	mounted () {
-		window.console.log('is mobile? ' + this.mobile)
+		window.onresize = () => {
+			this.$refs.mapbox.resizeMap()
+		}
 	}
 }
 </script>

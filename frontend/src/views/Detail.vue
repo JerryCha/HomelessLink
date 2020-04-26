@@ -14,7 +14,6 @@ export default {
 		id: String
 	},
 	mounted () {
-		window.console.log(`id=${this.$route.params.id}`)
 		this.$store.dispatch('locations/getLocation', this.id)
 	},
 	destroyed () {
@@ -47,7 +46,6 @@ export default {
 			var coord = loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
 				.split(' ')
 				.map(p => Number(p))
-			window.console.log(coord)
 			return coord
 		},
 		getWebsiteLink: function () {

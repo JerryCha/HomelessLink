@@ -94,11 +94,11 @@ export default {
 			submitJson.bound = this.$store.state.locations.viewBound
 			submitJson.queryForm = this.form
 			this.$store.dispatch('locations/setQueryParams', submitJson)
+			this.$store.dispatch('locations/setResultsCountToSearching')
 			this.$router.push(this.$route.path + '/search')
 		},
 		onLocate: function (evt) {
 			navigator.geolocation.getCurrentPosition((pos) => {
-				window.console.log('invoked getCurrentPosition')
 				var coord = [pos.coords.longitude, pos.coords.latitude]
 				this.$emit('on-locate-pressed', coord)
 				this.$store.dispatch('locations/setCurrentLocation', coord)
@@ -116,7 +116,6 @@ export default {
 			})
 			geocoder.addTo('#geocoder')
 			geocoder.on('result', (e) => {
-				window.console.log(e)
 				this.form.location = ((placeName) => {
 					// TODO: edge cases handling
 					return placeName.split(',')[0]

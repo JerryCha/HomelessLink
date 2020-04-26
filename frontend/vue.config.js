@@ -4,11 +4,11 @@ module.exports = {
 	devServer: {
 		hot: true,
 		hotOnly: true,
-		https: false,
-		proxy: 'http://localhost:8000',
+		https: true,
+		proxy: 'https://mateshelp.herokuapp.com',
 		disableHostCheck: true,
 		historyApiFallback: true,
-		public: '0.0.0.0:8000',
+		public: '0.0.0.0:8080',
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',

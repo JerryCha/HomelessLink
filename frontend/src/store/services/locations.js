@@ -3,7 +3,7 @@ import API from '@/api/api'
 import queryHelper from '@/util/query'
 
 const state = {
-	resultsList: null,
+	resultsList: [],
 	resultsCount: 0,
 	location: null,
 	centerLocation: null,
@@ -43,8 +43,12 @@ const mutations = {
 	setResultsList (state, locations) {
 		state.resultsList = locations
 	},
-	setResultsCount (state) {
-		state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
+	setResultsCount (state, searchFlag) {
+		if (searchFlag) {
+			state.resultsCount = -1
+		} else {
+			state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
+		}
 	},
 	setLocation (state, location) {
 		state.location = location
@@ -65,10 +69,8 @@ const mutations = {
 
 const actions = {
 	searchLocations (context) {
-		window.console.log(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
 			.then(res => {
-				console.log(res)
 				context.commit('setResultsList', res.data)
 				context.commit('setResultsCount')
 			})
@@ -81,7 +83,6 @@ const actions = {
 	getLocation (context, id) {
 		return axios.get(API.LOCATION.GET_LOCATION(id))
 			.then(res => {
-				console.log(res)
 				context.commit('setLocation', res.data)
 			})
 			.catch(e => { window.console.error(e) })
@@ -103,6 +104,9 @@ const actions = {
 	},
 	setQueryParams (context, form) {
 		context.commit('setQueryParams', form)
+	},
+	setResultsCountToSearching (context) {
+		context.commit('setResultsCount', true)
 	}
 }
 

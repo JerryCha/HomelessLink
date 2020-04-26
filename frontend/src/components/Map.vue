@@ -25,17 +25,14 @@ export default {
 	data () {
 		return {
 			styleObj: {
-				'min-width': this.mapWidth,
-				'max-width': this.mapWidth,
-				'min-height': this.mapHeight,
-				'max-height': this.mapHeight
+				'width': this.mapWidth,
+				'height': this.mapHeight
 			}
 		}
 	},
 	computed: {
 		center () {
 			var coord = this.$store.state.locations.centerLocation
-			window.console.log(`computed: ${coord}`)
 			return coord === null ? coord : this.initCenter
 		},
 		poiLocations () {
@@ -48,7 +45,6 @@ export default {
 	watch: {
 		center: {
 			handler: function (newCenter, oldCenter) {
-				window.console.log(`location change detected: ${oldCenter} -> ${newCenter}`)
 				this.changeMapCenter(this.$store.state.locations.centerLocation)
 			},
 			deep: true
@@ -74,7 +70,14 @@ export default {
 			map.on('load', () => {
 				this.updateViewBound()
 			})
+			map.on('resize', () => {
+				this.updateViewBound()
+				this.updateCenterCoord()
+			})
 			this.map = map
+		},
+		resizeMap: function () {
+			this.map.resize()
 		},
 		changeMapCenter: function (destCoord) {
 			// Update the boundary of viewing area after moved.
@@ -133,7 +136,6 @@ export default {
 								.map(p => Number(p))
 						}
 					})
-			// window.console.log('poiLocations[0]: ' + JSON.stringify(poiLocations[0]))
 			// TODO: optimize the replacement process in next iteration
 			this.removeMarker('poiLocations')
 			this.map.loadImage(poiIcon, (err, img) => {
