@@ -1,8 +1,8 @@
 <template>
   <div>
 		<div>
-			<b-form-group label="Type">
-					<b-form-select v-model="filterType" :options="filterOptions"></b-form-select>
+			<b-form-group label="Type" v-if="filterOptionsList.length > 0">
+					<b-form-select v-model="filterType" :options="filterOptionsList"></b-form-select>
 				</b-form-group>
 		</div>
 		<div :class="isSearching()?'':'invisible'">
@@ -27,6 +27,7 @@
 
 <script>
 import PoiCard from '@/components/PoiCard.vue'
+import axios from 'axios'
 
 export default {
 	name: 'search-list',
@@ -37,10 +38,7 @@ export default {
 		return {
 			filterType: '0',
 			filterOptions: [
-				{ value: '0', text: 'All' },
-				{ value: '1', text: 'Relief Center' },
-				{ value: '2', text: 'Organization' },
-				{ value: '3', text: 'Homelessness' }
+
 			]
 		}
 	},
@@ -58,13 +56,34 @@ export default {
 	},
 	mounted () {
 		this.$store.dispatch('locations/searchLocations')
+    const that = this;
+    axios.get('/api/types/').then(function(response) {
+      that.filterOptions = response.data;
+    });
 	},
 	watch: {
 		filterType (newVal, oldVal) {
-			this.$store.dispatch('locations/filterResultsList', newVal)
+			this.$store.dispatch('locations/filterResultsList', String(newVal))
 		}
 	},
 	computed: {
+    filterOptionsList: function(){
+      var temp_array = [];
+
+      if (this.filterOptions.length > 0){
+        var filter = {value: '0', text: 'All'}
+        temp_array.push(filter);
+        for(var key in this.filterOptions){
+          var option = this.filterOptions[key];
+          var filter = {
+            value: option.id, text: option.name
+          }
+          temp_array.push(filter);
+        }
+      }
+
+      return temp_array;
+    },
 		results: function () {
 			return this.$store.state.locations.resultsList
 		},
