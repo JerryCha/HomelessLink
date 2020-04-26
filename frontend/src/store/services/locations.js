@@ -1,5 +1,6 @@
 import axios from 'axios'
 import API from '@/api/api'
+import queryHelper from '@/util/query'
 
 const state = {
 	resultsList: null,
@@ -7,25 +8,34 @@ const state = {
 	location: null,
 	centerLocation: null,
 	currentLocation: null,
-	viewBound: [],	// southern-west, northern-east
-	queryForm: {}
+	viewBound: {},	// southern-west, northern-east
+	queryParams: {}
 }
 
 const getters = {
-	getReliefCenter (state) {
-		// TODO: Confirm type
-		return state.resultsList.filter(loc => loc.type === '1')
+	getOrganizations (state) {
+		return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '2')
 	},
-	getLocations (state) {
-		return state.resultsList.map(loc => {
-			return {
-				name: loc.name,
-				suburb: loc.suburb,
-				type: loc.type[loc.type.length - 2],
-				coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
-				website: loc.website
-			}
-		})
+	getLocations (state, type) {
+		switch (type) {
+		// Return all results
+		case '0':
+			return state.resultsList.map(loc => {
+				return {
+					name: loc.name,
+					suburb: loc.suburb,
+					type: loc.type[loc.type.length - 2],
+					coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
+					website: loc.website
+				}
+			})
+		case '1':
+			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '1')
+		case '2':
+			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '2')
+		case '3':
+			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '3')
+		}
 	}
 }
 
@@ -39,8 +49,8 @@ const mutations = {
 	setLocation (state, location) {
 		state.location = location
 	},
-	setQueryForm (state, form) {
-		state.queryForm = form
+	setQueryParams (state, form) {
+		state.queryParams = form
 	},
 	setCenterLocation (state, coord) {
 		state.centerLocation = coord
@@ -55,8 +65,8 @@ const mutations = {
 
 const actions = {
 	searchLocations (context) {
-		window.console.log(JSON.stringify(context.state.queryForm))
-		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?bound=' + context.state.queryForm)
+		window.console.log(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
+		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
 			.then(res => {
 				console.log(res)
 				context.commit('setResultsList', res.data)
@@ -91,8 +101,8 @@ const actions = {
 	updateViewBound (context, newViewBound) {
 		context.commit('setViewBound', newViewBound)
 	},
-	setQueryForm (context, form) {
-		context.commit('setQueryForm', form)
+	setQueryParams (context, form) {
+		context.commit('setQueryParams', form)
 	}
 }
 

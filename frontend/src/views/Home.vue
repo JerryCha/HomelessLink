@@ -4,7 +4,10 @@
       <Map ref="mapbox" :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
     </b-col>
     <b-col id="subview" xs="12" sm="4">
-      <router-view v-on:on-locate-pressed="handleOnLocatePressed"/>
+      <router-view
+        @on-locate-pressed="handleOnLocatePressed"
+        @on-submit-fired="handleOnSubmit"
+      />
     </b-col>
   </b-row>
 </template>
@@ -36,6 +39,9 @@ export default {
 		handleOnLocatePressed: function (coord) {
 			window.console.log('parent: ' + coord)
 			this.$refs.mapbox.setUserLocation()
+		},
+		handleOnSubmit: function () {
+			this.$refs.mapbox.updateCenterCoord()
 		}
 	},
 	mounted () {

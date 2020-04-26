@@ -1,5 +1,10 @@
 <template>
   <div>
+		<div>
+			<b-form-group label="Type">
+					<b-form-select v-model="filterType" :options="filterOptions"></b-form-select>
+				</b-form-group>
+		</div>
     <div id="result-list">
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
@@ -20,13 +25,21 @@ export default {
 	components: {
 		PoiCard
 	},
+	data () {
+		return {
+			filterType: '0',
+			filterOptions: [
+				{ value: '0', text: 'All' },
+				{ value: '1', text: 'Relief Center' },
+				{ value: '2', text: 'Organization' },
+				{ value: '3', text: 'Homelessness' }
+			]
+		}
+	},
 	methods: {
 		goBack: function () {
 			this.$store.dispatch('locations/flushResultsList')
 			this.$router.go(-1)
-		},
-		retriveData: function () {
-			window.console.log(this.results)
 		}
 	},
 	mounted () {
@@ -43,6 +56,9 @@ export default {
 						coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')),
 						website: loc.website
 					}
+				}).filter(loc => {
+					if (this.filterType === '0') { return true }
+					return loc.type === this.filterType
 				}) : []
 		}
 	}

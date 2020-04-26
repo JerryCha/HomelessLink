@@ -24,16 +24,6 @@ export default {
 	},
 	data () {
 		return {
-			userLocationMarker: null,
-			poiList: [
-				{
-					'name': 'Library Services',
-					'type': 2,
-					'coord': [145.02291, -37.8800209],
-					'url': null,
-					'suburb': 'Caulfield'
-				}
-			],
 			styleObj: {
 				'min-width': this.mapWidth,
 				'max-width': this.mapWidth,
@@ -80,12 +70,16 @@ export default {
 				center: this.initCenter,
 				zoom: 13
 			})
-			map.on('load', this.updateViewBound)
+			map.on('load', () => {
+				this.updateViewBound()
+			})
 			this.map = map
 		},
 		changeMapCenter: function (destCoord) {
 			// Update the boundary of viewing area after moved.
-			this.map.on('moveend', () => { this.updateViewBound() })
+			this.map.on('moveend', () => {
+				this.updateViewBound()
+			})
 			this.map.flyTo({
 				center: destCoord,
 				essential: true
@@ -96,7 +90,6 @@ export default {
 			this.removeMarker('userLocation')
 			this.map.loadImage(locationIcon, (err, img) => {
 				if (err) throw err
-				window.console.log(`setting marker to ${this.$store.state.locations.currentLocation}`)
 				this.map.addImage('userLocation', img)
 				this.map.addSource('userLocation', geobox.buildMapboxSource([this.$store.state.locations.currentLocation]))
 				this.map.addLayer({
@@ -105,6 +98,7 @@ export default {
 					'source': 'userLocation',
 					'layout': {
 						'icon-image': 'userLocation',
+						'icon-allow-overlap': true,
 						'icon-size': 0.25
 					}
 				})
@@ -116,11 +110,18 @@ export default {
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
 		updateViewBound: function () {
-			var bound = [
-				this.map.getBounds().getNorthWest().toArray(),
-				this.map.getBounds().getSouthEast().toArray()
-			]
+			window.console.log('++++++++++++++++++++++++++++++++')
+			// Get bound
+			var bound = {
+				'ne': this.map.getBounds().getNorthEast().toArray(),
+				'sw': this.map.getBounds().getSouthWest().toArray()
+			}
 			this.$store.dispatch('locations/updateViewBound', bound)
+		},
+		updateCenterCoord: function () {
+			window.console.log('============================================')
+			// Get center coord of current view
+			this.$store.dispatch('locations/setCenterLocation', this.map.getCenter().toArray())
 		},
 		setPoiOnMap: function () {
 			var poiLocations =
@@ -131,9 +132,7 @@ export default {
 							.map(p => Number(p))
 					})
 			// TODO: optimize the replacement process in next iteration
-			if (this.map.getLayer('poiLocations')) { this.map.removeLayer('poiLocations') }
-			if (this.map.getSource('poiLocations')) { this.map.removeSource('poiLocations') }
-			if (this.map.hasImage('poiLocations')) { this.map.removeImage('poiLocations') }
+			this.removeMarker('poiLocations')
 			this.map.loadImage(poiIcon, (err, img) => {
 				if (err) throw err
 				this.map.addImage('poiLocations', img)
@@ -144,6 +143,7 @@ export default {
 					'source': 'poiLocations',
 					'layout': {
 						'icon-image': 'poiLocations',
+						'icon-allow-overlap': true,
 						'icon-size': 0.5
 					}
 				})

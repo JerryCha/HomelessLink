@@ -61,7 +61,7 @@ export default {
 		return {
 			form: {
 				location: '',
-				interest: '1'
+				interest: '0'
 				/*	Disabled in iteration 1
 				street: '',
 				unitNo: '',
@@ -70,6 +70,7 @@ export default {
 				*/
 			},
 			interestOptions: [
+				{ value: '0', text: 'All' },
 				{ value: '1', text: 'Relief Center' },
 				{ value: '2', text: 'Organization' },
 				{ value: '3', text: 'Homelessness' }
@@ -80,6 +81,7 @@ export default {
 		this.initMapBoxGeoCoder()
 	},
 	computed: {
+		// Not in use
 		currentBound () {
 			return this.$store.state.locations.currentBound
 		}
@@ -87,10 +89,11 @@ export default {
 	methods: {
 		onSubmit: function (evt) {
 			evt.preventDefault()
+			this.$emit('on-submit-fired')
 			var submitJson = {}
 			submitJson.bound = this.$store.state.locations.viewBound
 			submitJson.queryForm = this.form
-			this.$store.dispatch('locations/setQueryForm', submitJson)
+			this.$store.dispatch('locations/setQueryParams', submitJson)
 			this.$router.push(this.$route.path + '/search')
 		},
 		onLocate: function (evt) {
