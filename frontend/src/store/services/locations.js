@@ -84,6 +84,10 @@ const actions = {
 	filterResultsList (context, type) {
 		// TODO: Optimize update strategy
 		switch (type) {
+		case '0':
+			context.commit('setResultsList', state.fetchedLocations)
+			context.commit('setResultsCount')
+			break
 		case '1':
 			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '1'))
 			context.commit('setResultsCount')
