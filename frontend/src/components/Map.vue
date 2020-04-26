@@ -64,7 +64,11 @@ export default {
 			deep: true
 		},
 		poiLocationsCount (newState, oldState) {
-			this.setPoiOnMap()
+			if (newState === 0) {
+				this.removeMarker('poiLocations')
+			} else {
+				this.setPoiOnMap()
+			}
 		}
 	},
 	methods: {

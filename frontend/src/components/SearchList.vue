@@ -22,7 +22,7 @@ export default {
 	},
 	methods: {
 		goBack: function () {
-			this.$store.dispatch('locations/set')
+			this.$store.dispatch('locations/flushResultsList')
 			this.$router.go(-1)
 		},
 		retriveData: function () {

@@ -56,7 +56,6 @@ const mutations = {
 const actions = {
 	searchLocations (context) {
 		window.console.log(JSON.stringify(context.state.queryForm))
-		window.alert(API.LOCATION.SEARCH_LOCATIONS() + '?bound=' + context.state.queryForm)
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?bound=' + context.state.queryForm)
 			.then(res => {
 				console.log(res)
@@ -67,6 +66,7 @@ const actions = {
 	},
 	flushResultsList (context) {
 		context.commit('setResultsList', null)
+		context.commit('setResultsCount')
 	},
 	getLocation (context, id) {
 		return axios.get(API.LOCATION.GET_LOCATION(id))
