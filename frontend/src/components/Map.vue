@@ -6,7 +6,7 @@
 <script>
 import MapBox from 'mapbox-gl'
 import geobox from '@/util/geobox'
-import locationIcon from '@/assets/location.png'
+import locationIcon from '@/assets/location_user.png'
 import poiIcon from '@/assets/location_poi.png'
 
 export default {
@@ -88,8 +88,9 @@ export default {
 			if (this.map.hasImage('userLocation')) { this.map.removeImage('userLocation') }
 			this.map.loadImage(locationIcon, (err, img) => {
 				if (err) throw err
+				window.console.log(`setting marker to ${this.$store.state.locations.currentLocation}`)
 				this.map.addImage('userLocation', img)
-				this.map.addSource('userLocation', geobox.buildMapboxSource(this.$store.state.locations.currentLocation))
+				this.map.addSource('userLocation', geobox.buildMapboxSource([this.$store.state.locations.currentLocation]))
 				this.map.addLayer({
 					'id': 'userLocation',
 					'type': 'symbol',
@@ -109,7 +110,7 @@ export default {
 			this.$store.dispatch('locations/updateViewBound', bound)
 		},
 		setPoiOnMap: function () {
-			const poiLocations = this.$store.state.locations.locations
+			var poiLocations = this.$store.state.locations.locations
 			// TODO: optimize the replacement process in next iteration
 			if (this.map.getLayer('poiLocations')) { this.map.removeLayer('poiLocations') }
 			if (this.map.getSource('poiLocations')) { this.map.removeSource('poiLocations') }
