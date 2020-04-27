@@ -204,6 +204,20 @@ export default {
 					}
 				})
 			})
+			// Making the markers clickable
+			this.map.on('click', 'poiLocations', (e) => {
+				var coordinate = e.features[0].geometry.coordinates.slice()
+				var description = e.features[0].properties.description
+				new MapBox.Popup().setLngLat(coordinate).setHTML(description).addTo(this.map)
+			})
+			// Change the cursor to a pointer when the mouse is over the place layer.
+			this.map.on('mouseenter', 'poiLocations', () => {
+				this.map.getCanvas().style.cursor = 'pointer'
+			})
+			// Change the cursor back to normal style while it leaves
+			this.map.on('mouseleave', 'poiLocations', () => {
+				this.map.getCanvas().style.cursor = ''
+			})
 		}
 	},
 	mounted () {
