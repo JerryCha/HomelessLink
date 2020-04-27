@@ -4,10 +4,10 @@
       <Map ref="mapbox" :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
     </b-col>
     <b-col id="subview" xs="12" sm="4">
-      <router-view
-        @on-locate-pressed="handleOnLocatePressed"
+			<SearchForm @on-locate-pressed="handleOnLocatePressed"
         @on-submit-fired="handleOnSubmit"
-      />
+			/>
+			<router-view />
     </b-col>
   </b-row>
 </template>
@@ -18,12 +18,14 @@
 
 <script>
 // @ is an alias to /src
+import SearchForm from '@/components/SearchForm.vue'
 import Map from '@/components/Map.vue'
 
 export default {
 	name: 'Home',
 	components: {
-		Map
+		Map,
+		SearchForm
 	},
 	props: {
 		mobile: {
