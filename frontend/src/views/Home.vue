@@ -1,7 +1,7 @@
 <template>
   <b-row>
-    <b-col id="map" xs="12" sm="8">
-      <Map ref="mapbox" :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
+    <b-col xs="12" sm="8">
+      <MapBox ref="mapbox" :initCenter="[144.946457, -37.840935]" :mapHeight="getMapContainerHeight()"/>
     </b-col>
     <b-col id="subview" xs="12" sm="4">
 			<SearchForm @on-locate-pressed="handleOnLocatePressed"
@@ -19,12 +19,12 @@
 <script>
 // @ is an alias to /src
 import SearchForm from '@/components/SearchForm.vue'
-import Map from '@/components/Map.vue'
+import MapBox from '@/components/Map.vue'
 
 export default {
 	name: 'Home',
 	components: {
-		Map,
+		MapBox,
 		SearchForm
 	},
 	props: {
@@ -49,7 +49,7 @@ export default {
 	},
 	mounted () {
 		window.onresize = () => {
-			this.$refs.mapbox.resizeMap()
+			// this.$refs.mapbox.resizeMap()
 		}
 	}
 }
