@@ -27,7 +27,8 @@ export default {
 			styleObj: {
 				'width': this.mapWidth,
 				'height': this.mapHeight
-			}
+			},
+			prevZoomLevel: 13
 		}
 	},
 	computed: {
@@ -35,6 +36,9 @@ export default {
 		center () {
 			var coord = this.$store.state.locations.centerLocation
 			return coord === null ? coord : this.initCenter
+		},
+		poiLocation () {
+			return this.$store.state.locations.location
 		},
 		// Point of interests
 		poiLocations () {
@@ -49,9 +53,18 @@ export default {
 		// Center coordinate watcher
 		center: {
 			handler: function (newCenter, oldCenter) {
-				this.changeMapCenter(this.$store.state.locations.centerLocation)
+				if (this.poiLocation === null) {
+					this.flyToCenter(this.$store.state.locations.centerLocation)
+				} else {
+					this.flyZoomToCenter(this.$store.state.locations.centerLocation, 16)
+				}
 			},
 			deep: true
+		},
+		poiLocation (newState, oldState) {
+			if (newState === null) {
+				this.zoomTo(this.prevZoomLevel)
+			}
 		},
 		// Count of POI change watcher. Once updated, remove the marker and set the new ones
 		poiLocationsCount (newState, oldState) {
@@ -67,34 +80,50 @@ export default {
 			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const map = new MapBox.Map({
 				container: 'map-container',
-				style: 'mapbox://styles/mapbox/streets-v11',
+				style: 'mapbox://styles/jerrycha/ck9i9jbdg02sq1io1c01t4f73',
 				center: this.initCenter,
-				zoom: 13
+				zoom: 13,
+				pitch: 45
 			})
 			// Adding zoom control
 			map.addControl(new MapBox.NavigationControl())
-			// Once loaded, update the view bound
+			// TODO: Remove update bound code
 			map.on('load', () => {
 				this.updateViewBound()
 			})
-			// Once resized, update the center coordinate and view bound
+			// TODO: Remove update bound code
 			map.on('resize', () => {
 				this.updateViewBound()
 				this.updateCenterCoord()
 			})
+			map.on('zoomstart', () => {
+				this.prevZoomLevel = map.getZoom()
+			})
 			this.map = map
+		},
+		zoomTo (newZoomLevel) {
+			this.map.zoomTo(newZoomLevel, {
+				duration: 1000
+			})
 		},
 		resizeMap: function () {
 			this.map.resize()
 		},
-		changeMapCenter: function (destCoord) {
-			// Update the boundary of viewing area after moved.
+		flyToCenter: function (destCoord) {
+			this.map.flyTo({
+				center: destCoord,
+				essential: true
+			})
+		},
+		flyZoomToCenter: function (destCoord, zoom) {
+			// TODO: Remove update bound code
 			this.map.on('moveend', () => {
 				this.updateViewBound()
 			})
 			// Fly to the new coordinate
 			this.map.flyTo({
 				center: destCoord,
+				zoom: zoom,
 				essential: true
 			})
 		},
@@ -125,7 +154,7 @@ export default {
 			if (this.map.getSource(name)) { this.map.removeSource(name) }
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
-		// Update the view bound
+		// Update the view bound. TODO: Remove if not necessary
 		updateViewBound: function () {
 			// Get bound
 			var bound = {
@@ -133,7 +162,8 @@ export default {
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
 			// Update
-			this.$store.dispatch('locations/updateViewBound', bound)
+			// this.$store.dispatch('locations/updateBoxBound', bound)
+			window.console.warn('[Map] bound coordinate now is no longer updated as map view moved. Remember to delete corresponding code')
 		},
 		// Update center coordination
 		updateCenterCoord: function () {
@@ -173,6 +203,20 @@ export default {
 						'icon-size': 0.5
 					}
 				})
+			})
+			// Making the markers clickable
+			this.map.on('click', 'poiLocations', (e) => {
+				var coordinate = e.features[0].geometry.coordinates.slice()
+				var description = e.features[0].properties.description
+				new MapBox.Popup().setLngLat(coordinate).setHTML(description).addTo(this.map)
+			})
+			// Change the cursor to a pointer when the mouse is over the place layer.
+			this.map.on('mouseenter', 'poiLocations', () => {
+				this.map.getCanvas().style.cursor = 'pointer'
+			})
+			// Change the cursor back to normal style while it leaves
+			this.map.on('mouseleave', 'poiLocations', () => {
+				this.map.getCanvas().style.cursor = ''
 			})
 		}
 	},

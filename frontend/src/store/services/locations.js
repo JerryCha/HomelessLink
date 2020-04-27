@@ -9,7 +9,7 @@ const state = {
 	location: null,	// location for detailed view
 	centerLocation: null,	// map center coordinate
 	currentLocation: null,	// user location coordinate
-	viewBound: {},	// southern-west, northern-east
+	boxBound: {},	// southern-west, northern-east
 	queryParams: {}	// parameters for query
 }
 
@@ -105,8 +105,8 @@ const mutations = {
 	setCurrentLocation (state, coord) {
 		state.currentLocation = coord
 	},
-	setViewBound (state, bound) {
-		state.viewBound = bound
+	setBoxBound (state, bound) {
+		state.boxBound = bound
 	}
 }
 
@@ -198,10 +198,10 @@ const actions = {
 	/**
 	 * Update map view boundary after changed.
 	 * @param {*} context context
-	 * @param {Object} newViewBound new mapview bound coordinates. (format: {ne: [lng, lat], sw: [lng, lat]})
+	 * @param {Object} newBoxBound new mapview bound coordinates. (format: {ne: [lng, lat], sw: [lng, lat]})
 	 */
-	updateViewBound (context, newViewBound) {
-		context.commit('setViewBound', newViewBound)
+	updateBoxBound (context, newBoxBound) {
+		context.commit('setBoxBound', newBoxBound)
 	},
 	/**
 	 * Update query parameters

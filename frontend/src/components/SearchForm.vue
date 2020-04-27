@@ -1,56 +1,19 @@
 <template>
 	<div>
-		<h2>Search</h2>
-		<b-form @submit="onSubmit">
-			<b-form-row>
-				<b-form-group label="Location">
-					<div id="geocoder"></div>
-				</b-form-group>
-			</b-form-row>
-			<b-form-row>
-				<b-col>
-					<b-button @click="onLocate" variant="outline-secondary"><b-icon-cursor></b-icon-cursor> My Location</b-button>
-				</b-col>
-				<b-col>
-					<b-button type="submit"
-										variant="primary">Search</b-button>
-				</b-col>
-			</b-form-row>
-			<!--Already replaced by geocoder -->
-			<!-- <b-form-group label="Location">
-				<b-input-group>
-					<b-form-input v-model="form.location"
-												placeholder="Searching"></b-form-input>
-					<b-input-group-append>
-						<b-button @click="onLocate" variant="outline-secondary"><b-icon-cursor></b-icon-cursor></b-button>
-					</b-input-group-append>
-				</b-input-group>
-			</b-form-group>
-			<b-form-row>
-				<b-form-group label="Type">
-					<b-form-select v-model="form.interest" :options="interestOptions"></b-form-select>
-				</b-form-group>
-			</b-form-row>
-			<b-form-group label="Street">
-				<b-form-input v-model="form.street"></b-form-input>
-			</b-form-group>
-			<b-form-row>
-				<b-col>
-					<b-form-group label="Unit No.">
-						<b-form-input v-model="form.unitNo"></b-form-input>
-					</b-form-group>
-				</b-col>
-				<b-col>
-					<b-form-group label="Postcode">
-						<b-form-input v-model="form.postcode"></b-form-input>
-					</b-form-group>
-				</b-col>
-			</b-form-row>
-			<b-form-group label="Name">
-				<b-form-input v-model="form.name"></b-form-input>
-			</b-form-group>
-			-->
-		</b-form>
+		<div id="geocoder"></div>
+		<b-row>
+			<b-col>
+				<b-button @click="onLocate"
+									variant="outline-secondary">
+					<b-icon-cursor></b-icon-cursor> My Location
+				</b-button>
+			</b-col>
+			<b-col>
+				<b-button
+						@click="onSubmit"
+						variant="primary">Search</b-button>
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
@@ -65,12 +28,6 @@ export default {
 			form: {
 				location: '',
 				interest: '0'
-				/*	Disabled in iteration 1
-				street: '',
-				unitNo: '',
-				postcode: '',
-				name: ''
-				*/
 			},
 			interestOptions: [
 				{ value: '0', text: 'All' },
@@ -98,7 +55,7 @@ export default {
 			// Create submit json form
 			var submitJson = {}
 			// Add map bound as area restriction
-			submitJson.bound = this.$store.state.locations.viewBound
+			submitJson.bound = this.$store.state.locations.boxBound
 			// Add form as query conditions
 			submitJson.queryForm = this.form
 			// Set query params to store
@@ -134,12 +91,21 @@ export default {
 			geocoder.addTo('#geocoder')
 			// Setting result changed listener
 			geocoder.on('result', (e) => {
+				window.console.log(e)
 				this.form.location = ((placeName) => {
 					// TODO: edge cases handling
 					return placeName.split(',')[0]
 				})(e.result.place_name)
 				// Update current location
 				this.$store.dispatch('locations/setCurrentLocation', e.result.center)
+				// Update box bound of the suburb
+				let newBound = ((boxArray) => {
+					return {
+						ne: boxArray.slice(2, 4),
+						sw: boxArray.slice(0, 2)
+					}
+				})(e.result.bbox)
+				this.$store.dispatch('locations/updateBoxBound', newBound)
 			})
 		}
 	}
@@ -147,4 +113,10 @@ export default {
 </script>
 
 <style>
+#geocoder {
+	width: 100%;
+}
+.mapboxgl-ctrl-geocoder {
+	min-width: 100%;
+}
 </style>
