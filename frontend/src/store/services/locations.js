@@ -130,8 +130,10 @@ const actions = {
 			.catch(e => { window.console.error(e) })
 	},
 	setFilterTypes (context, types) {
-		context.commit('setFilterTypes', types)
-		// TODO: Invoke filtering method
+		return new Promise((resolve, reject) => {
+			context.commit('setFilterTypes', types)
+			resolve()
+		})
 	},
 	/**
 	 * Filtering display results by updating resultsList.
@@ -139,25 +141,20 @@ const actions = {
 	 * @param {*} type type of location
 	 */
 	filterResultsList (context, type) {
-		// TODO: Optimize update strategy
-		switch (type) {
-		case '0':
-			context.commit('setResultsList', state.fetchedLocations)
-			context.commit('setResultsCount')
-			break
-		case '1':
-			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '1'))
-			context.commit('setResultsCount')
-			break
-		case '2':
-			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '2'))
-			context.commit('setResultsCount')
-			break
-		case '3':
-			context.commit('setResultsList', state.fetchedLocations.filter(loc => loc.type[loc.type.length - 2] === '3'))
-			context.commit('setResultsCount')
-			break
-		}
+		var shownLocations = state.fetchedLocations.filter(loc => {
+			var typeId = (() => {
+				var tempSplitArr = loc.type.split('/')
+				return Number(tempSplitArr[tempSplitArr.length - 2])
+			})()
+			return state.filterTypes.includes(typeId)
+		})
+		window.console.log('after filtered: ' + shownLocations.length)
+		context.commit('setResultsList', shownLocations)
+		context.commit('setResultsCount')
+	},
+	resumeResultsList (context) {
+		context.commit('setResultsList', state.fetchedLocations)
+		context.commit('setResultsCount')
 	},
 	// temporary flush both resultsList and fetchedResults
 	flushResultsList (context) {

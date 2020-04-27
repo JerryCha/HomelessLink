@@ -1,12 +1,6 @@
 <template>
   <div>
 		<!-- list top block -->
-		<div>
-			<!-- Type select -->
-			<b-form-group label="Type" v-if="filterOptionsList.length > 0">
-					<b-form-select v-model="filterType" :options="filterOptionsList"></b-form-select>
-				</b-form-group>
-		</div>
 		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
 			<p id="searching-text">Searching</p>
@@ -15,6 +9,17 @@
 		<div :class="hasNoResult()?'':'invisible'">
 			<p id="searching-text">Not Found</p>
 		</div>
+		<!-- Filter -->
+		<div>
+				<!-- Type filter button -->
+				<b-button
+							variant="light"
+							@click="$bvToast.show('filter-panel')">Filter</b-button>
+			</div>
+			<!-- Filter panel overlay-->
+			<b-toast id="filter-panel" title="Type Select" static no-auto-hide>
+				<TypeFilter :options="filterOptionsList"/>
+			</b-toast>
 		<!-- Result block -->
     <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
 			<p>{{ resultsCount }} results found.</p>
@@ -34,17 +39,18 @@
 <script>
 import PoiCard from '@/components/PoiCard.vue'
 import axios from 'axios'
+import TypeFilter from '@/components/TypeSelectPanel.vue'
 
 export default {
 	name: 'search-list',
 	components: {
-		PoiCard
+		PoiCard,
+		TypeFilter
 	},
 	data () {
 		return {
-			filterType: '0',
 			// filterOptions is dynamically loaded from backend
-			filterOptions: [
+			filterOptionsList: [
 
 			]
 		}
@@ -64,37 +70,25 @@ export default {
 	mounted () {
 		// Query once components mounted
 		this.$store.dispatch('locations/searchLocations')
-		const that = this
 		// Get location type from backend
-		axios.get('/api/types/').then(function (response) {
-			that.filterOptions = response.data
+		axios.get('/api/types/').then((response) => {
+			var tempArray = []
+			var valueArray = []
+			for (var key in response.data) {
+				var option = response.data[key]
+				var filter = {
+					value: option.id, text: option.name
+				}
+				tempArray.push(filter)
+				valueArray.push(filter.value)
+			}
+			this.$store.dispatch('locations/setFilterTypes', valueArray)
+			this.filterOptionsList = tempArray
 		})
 	},
 	watch: {
-		filterType (newVal, oldVal) {
-			this.$store.dispatch('locations/filterResultsList', String(newVal))
-		}
 	},
 	computed: {
-		filterOptionsList: function () {
-			var temp_array = []
-			// If filterOptions is not empty, create a new one
-			if (this.filterOptions.length > 0) {
-				// Add 'ALL' manually
-				var filter = { value: '0', text: 'All' }
-				temp_array.push(filter)
-				// Adding other options from retrived data.
-				for (var key in this.filterOptions) {
-					var option = this.filterOptions[key]
-					var filter = {
-						value: option.id, text: option.name
-					}
-					temp_array.push(filter)
-				}
-			}
-
-			return temp_array
-		},
 		results: function () {
 			return this.$store.state.locations.resultsList
 		},
