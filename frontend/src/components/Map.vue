@@ -157,13 +157,13 @@ export default {
 		// Update the view bound. TODO: Remove if not necessary
 		updateViewBound: function () {
 			// Get bound
-			var bound = {
-				'ne': this.map.getBounds().getNorthEast().toArray(),
-				'sw': this.map.getBounds().getSouthWest().toArray()
-			}
-			// Update
-			// this.$store.dispatch('locations/updateBoxBound', bound)
-			window.console.warn('[Map] bound coordinate now is no longer updated as map view moved. Remember to delete corresponding code')
+			// var bound = {
+			// 	'ne': this.map.getBounds().getNorthEast().toArray(),
+			// 	'sw': this.map.getBounds().getSouthWest().toArray()
+			// }
+			// // Update
+			// // this.$store.dispatch('locations/updateBoxBound', bound)
+			// window.console.warn('[Map] bound coordinate now is no longer updated as map view moved. Remember to delete corresponding code')
 		},
 		// Update center coordination
 		updateCenterCoord: function () {

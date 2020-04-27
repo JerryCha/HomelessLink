@@ -1,13 +1,15 @@
 <template>
   <div>
 		<!-- Filter -->
-		<div>
+		<div id="filter-panel">
 			<!-- Type filter button -->
 			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
 			<!-- Filter panel overlay-->
 			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
 				<TypeFilter :options="filterOptionsList"/>
 			</b-toast>
+			<!-- Result count -->
+			<p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found.</p>
 		</div>
 		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
@@ -19,7 +21,6 @@
 		</div>
 		<!-- Result block -->
     <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
-			<p>{{ resultsCount }} results found.</p>
       <PoiCard class="result-card" v-for="(poi, idx) in results"
                 :key="idx"
 								:id="poi.id"
