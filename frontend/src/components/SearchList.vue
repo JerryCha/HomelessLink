@@ -1,25 +1,22 @@
 <template>
   <div>
-		<!-- list top block -->
+		<!-- Filter -->
+		<div>
+			<!-- Type filter button -->
+			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
+			<!-- Filter panel overlay-->
+			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
+				<TypeFilter :options="filterOptionsList"/>
+			</b-toast>
+		</div>
 		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
 			<p id="searching-text">Searching</p>
 		</div>
 		<!-- No result block -->
 		<div :class="hasNoResult()?'':'invisible'">
-			<p id="searching-text">Not Found</p>
+			<p id="searching-text">No Result</p>
 		</div>
-		<!-- Filter -->
-		<div>
-				<!-- Type filter button -->
-				<b-button
-							variant="light"
-							@click="$bvToast.show('filter-panel')">Filter</b-button>
-			</div>
-			<!-- Filter panel overlay-->
-			<b-toast id="filter-panel" title="Type Select" static no-auto-hide>
-				<TypeFilter :options="filterOptionsList"/>
-			</b-toast>
 		<!-- Result block -->
     <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
 			<p>{{ resultsCount }} results found.</p>
@@ -124,5 +121,8 @@ export default {
 }
 #searching-text {
 	font-size: 2em;
+}
+.b-toast {
+	position: absolute;
 }
 </style>

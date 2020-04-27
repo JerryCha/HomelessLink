@@ -148,7 +148,6 @@ const actions = {
 			})()
 			return state.filterTypes.includes(typeId)
 		})
-		window.console.log('after filtered: ' + shownLocations.length)
 		context.commit('setResultsList', shownLocations)
 		context.commit('setResultsCount')
 	},

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="filter-panel">
     <b-form-group>
       <template v-slot:label>
         <b-form-checkbox
@@ -41,7 +41,6 @@ export default {
 	},
 	watch: {
 		selected (newVal, oldVal) {
-			window.console.log('selected new value: ' + newVal)
 			if (newVal.length === 0) {
 				this.indeterminate = false
 				this.allSelected = false
@@ -69,6 +68,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>
