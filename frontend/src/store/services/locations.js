@@ -5,6 +5,7 @@ import queryHelper from '@/util/query'
 const state = {
 	resultsList: [],	// results list for showing
 	resultsCount: 0,	// count of showing results list
+	filterTypes: [],	// Types of location to show on map
 	fetchedLocations: [],	// list to store all the locations within a range
 	location: null,	// location for detailed view
 	centerLocation: null,	// map center coordinate
@@ -63,6 +64,9 @@ const mutations = {
 		} else {
 			state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
 		}
+	},
+	setFilterTypes (state, types) {
+		state.filterTypes = types
 	},
 	/**
 	 * fetchedLocations mutator.
@@ -124,6 +128,10 @@ const actions = {
 				context.commit('setResultsCount')
 			})
 			.catch(e => { window.console.error(e) })
+	},
+	setFilterTypes (context, types) {
+		context.commit('setFilterTypes', types)
+		// TODO: Invoke filtering method
 	},
 	/**
 	 * Filtering display results by updating resultsList.
