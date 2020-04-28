@@ -1,19 +1,15 @@
 <template>
-	<div>
+	<div id="search-form">
 		<div id="geocoder"></div>
-		<b-row>
-			<b-col>
-				<b-button @click="onLocate"
-									variant="outline-secondary">
-					<b-icon-cursor></b-icon-cursor> My Location
-				</b-button>
-			</b-col>
-			<b-col>
-				<b-button
-						@click="onSubmit"
-						variant="primary">Search</b-button>
-			</b-col>
-		</b-row>
+		<b-button-group>
+			<b-button @click="onLocate"
+								variant="outline-secondary">
+				<b-icon-cursor></b-icon-cursor>
+			</b-button>
+			<b-button
+					@click="onSubmit"
+					variant="primary"><b-icon-search></b-icon-search></b-button>
+		</b-button-group>
 	</div>
 </template>
 
@@ -23,18 +19,18 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
 export default {
 	name: 'search-form',
+	props: {
+		jump: Boolean
+	},
 	data () {
 		return {
 			form: {
 				location: '',
 				interest: '0'
 			},
-			interestOptions: [
-				{ value: '0', text: 'All' },
-				{ value: '1', text: 'Relief Center' },
-				{ value: '2', text: 'Organization' },
-				{ value: '3', text: 'Homelessness' }
-			]
+			mapbox: {
+				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
+			}
 		}
 	},
 	mounted () {
@@ -62,8 +58,12 @@ export default {
 			this.$store.dispatch('locations/setQueryParams', submitJson)
 			// Set status to searching
 			this.$store.dispatch('locations/setResultsCountToSearching')
-			// Go to searching page.
-			this.$router.push(this.$route.path + '/search')
+			// Making query with backend
+			this.$store.dispatch('locations/searchLocations')
+			if (this.jump) {
+				// Go to searching page.
+				this.$router.push('/itr1')
+			}
 		},
 		// Set current location to user location
 		onLocate: function (evt) {
@@ -80,7 +80,7 @@ export default {
 		},
 		// GeoCoder initialization
 		initMapBoxGeoCoder: function () {
-			const accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
+			const accessToken = this.mapbox.accessToken
 			const geocoder = new MapboxGeocoder({
 				'accessToken': accessToken,
 				'types': 'country,region,place,postcode,locality,neighborhood',
@@ -97,7 +97,7 @@ export default {
 					return placeName.split(',')[0]
 				})(e.result.place_name)
 				// Update current location
-				this.$store.dispatch('locations/setCurrentLocation', e.result.center)
+				this.$store.dispatch('locations/setCenterLocation', e.result.center)
 				// Update box bound of the suburb
 				let newBound = ((boxArray) => {
 					return {
@@ -107,16 +107,29 @@ export default {
 				})(e.result.bbox)
 				this.$store.dispatch('locations/updateBoxBound', newBound)
 			})
+		},
+		reverseGeocoding (coord) {
+			const api = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
 		}
 	}
 }
 </script>
 
 <style>
+#search-form {
+	display: flex;
+}
 #geocoder {
 	width: 100%;
 }
 .mapboxgl-ctrl-geocoder {
 	min-width: 100%;
+	min-height: 38px;
+	box-shadow: 0 0 0 0;
+}
+.mapboxgl-ctrl-geocoder--input {
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	min-height: 38px;
 }
 </style>
