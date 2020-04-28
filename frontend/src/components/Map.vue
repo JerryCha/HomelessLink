@@ -59,7 +59,7 @@ export default {
 					this.flyZoomToCenter(this.$store.state.locations.centerLocation, 16)
 				}
 			},
-			deep: true
+			deep: false
 		},
 		poiLocation (newState, oldState) {
 			if (newState === null) {
@@ -85,17 +85,17 @@ export default {
 				zoom: 13,
 				pitch: 45
 			})
+			map.on('load', () => {
+				if (this.$store.state.locations.centerLocation === null) {
+					this.updateCenterCoord()
+				} else {
+					map.jumpTo({
+						center: this.$store.state.locations.centerLocation
+					})
+				}
+			})
 			// Adding zoom control
 			map.addControl(new MapBox.NavigationControl())
-			// TODO: Remove update bound code
-			map.on('load', () => {
-				this.updateViewBound()
-			})
-			// TODO: Remove update bound code
-			map.on('resize', () => {
-				this.updateViewBound()
-				this.updateCenterCoord()
-			})
 			map.on('zoomstart', () => {
 				this.prevZoomLevel = map.getZoom()
 			})
@@ -116,10 +116,6 @@ export default {
 			})
 		},
 		flyZoomToCenter: function (destCoord, zoom) {
-			// TODO: Remove update bound code
-			this.map.on('moveend', () => {
-				this.updateViewBound()
-			})
 			// Fly to the new coordinate
 			this.map.flyTo({
 				center: destCoord,
@@ -153,17 +149,6 @@ export default {
 			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
 			if (this.map.getSource(name)) { this.map.removeSource(name) }
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
-		},
-		// Update the view bound. TODO: Remove if not necessary
-		updateViewBound: function () {
-			// Get bound
-			// var bound = {
-			// 	'ne': this.map.getBounds().getNorthEast().toArray(),
-			// 	'sw': this.map.getBounds().getSouthWest().toArray()
-			// }
-			// // Update
-			// // this.$store.dispatch('locations/updateBoxBound', bound)
-			// window.console.warn('[Map] bound coordinate now is no longer updated as map view moved. Remember to delete corresponding code')
 		},
 		// Update center coordination
 		updateCenterCoord: function () {
@@ -223,7 +208,7 @@ export default {
 	mounted () {
 		this.initMapBox()
 		// update center location after mounted
-		this.$store.dispatch('locations/setCenterLocation', this.initCenter)
+		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
 	}
 }
 </script>

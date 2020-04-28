@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SearchForm :jump="true"/>
     <p style="font-size: 36px; color: red;">Homepage under construction.</p>
     <strong><p>Homepage has not been finished yet. There will be some introduction on this page telling user what they can expect from this website.</p></strong>
     <p>Mateshelp is a project that provides LBS for homeless people.
@@ -11,8 +12,12 @@
 </template>
 
 <script>
+import SearchForm from '@/components/SearchForm.vue'
 export default {
-	name: 'homepage'
+	name: 'homepage',
+	components: {
+		SearchForm
+	}
 }
 </script>
 

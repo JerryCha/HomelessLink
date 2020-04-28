@@ -9,7 +9,7 @@
 				<TypeFilter :options="filterOptionsList"/>
 			</b-toast>
 			<!-- Result count -->
-			<p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found.</p>
+			<p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p>
 		</div>
 		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
@@ -30,7 +30,7 @@
       />
     </div>
 		<!-- back to previous page button -->
-    <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
+    <!-- <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button> -->
   </div>
 </template>
 
@@ -66,8 +66,6 @@ export default {
 		}
 	},
 	mounted () {
-		// Query once components mounted
-		this.$store.dispatch('locations/searchLocations')
 		// Get location type from backend
 		axios.get('/api/types/').then((response) => {
 			var tempArray = []
@@ -92,6 +90,9 @@ export default {
 		},
 		resultsCount: function () {
 			return this.$store.state.locations.resultsCount
+		},
+		targetLocation: function () {
+			return this.$store.state.locations.queryParams.queryForm.location
 		}
 	}
 }

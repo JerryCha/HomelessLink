@@ -17,7 +17,7 @@ const routes = [
 		component: Home,
 		children: [
 			{
-				path: 'search',
+				path: '',
 				component: SearchList
 			},
 			{
