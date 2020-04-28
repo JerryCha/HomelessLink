@@ -1,5 +1,5 @@
 <template>
-  <div id="map-container" :style="styleObj">
+  <div id="map-container">
 	</div>
 </template>
 
@@ -79,7 +79,7 @@ export default {
 		initMapBox: function () {
 			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const map = new MapBox.Map({
-				container: 'map-container',
+				container: 'mapbox',
 				style: 'mapbox://styles/jerrycha/ck9i9jbdg02sq1io1c01t4f73',
 				center: this.initCenter,
 				zoom: 13,
@@ -93,9 +93,13 @@ export default {
 						center: this.$store.state.locations.centerLocation
 					})
 				}
+				this.updateBoxBound()
 			})
 			// Adding zoom control
 			map.addControl(new MapBox.NavigationControl())
+			map.on('moveend', () => {
+				this.updateBoxBound()
+			})
 			map.on('zoomstart', () => {
 				this.prevZoomLevel = map.getZoom()
 			})
@@ -144,6 +148,14 @@ export default {
 					}
 				})
 			})
+		},
+		updateBoxBound: function () {
+			// Get bound
+			var newBound = {
+				'ne': this.map.getBounds().getNorthEast().toArray(),
+				'sw': this.map.getBounds().getSouthWest().toArray()
+			}
+			this.$store.dispatch('locations/updateBoxBound', newBound)
 		},
 		removeMarker: function (name) {
 			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
@@ -224,4 +236,9 @@ export default {
 
 <style>
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
+
+#map-container {
+	height: 100%;
+	width: 100%;
+}
 </style>

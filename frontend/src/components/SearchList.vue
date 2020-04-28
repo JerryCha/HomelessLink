@@ -106,7 +106,7 @@ export default {
   margin: 0.5em auto;
 }
 #result-list {
-  max-height: 75vh;
+  max-height: 100%;
   overflow-y: auto;
 }
 .result-card {

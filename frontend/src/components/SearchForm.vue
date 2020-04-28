@@ -133,6 +133,9 @@ export default {
 </script>
 
 <style>
+div {
+	box-sizing: border-box;
+}
 #search-form {
 	display: flex;
 }
