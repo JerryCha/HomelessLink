@@ -16,6 +16,7 @@
 <script>
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import axios from 'axios'
 
 export default {
 	name: 'search-form',
@@ -70,12 +71,18 @@ export default {
 			navigator.geolocation.getCurrentPosition((pos) => {
 				// Extract coordinate from GeolocationPosition
 				var coord = [pos.coords.longitude, pos.coords.latitude]
-				// Emit event to parent component
-				this.$emit('on-locate-pressed', coord)
-				// Update current location
-				this.$store.dispatch('locations/setCurrentLocation', coord)
-			}, (err) => {
-				window.console.error(err)
+				// Reverse geocoding
+				this.reverseGeocoding(coord)
+					.then((addr) => {
+						// Emit event to parent component
+						this.$emit('on-locate-pressed', coord)
+						// Set geocoder query
+						this.geocoder.query(addr)
+						// Update current location
+						this.$store.dispatch('locations/setCurrentLocation', coord)
+					}, (err) => {
+						window.console.error(err)
+					})
 			})
 		},
 		// GeoCoder initialization
@@ -107,9 +114,19 @@ export default {
 				})(e.result.bbox)
 				this.$store.dispatch('locations/updateBoxBound', newBound)
 			})
+			this.geocoder = geocoder
 		},
-		reverseGeocoding (coord) {
+		reverseGeocoding: async function (coord) {
 			const api = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+			const type = 'locality'
+			var query = api + `${coord[0]},${coord[1]}.json/?` + `type=${type}&access_token=${this.mapbox.accessToken}`
+			var addr = null
+			await axios.get(query)
+				.then(res => {
+					addr = res.data.features[0].place_name
+				})
+				.catch(e => { window.console.error(e) })
+			return addr
 		}
 	}
 }

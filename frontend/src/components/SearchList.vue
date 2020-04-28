@@ -4,7 +4,7 @@
 		<div id="filter-panel">
 			<!-- Type filter button -->
 			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
-			<!-- Filter panel overlay-->
+			<!-- Filter panel-->
 			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
 				<TypeFilter :options="filterOptionsList"/>
 			</b-toast>
