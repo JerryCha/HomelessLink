@@ -92,7 +92,8 @@ export default {
 			return this.$store.state.locations.resultsCount
 		},
 		targetLocation: function () {
-			return this.$store.state.locations.queryParams.queryForm.location
+			return this.$store.state.locations.queryParams === null
+				? '' : this.$store.state.locations.queryParams.queryForm.location
 		}
 	}
 }

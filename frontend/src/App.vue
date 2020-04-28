@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <Nav />
-    <b-container id="content" :style="containerStyle">
+    <div id="content" :style="containerStyle">
       <router-view :mobile="mobile"/>
-    </b-container>
+    </div>
   </div>
 </template>
 

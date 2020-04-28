@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container>
     <SearchForm :jump="true"/>
     <p style="font-size: 36px; color: red;">Homepage under construction.</p>
     <strong><p>Homepage has not been finished yet. There will be some introduction on this page telling user what they can expect from this website.</p></strong>
@@ -8,7 +8,7 @@
       Anyone who is experiencing homeless can search these location surround themselves.</p>
     <!--<h2>Lean Canvas</h2>
     <b-img :src="require('../assets/leancanvas_0419.jpg')" fluid></b-img>-->
-  </div>
+  </b-container>
 </template>
 
 <script>

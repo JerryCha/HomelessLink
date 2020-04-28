@@ -147,6 +147,7 @@ export default {
 		},
 		removeMarker: function (name) {
 			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
+			if (this.map.getLayer(name + '-labels')) { this.map.removeLayer(name + '-labels') }
 			if (this.map.getSource(name)) { this.map.removeSource(name) }
 			if (this.map.hasImage(name)) { this.map.removeImage(name) }
 		},
@@ -179,13 +180,21 @@ export default {
 					'type': 'symbol',
 					'source': 'poiLocations',
 					'layout': {
-						'text-field': ['get', 'description'],
-						'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-						'text-justify': 'auto',
-						'text-radial-offset': 0.5,
 						'icon-image': 'poiLocations',
 						'icon-allow-overlap': true,	// Allow overlapping, avoid marker hidden at different zoom levels
 						'icon-size': 0.5
+					}
+				})
+				this.map.addLayer({
+					'id': 'poiLocations-labels',
+					'type': 'symbol',
+					'source': 'poiLocations',
+					'minzoom': 12,
+					'layout': {
+						'text-field': ['get', 'description'],
+						'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+						'text-justify': 'auto',
+						'text-radial-offset': 0.5
 					}
 				})
 			})
