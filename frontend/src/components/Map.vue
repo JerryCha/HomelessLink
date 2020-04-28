@@ -24,10 +24,6 @@ export default {
 	},
 	data () {
 		return {
-			styleObj: {
-				'width': this.mapWidth,
-				'height': this.mapHeight
-			},
 			prevZoomLevel: 13
 		}
 	},
@@ -178,7 +174,8 @@ export default {
 							name: loc.name,
 							coord: loc.location.substring(loc.location.indexOf('(') + 1, loc.location.indexOf(')'))
 								.split(' ')
-								.map(p => Number(p))
+								.map(p => Number(p)),
+							id: loc.id
 						}
 					})
 			// TODO: optimize the replacement process in next iteration
@@ -214,7 +211,8 @@ export default {
 			this.map.on('click', 'poiLocations', (e) => {
 				var coordinate = e.features[0].geometry.coordinates.slice()
 				var description = e.features[0].properties.description
-				new MapBox.Popup().setLngLat(coordinate).setHTML(description).addTo(this.map)
+				var id = String(e.features[0].properties.id)
+				new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
 			})
 			// Change the cursor to a pointer when the mouse is over the place layer.
 			this.map.on('mouseenter', 'poiLocations', () => {

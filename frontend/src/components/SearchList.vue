@@ -9,7 +9,7 @@
 				<TypeFilter :options="filterOptionsList"/>
 			</b-toast>
 			<!-- Result count -->
-			<p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p>
+			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
 		</div>
 		<!-- Searching indication block -->
 		<div :class="isSearching()?'':'invisible'">
@@ -90,11 +90,11 @@ export default {
 		},
 		resultsCount: function () {
 			return this.$store.state.locations.resultsCount
-		},
-		targetLocation: function () {
-			return this.$store.state.locations.queryParams === null
-				? '' : this.$store.state.locations.queryParams.queryForm.location
 		}
+		// targetLocation: function () {
+		// 	return this.$store.state.locations.queryParams === null
+		// 		? '' : this.$store.state.locations.queryParams.queryForm.location
+		// }
 	}
 }
 </script>

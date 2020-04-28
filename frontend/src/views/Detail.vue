@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="detail-container">
     <h2>{{ poi.name }}</h2>
     <p>Suburb: {{ poi.suburb }}</p>
     <p>Website: {{ getWebsiteLink }}</p>
@@ -71,6 +71,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

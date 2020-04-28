@@ -19,6 +19,7 @@ const convertToGeoJson = function (loc) {
 		return {
 			'type': 'Feature',
 			'properties': {
+				'id': loc.id,
 				'description': loc.name
 			},
 			'geometry': {

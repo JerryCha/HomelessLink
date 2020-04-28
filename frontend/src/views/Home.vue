@@ -28,7 +28,9 @@
 	height: 38px;
 }
 #subview {
-	height: 100%;
+	height: 90%;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
 @media screen and ( max-width: 575px ) {
 	#mapbox {
