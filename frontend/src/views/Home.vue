@@ -13,12 +13,7 @@
 </template>
 
 <style scoped>
-#view-container {
-	display: flex;
-	/* flex-wrap: wrap; */
-	margin-left: 1rem;
-	margin-right: 2rem;
-}
+
 #side-panel {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
@@ -28,11 +23,18 @@
 	height: 38px;
 }
 #subview {
-	height: 90%;
+	height: calc(100% - 38px);
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+	/* overflow-y: scroll; */
 }
 @media screen and ( max-width: 575px ) {
+	#view-container {
+		display: flex;
+		flex-direction: column;
+		margin-left: 1rem;
+		margin-right: 2rem;
+	}
 	#mapbox {
 		height: 30vh;
 		width: 100%;
@@ -43,13 +45,19 @@
 	}
 }
 @media screen and ( min-width: 576px ) {
+	#view-container {
+		display: flex;
+		/* flex-wrap: wrap; */
+		margin-left: 1rem;
+		margin-right: 2rem;
+	}
 	#mapbox {
 		height: 85vh;
-		width: 70vw;
+		width: calc(100% - 360px);
 	}
 	#side-panel {
 		height: 85vh;
-		width: 30vw;
+		width: 360px;
 	}
 }
 </style>

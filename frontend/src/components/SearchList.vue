@@ -11,24 +11,26 @@
 			<!-- Result count -->
 			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
 		</div>
-		<!-- Searching indication block -->
-		<div :class="isSearching()?'':'invisible'">
-			<p id="searching-text">Searching</p>
+		<div id="content-block">
+			<!-- Searching indication block -->
+			<div :class="isSearching()?'':'invisible'">
+				<p id="searching-text">Searching</p>
+			</div>
+			<!-- No result block -->
+			<div :class="hasNoResult()?'':'invisible'">
+				<p id="searching-text">No Result</p>
+			</div>
+			<!-- Result block -->
+			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
+				<PoiCard class="result-card" v-for="(poi, idx) in results"
+									:key="idx"
+									:id="poi.id"
+									:name="poi.name"
+									:suburb="poi.suburb"
+									:website="poi.website"
+				/>
+			</div>
 		</div>
-		<!-- No result block -->
-		<div :class="hasNoResult()?'':'invisible'">
-			<p id="searching-text">No Result</p>
-		</div>
-		<!-- Result block -->
-    <div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
-      <PoiCard class="result-card" v-for="(poi, idx) in results"
-                :key="idx"
-								:id="poi.id"
-                :name="poi.name"
-                :suburb="poi.suburb"
-								:website="poi.website"
-      />
-    </div>
 		<!-- back to previous page button -->
     <!-- <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button> -->
   </div>
@@ -105,9 +107,13 @@ export default {
   bottom: 0px;
   margin: 0.5em auto;
 }
+#content-block {
+  height: calc(100% - 38px);
+  overflow-y: scroll;
+	margin-top: 0.5rem;
+}
 #result-list {
-  max-height: 100%;
-  overflow-y: auto;
+	max-height: 100%;
 }
 .result-card {
   margin: 0.5em 0.2em;

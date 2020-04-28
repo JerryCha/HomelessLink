@@ -2,12 +2,14 @@
   <div id="detail-container">
     <h2>{{ poi.name }}</h2>
     <p>Suburb: {{ poi.suburb }}</p>
+		<p>Address: {{ address }}</p>
     <p>Website: {{ getWebsiteLink }}</p>
     <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 	name: 'detail',
 	props: {
@@ -22,9 +24,10 @@ export default {
 	},
 	data () {
 		return {
-			name: this.id,
-			suburb: this.id,
-			postcode: this.id
+			address: '',
+			mapbox: {
+				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
+			}
 		}
 	},
 	computed: {
@@ -36,7 +39,10 @@ export default {
 				? {
 					name: loc.name,
 					suburb: loc.suburb,
-					type: loc.type[loc.type.length - 2],
+					type: (() => {
+						var tempSplitArr = loc.type.split('/')
+						return Number(tempSplitArr[tempSplitArr.length - 2])
+					})(),
 					website: loc.website
 				} : {}
 		},
@@ -57,6 +63,18 @@ export default {
 	methods: {
 		goBack: function () {
 			this.$router.go(-1)
+		},
+		reverseGeocoding: async function (coord) {
+			const api = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+			const type = 'locality'
+			var query = api + `${coord[0]},${coord[1]}.json/?` + `type=${type}&access_token=${this.mapbox.accessToken}`
+			var addr = null
+			await axios.get(query)
+				.then(res => {
+					addr = res.data.features[0].place_name
+				})
+				.catch(e => { window.console.error(e) })
+			return addr
 		}
 	},
 	watch: {
@@ -64,6 +82,8 @@ export default {
 		coord: {
 			handler: function (newVal, oldVal) {
 				this.$store.dispatch('locations/setCenterLocation', newVal)
+				this.reverseGeocoding(newVal)
+					.then(addr => { this.address = addr })
 			},
 			deep: true
 		}

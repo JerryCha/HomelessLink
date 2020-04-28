@@ -8,6 +8,7 @@ const state = {
 	filterTypes: [],	// Types of location to show on map
 	fetchedLocations: [],	// list to store all the locations within a range
 	location: null,	// location for detailed view
+	locationPopup: null,
 	centerLocation: null,	// map center coordinate
 	currentLocation: null,	// user location coordinate
 	boxBound: {},	// southern-west, northern-east
@@ -30,15 +31,6 @@ const getters = {
 					website: loc.website
 				}
 			})
-		// Return relief center list
-		case '1':
-			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '1')
-		// Return organization list
-		case '2':
-			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '2')
-		// Return homelessness list
-		case '3':
-			return state.resultsList.filter(loc => loc.type[loc.type.length - 2] === '3')
 		}
 	}
 }
@@ -84,6 +76,9 @@ const mutations = {
 	 */
 	setLocation (state, location) {
 		state.location = location
+	},
+	setLocationPopup (state, popup) {
+		state.popup = popup
 	},
 	/**
 	 * queryParams mutator.
@@ -172,6 +167,19 @@ const actions = {
 				context.commit('setLocation', res.data)
 			})
 			.catch(e => { window.console.error(e) })
+	},
+	addPopup (context, popup) {
+		if (context.state.popup !== null) {
+			context.state.popup.remove()
+			context.state.popup = null
+		}
+		context.commit(popup)
+	},
+	delPopup (context) {
+		if (context.state.popup !== null) {
+			context.state.popup.remove()
+			context.state.popup = null
+		}
 	},
 	/**
 	 * Set location to null. Used for back to result list from detailed view.

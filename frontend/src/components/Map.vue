@@ -60,6 +60,14 @@ export default {
 		poiLocation (newState, oldState) {
 			if (newState === null) {
 				this.zoomTo(this.prevZoomLevel)
+			} else {
+				// var coordinate = newState.location
+				// 	.substring(newState.location.indexOf('(') + 1, newState.location.indexOf(')'))
+				// 	.split(' ')
+				// 	.map(p => Number(p))
+				// var description = newState.name
+				// var popup = new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p>`).addTo(this.map)
+				// this.$store.dispatch('locations/addPopup', popup)
 			}
 		},
 		// Count of POI change watcher. Once updated, remove the marker and set the new ones

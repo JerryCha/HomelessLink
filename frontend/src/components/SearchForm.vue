@@ -46,7 +46,6 @@ export default {
 	methods: {
 		// submiting query form.
 		onSubmit: function (evt) {
-			evt.preventDefault()
 			// Emit event to parent component
 			this.$emit('on-submit-fired')
 			// Create submit json form
@@ -98,7 +97,6 @@ export default {
 			geocoder.addTo('#geocoder')
 			// Setting result changed listener
 			geocoder.on('result', (e) => {
-				window.console.log(e)
 				this.form.location = ((placeName) => {
 					// TODO: edge cases handling
 					return placeName.split(',')[0]
@@ -112,7 +110,9 @@ export default {
 						sw: boxArray.slice(0, 2)
 					}
 				})(e.result.bbox)
+				// Update the bound to suburb bound while query using geocoder
 				this.$store.dispatch('locations/updateBoxBound', newBound)
+				// this.onSubmit()
 			})
 			this.geocoder = geocoder
 		},
