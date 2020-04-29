@@ -4,7 +4,8 @@
     <b-row >
       <b-col class="row-top" fluid="xl" style="min-height:350px; width:100%;">
         <b-container>
-          <div style="padding-top: 125px;">
+          <div style="padding-top: 125px; font-size: 18px; color: black;">
+            MatesHelp: Search for support services across Victoria. Search for your suburb or find your location and find support services near you.
             <SearchForm  :jump="true"/>
           </div>
         </b-container>
