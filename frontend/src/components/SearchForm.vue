@@ -1,7 +1,7 @@
 <template>
 	<div id="search-form">
 		<div id="geocoder"></div>
-		<b-button-group>
+		<b-button-group style="z-index: 102;">
 			<b-button @click="onLocate"
 								variant="outline-secondary">
 				<b-icon-cursor></b-icon-cursor>
