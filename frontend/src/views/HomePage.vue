@@ -58,12 +58,12 @@ export default {
 
 <style>
 .row-top{
-  background-image: url(/img/2361587974774_.pic.jpg);
+  background-image: url(/static/img/2361587974774_.pic.jpg);
 }
 .row-bottom-one{
-  background-image: url(/img/2301587974211_.pic.jpg);
+  background-image: url(/static/img/2301587974211_.pic.jpg);
 }
 .row-bottom-two{
-  background-image: url(/img/2321587974432_.pic.jpg);
+  background-image: url(/static/img/2321587974432_.pic.jpg);
 }
 </style>
