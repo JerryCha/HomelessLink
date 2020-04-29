@@ -19,7 +19,7 @@
       <!-- 1st col -->
       <b-col class="row-bottom-one" fluid="sm" style="min-height:350px; height: 100%; bottom:0px; width: 50%; margin:5px;">
         <b-container fluid="sm"><div class="mx-auto" style="font-size: 18px; color: black; width: 200px; padding: 30px;">
-          <b>Our website records hundreds of relief centers and locations around Victoria. Anyoning needing help or relief can find them and help themselves !</b>
+          <b>Our website records hundreds of relief centers and locations around Victoria. Anyone needing help or relief can find them and help themselves !</b>
         </div></b-container>
       </b-col>
       <!-- 2nd col -->
