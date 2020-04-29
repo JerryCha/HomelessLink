@@ -3,6 +3,13 @@
     <Nav />
     <div id="content" :style="containerStyle">
       <router-view :mobile="mobile"/>
+      <b-row>
+        <b-col>
+          <b-container class="mx-auto" style="width: 200px;">
+            &copy; Prophetics 2020
+          </b-container>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
