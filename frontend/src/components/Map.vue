@@ -90,9 +90,11 @@ export default {
 				pitch: 45
 			})
 			map.on('load', () => {
+				// In case where the center location is null, updating with initial center.
 				if (this.$store.state.locations.centerLocation === null) {
 					this.updateCenterCoord()
 				} else {
+					// Otherwise, jumping to the center coordinate.
 					map.jumpTo({
 						center: this.$store.state.locations.centerLocation
 					})
@@ -101,12 +103,15 @@ export default {
 			})
 			// Adding zoom control
 			map.addControl(new MapBox.NavigationControl())
+			// Once the viewing area changed, updating the bounding box.
 			map.on('moveend', () => {
 				this.updateBoxBound()
 			})
+			// Keeping the zoom level before zomming, so that it can changed back while exiting from detailed view.
 			map.on('zoomstart', () => {
 				this.prevZoomLevel = map.getZoom()
 			})
+			// Mounting the map instance to the component variable.
 			this.map = map
 		},
 		zoomTo (newZoomLevel) {
