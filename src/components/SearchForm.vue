@@ -92,7 +92,11 @@ export default {
 				'accessToken': accessToken,
 				'types': 'country,region,place,postcode,locality,neighborhood',
 				'language': 'en-AU',	// Set language to Australian English
-				'countries': 'au'	// Restrict region to Australia
+				'countries': 'au',	// Restrict region to Australia
+				'bbox': [	// bbox for VIC, [sw, ne]. Retrived from mapbox geocoding
+					140.948117800682, -39.2581179898835,
+					150.055424999935, -33.9806470100642
+				]
 			})
 			// Add geocoder plugin to DOM
 			geocoder.addTo('#geocoder')
