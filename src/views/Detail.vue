@@ -94,18 +94,13 @@ export default {
 			}
 		},
 		parseOpeningDays: function (rawData) {
-			window.console.debug(`parseOpeningDays started: ${new Date()}`)
-			window.console.debug('raw data: ' + JSON.stringify(rawData))
-			window.console.debug(`raw data properties: ${Object.getOwnPropertyNames(rawData)}`)
 			const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 			var formatedDays = []
 			for (let key of days) {
-				window.console.debug(`To push: ${key}: ${rawData[key]}`)
 				if (rawData.hasOwnProperty(key) && rawData[key] !== '') {
 					formatedDays.push({ day: key, hours: rawData[key] })
 				}
 			}
-			window.console.debug(`parseOpeningDays end: ${new Date()}`)
 			return formatedDays
 		},
 		reverseGeocoding: async function (coord) {
