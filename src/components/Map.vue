@@ -236,11 +236,14 @@ export default {
 						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
 					});
 					// Change the cursor to a pointer when the mouse is over the place layer.
-					this.map.on('mouseenter', 'poiLocations', () => {
+					this.map.on('mouseenter', 'poiLocations', (e) => {
+						var id = e.features[0].properties.id
+						this.$store.dispatch('locations/updateOnHoverLocationId', id)
 						this.map.getCanvas().style.cursor = 'pointer'
 					});
 					// Change the cursor back to normal style while it leaves
 					this.map.on('mouseleave', 'poiLocations', () => {
+						this.$store.dispatch('locations/updateOnHoverLocationId', -1)
 						this.map.getCanvas().style.cursor = ''
 					});
 				})

@@ -14,6 +14,7 @@ const state = {
 	boxBound: {},	// southern-west, northern-east
 	queryParams: {},	// parameters for query
 	searchText: null,
+	onHoverLocationId: -1	// Location Point of interest which is currently hovering by cursor
 }
 
 const getters = {
@@ -108,9 +109,12 @@ const mutations = {
 	setBoxBound (state, bound) {
 		state.boxBound = bound
 	},
-	setSearchText(state, text) {
+	setSearchText (state, text) {
 		state.searchText = text
-		console.log(state.searchText);
+		console.log(state.searchText)
+	},
+	setOnHoverLocationId (state, id) {
+		state.onHoverLocationId = id
 	}
 }
 
@@ -243,11 +247,14 @@ const actions = {
 	 * Set resultsCount to searching value (-1)
 	 * @param {*} context context
 	 */
-	 setSearchText(context, text){
-		 context.commit('setSearchText', text);
-	 },
+	setSearchText (context, text) {
+		context.commit('setSearchText', text)
+	},
 	setResultsCountToSearching (context) {
 		context.commit('setResultsCount', true)
+	},
+	updateOnHoverLocationId (context, id) {
+		context.commit('setOnHoverLocationId', id)
 	}
 }
 

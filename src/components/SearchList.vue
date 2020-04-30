@@ -26,9 +26,11 @@
 			</div>
 			<!-- Result block -->
 			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
-				<PoiCard class="result-card" v-for="poi in results"
+				<PoiCard v-for="poi in results"
+									:class="['result-card', shouldHover(poi.id) ? 'result-card-hover': '']"
+									:id = "'result-' + poi.id"
 									:key="poi.id"
-									:id="poi.id"
+									:locId="poi.id"
 									:name="poi.name"
 									:suburb="poi.suburb"
 									:website="poi.website"
@@ -69,6 +71,9 @@ export default {
 		},
 		hasNoResult: function () {
 			return this.$store.state.locations.resultsCount === 0
+		},
+		shouldHover: function (id) {
+			return this.onHoverLocationId === id
 		}
 	},
 	mounted () {
@@ -89,6 +94,11 @@ export default {
 		})
 	},
 	watch: {
+		onHoverLocationId (newVal, oldVal) {
+			if (newVal !== -1) {
+				document.getElementById('result-' + newVal).scrollIntoView()
+			}
+		}
 	},
 	computed: {
 		results: function () {
@@ -96,11 +106,10 @@ export default {
 		},
 		resultsCount: function () {
 			return this.$store.state.locations.resultsCount
+		},
+		onHoverLocationId: function () {
+			return this.$store.state.locations.onHoverLocationId
 		}
-		// targetLocation: function () {
-		// 	return this.$store.state.locations.queryParams === null
-		// 		? '' : this.$store.state.locations.queryParams.queryForm.location
-		// }
 	}
 }
 </script>
@@ -125,7 +134,7 @@ export default {
 	box-shadow: 0px 0px 0px 0px rgba(255,255,255,0);
 	transition: box-shadow .3s;
 }
-.result-card:hover {
+.result-card-hover, .result-card:hover {
 	z-index: 0;
 	box-shadow: 4px 4px 8px 0px rgba(128,128,128,.5);
 }
