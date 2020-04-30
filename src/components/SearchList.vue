@@ -1,9 +1,13 @@
 <template>
   <div>
 		<!-- Filter -->
-		<div id="filter-panel">
+		<div id="filter-panel" style="display: flex; align-items: center; justify-content: space-between;">
 			<!-- Type filter button -->
 			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
+			<!-- Results count -->
+			<div>
+          Found {{this.$store.state.locations.resultsCount}} results
+      </div>
 			<!-- Filter panel-->
 			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
 				<TypeFilter :options="filterOptionsList"/>
@@ -22,11 +26,8 @@
 			</div>
 			<!-- Result block -->
 			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
-        <div v-if="$store.state.locations.searchText != null">
-          Showing {{this.$store.state.locations.resultsCount}} results for {{$store.state.locations.searchText}}
-        </div>
-				<PoiCard class="result-card" v-for="(poi, idx) in results"
-									:key="idx"
+				<PoiCard class="result-card" v-for="poi in results"
+									:key="poi.id"
 									:id="poi.id"
 									:name="poi.name"
 									:suburb="poi.suburb"
