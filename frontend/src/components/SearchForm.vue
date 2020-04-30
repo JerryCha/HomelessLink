@@ -59,7 +59,8 @@ export default {
 			// Set status to searching
 			this.$store.dispatch('locations/setResultsCountToSearching')
 			// Making query with backend
-			this.$store.dispatch('locations/searchLocations')
+			// this.$store.dispatch('locations/searchLocations')
+			this.$store.dispatch('locations/setSearchText',submitJson.queryForm.location)
 			if (this.jump) {
 				// Go to searching page.
 				this.$router.push('/itr1')

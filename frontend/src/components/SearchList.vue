@@ -22,6 +22,9 @@
 			</div>
 			<!-- Result block -->
 			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
+        <div v-if="$store.state.locations.searchText != null">
+          Showing {{this.$store.state.locations.resultsCount}} results for {{$store.state.locations.searchText}}
+        </div>
 				<PoiCard class="result-card" v-for="(poi, idx) in results"
 									:key="idx"
 									:id="poi.id"

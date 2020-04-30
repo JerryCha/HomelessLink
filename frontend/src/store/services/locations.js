@@ -12,7 +12,8 @@ const state = {
 	centerLocation: null,	// map center coordinate
 	currentLocation: null,	// user location coordinate
 	boxBound: {},	// southern-west, northern-east
-	queryParams: {}	// parameters for query
+	queryParams: {},	// parameters for query
+	searchText: null,
 }
 
 const getters = {
@@ -106,6 +107,10 @@ const mutations = {
 	},
 	setBoxBound (state, bound) {
 		state.boxBound = bound
+	},
+	setSearchText(state, text) {
+		state.searchText = text
+		console.log(state.searchText);
 	}
 }
 
@@ -116,6 +121,17 @@ const actions = {
 	 */
 	searchLocations (context) {
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
+			.then(res => {
+				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
+				context.commit('setFetchedLocations', res.data)
+				context.commit('setResultsList', res.data)
+				context.commit('setResultsCount')
+			})
+			.catch(e => { window.console.error(e) })
+	},
+	getLocations (context, bounds) {
+		var query = 'ne='+ bounds.ne[0]+','+bounds.ne[1] + '&sw='+ bounds.sw[0]+','+bounds.sw[1]
+		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + query)
 			.then(res => {
 				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
 				context.commit('setFetchedLocations', res.data)
@@ -213,7 +229,7 @@ const actions = {
 	 * @param {Object} newBoxBound new mapview bound coordinates. (format: {ne: [lng, lat], sw: [lng, lat]})
 	 */
 	updateBoxBound (context, newBoxBound) {
-		context.commit('setBoxBound', newBoxBound)
+		context.commit('setBoxBound', newBoxBound);
 	},
 	/**
 	 * Update query parameters
@@ -227,6 +243,9 @@ const actions = {
 	 * Set resultsCount to searching value (-1)
 	 * @param {*} context context
 	 */
+	 setSearchText(context, text){
+		 context.commit('setSearchText', text);
+	 },
 	setResultsCountToSearching (context) {
 		context.commit('setResultsCount', true)
 	}

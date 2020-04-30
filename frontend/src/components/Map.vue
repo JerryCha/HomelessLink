@@ -89,30 +89,33 @@ export default {
 				zoom: 13,
 				pitch: 45
 			})
-			map.on('load', () => {
+      this.map = map;
+      this.$store.dispatch('locations/setSearchText',null)
+			this.map.on('load', () => {
 				// In case where the center location is null, updating with initial center.
 				if (this.$store.state.locations.centerLocation === null) {
 					this.updateCenterCoord()
 				} else {
 					// Otherwise, jumping to the center coordinate.
-					map.jumpTo({
-						center: this.$store.state.locations.centerLocation
-					})
+					// this.map.jumpTo({
+					// 	center: this.$store.state.locations.centerLocation
+					// })
 				}
 				this.updateBoxBound()
+
 			})
 			// Adding zoom control
-			map.addControl(new MapBox.NavigationControl())
+			this.map.addControl(new MapBox.NavigationControl())
 			// Once the viewing area changed, updating the bounding box.
-			map.on('moveend', () => {
+			this.map.on('moveend', () => {
 				this.updateBoxBound()
 			})
 			// Keeping the zoom level before zomming, so that it can changed back while exiting from detailed view.
-			map.on('zoomstart', () => {
-				this.prevZoomLevel = map.getZoom()
+			this.map.on('zoomstart', () => {
+				this.prevZoomLevel = this.map.getZoom()
 			})
 			// Mounting the map instance to the component variable.
-			this.map = map
+
 		},
 		zoomTo (newZoomLevel) {
 			this.map.zoomTo(newZoomLevel, {
@@ -165,6 +168,8 @@ export default {
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
 			this.$store.dispatch('locations/updateBoxBound', newBound)
+      this.$store.dispatch('locations/getLocations',newBound)
+      this.setPoiOnMap()
 		},
 		removeMarker: function (name) {
 			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
@@ -226,15 +231,15 @@ export default {
 				var description = e.features[0].properties.description
 				var id = String(e.features[0].properties.id)
 				new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
-			})
+			});
 			// Change the cursor to a pointer when the mouse is over the place layer.
 			this.map.on('mouseenter', 'poiLocations', () => {
 				this.map.getCanvas().style.cursor = 'pointer'
-			})
+			});
 			// Change the cursor back to normal style while it leaves
 			this.map.on('mouseleave', 'poiLocations', () => {
 				this.map.getCanvas().style.cursor = ''
-			})
+			});
 		}
 	},
 	mounted () {
