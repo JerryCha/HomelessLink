@@ -90,16 +90,15 @@ export default {
 				pitch: 45
 			})
       this.map = map;
-      this.$store.dispatch('locations/setSearchText',null)
 			this.map.on('load', () => {
 				// In case where the center location is null, updating with initial center.
 				if (this.$store.state.locations.centerLocation === null) {
 					this.updateCenterCoord()
 				} else {
 					// Otherwise, jumping to the center coordinate.
-					// this.map.jumpTo({
-					// 	center: this.$store.state.locations.centerLocation
-					// })
+					this.map.jumpTo({
+						center: this.$store.state.locations.centerLocation
+					})
 				}
 				this.updateBoxBound()
 
