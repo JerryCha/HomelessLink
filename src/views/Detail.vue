@@ -1,9 +1,20 @@
 <template>
   <div id="detail-container">
-    <h2>{{ poi.name }}</h2>
-    <p>Suburb: {{ poi.suburb }}</p>
-		<p>Address: {{ address }}</p>
-    <p>Website: {{ getWebsiteLink }}</p>
+		<b-overlay :show="!loaded">
+			<div id="detail-section">
+				<h2>{{ poi.name }}</h2>
+				<p>{{ poi.desc === null ? '': poi.desc }}</p>
+				<p>Suburb: {{ poi.suburb }}</p>
+				<p>Address: {{ address }}</p>
+				<div :class="poi.openingDays === null || poi.openingDays.length === 0 ? 'invisible':''">
+				<p>Trading hours</p>
+					<ul>
+						<li v-for="(day, idx) in poi.openingDays " :key="idx">{{day.day}}: {{day.hours}}</li>
+					</ul>
+				</div>
+				<p>Website: {{ getWebsiteLink }}</p>
+			</div>
+		</b-overlay>
     <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
   </div>
 </template>
@@ -25,6 +36,7 @@ export default {
 	data () {
 		return {
 			address: '',
+			loaded: false,
 			mapbox: {
 				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			}
@@ -34,17 +46,24 @@ export default {
 		// Retrive the location from store, if it is null return an empty object ({})
 		poi: function () {
 			var loc = this.$store.state.locations.location
+			if (loc === null) {
+				return {}
+			}
 			// loc is null ? reformated object : empty object
-			return loc !== null
-				? {
-					name: loc.name,
-					suburb: loc.suburb,
-					type: (() => {
-						var tempSplitArr = loc.type.split('/')
-						return Number(tempSplitArr[tempSplitArr.length - 2])
-					})(),
-					website: loc.website
-				} : {}
+			return {
+				name: loc.name,
+				suburb: loc.suburb,
+				type: (() => {
+					var tempSplitArr = loc.type.split('/')
+					return Number(tempSplitArr[tempSplitArr.length - 2])
+				})(),
+				website: loc.website,
+				desc: loc.desc,
+				openingDays: (() => {
+					window.console.debug('opening days: ' + JSON.stringify(loc.opening_days))
+					return loc.opening_days === null ? null : this.parseOpeningDays(loc.opening_days)
+				})()
+			}
 		},
 		// Coordinate of location. Extracted specially for map shown.
 		coord: function () {
@@ -63,6 +82,31 @@ export default {
 	methods: {
 		goBack: function () {
 			this.$router.go(-1)
+		},
+		isPoiNull: function () {
+			return this.poi === null
+		},
+		visibilityHanlder: function (visibility) {
+			if (this.isPoiNull()) {
+				visibility = false
+			} else {
+				visibility = true
+			}
+		},
+		parseOpeningDays: function (rawData) {
+			window.console.debug(`parseOpeningDays started: ${new Date()}`)
+			window.console.debug('raw data: ' + JSON.stringify(rawData))
+			window.console.debug(`raw data properties: ${Object.getOwnPropertyNames(rawData)}`)
+			const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+			var formatedDays = []
+			for (let key of days) {
+				window.console.debug(`To push: ${key}: ${rawData[key]}`)
+				if (rawData.hasOwnProperty(key) && rawData[key] !== '') {
+					formatedDays.push({ day: key, hours: rawData[key] })
+				}
+			}
+			window.console.debug(`parseOpeningDays end: ${new Date()}`)
+			return formatedDays
 		},
 		reverseGeocoding: async function (coord) {
 			const api = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
@@ -85,11 +129,24 @@ export default {
 				this.reverseGeocoding(newVal)
 					.then(addr => { this.address = addr })
 			},
-			deep: true
+			deep: false
+		},
+		poi: {
+			handler: function (newVal, oldVal) {
+				if (newVal != null) {
+					this.loaded = true
+				} else {
+					this.loaded = false
+				}
+			},
+			deep: false
 		}
 	}
 }
 </script>
 
 <style scoped>
+.invisible {
+	display: none;
+}
 </style>

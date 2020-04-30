@@ -89,7 +89,7 @@ export default {
 				zoom: 13,
 				pitch: 45
 			})
-      this.map = map;
+			this.map = map;
 			this.map.on('load', () => {
 				// In case where the center location is null, updating with initial center.
 				if (this.$store.state.locations.centerLocation === null) {
@@ -167,14 +167,17 @@ export default {
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
 			this.$store.dispatch('locations/updateBoxBound', newBound)
-      this.$store.dispatch('locations/getLocations',newBound)
-      this.setPoiOnMap()
+			this.$store.dispatch('locations/getLocations',newBound)
+			this.setPoiOnMap()
 		},
 		removeMarker: function (name) {
-			if (this.map.getLayer(name)) { this.map.removeLayer(name) }
-			if (this.map.getLayer(name + '-labels')) { this.map.removeLayer(name + '-labels') }
-			if (this.map.getSource(name)) { this.map.removeSource(name) }
-			if (this.map.hasImage(name)) { this.map.removeImage(name) }
+			return new Promise((resolve, reject) => {
+				if (this.map.hasImage(name)) { this.map.removeImage(name) }
+				if (this.map.getLayer(name)) { this.map.removeLayer(name) }
+				if (this.map.getLayer(name + '-labels')) { this.map.removeLayer(name + '-labels') }
+				if (this.map.getSource(name)) { this.map.removeSource(name) }
+				resolve()
+			})
 		},
 		// Update center coordination
 		updateCenterCoord: function () {
@@ -197,48 +200,50 @@ export default {
 					})
 			// TODO: optimize the replacement process in next iteration
 			this.removeMarker('poiLocations')
-			this.map.loadImage(poiIcon, (err, img) => {
-				if (err) throw err
-				this.map.addImage('poiLocations', img)
-				this.map.addSource('poiLocations', geobox.buildMapboxSource(poiLocations))
-				this.map.addLayer({
-					'id': 'poiLocations',
-					'type': 'symbol',
-					'source': 'poiLocations',
-					'layout': {
-						'icon-image': 'poiLocations',
-						'icon-allow-overlap': true,	// Allow overlapping, avoid marker hidden at different zoom levels
-						'icon-size': 0.5
-					}
+				.then(() => {
+					this.map.loadImage(poiIcon, (err, img) => {
+						if (err) throw err
+						this.map.addImage('poiLocations', img)
+						this.map.addSource('poiLocations', geobox.buildMapboxSource(poiLocations))
+						this.map.addLayer({
+							'id': 'poiLocations',
+							'type': 'symbol',
+							'source': 'poiLocations',
+							'layout': {
+								'icon-image': 'poiLocations',
+								'icon-allow-overlap': true,	// Allow overlapping, avoid marker hidden at different zoom levels
+								'icon-size': 0.5
+							}
+						})
+						this.map.addLayer({
+							'id': 'poiLocations-labels',
+							'type': 'symbol',
+							'source': 'poiLocations',
+							'minzoom': 12,
+							'layout': {
+								'text-field': ['get', 'description'],
+								'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+								'text-justify': 'auto',
+								'text-radial-offset': 0.5
+							}
+						})
+					})
+					// Making the markers clickable
+					this.map.on('click', 'poiLocations', (e) => {
+						var coordinate = e.features[0].geometry.coordinates.slice()
+						var description = e.features[0].properties.description
+						var id = String(e.features[0].properties.id)
+						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
+					});
+					// Change the cursor to a pointer when the mouse is over the place layer.
+					this.map.on('mouseenter', 'poiLocations', () => {
+						this.map.getCanvas().style.cursor = 'pointer'
+					});
+					// Change the cursor back to normal style while it leaves
+					this.map.on('mouseleave', 'poiLocations', () => {
+						this.map.getCanvas().style.cursor = ''
+					});
 				})
-				this.map.addLayer({
-					'id': 'poiLocations-labels',
-					'type': 'symbol',
-					'source': 'poiLocations',
-					'minzoom': 12,
-					'layout': {
-						'text-field': ['get', 'description'],
-						'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-						'text-justify': 'auto',
-						'text-radial-offset': 0.5
-					}
-				})
-			})
-			// Making the markers clickable
-			this.map.on('click', 'poiLocations', (e) => {
-				var coordinate = e.features[0].geometry.coordinates.slice()
-				var description = e.features[0].properties.description
-				var id = String(e.features[0].properties.id)
-				new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
-			});
-			// Change the cursor to a pointer when the mouse is over the place layer.
-			this.map.on('mouseenter', 'poiLocations', () => {
-				this.map.getCanvas().style.cursor = 'pointer'
-			});
-			// Change the cursor back to normal style while it leaves
-			this.map.on('mouseleave', 'poiLocations', () => {
-				this.map.getCanvas().style.cursor = ''
-			});
 		}
 	},
 	mounted () {
