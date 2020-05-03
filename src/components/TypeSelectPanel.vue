@@ -21,9 +21,6 @@
 <script>
 export default {
 	name: 'type-select-panel',
-	props: {
-		options: Array
-	},
 	data () {
 		return {
 			selected: [],
@@ -37,6 +34,12 @@ export default {
 	methods: {
 		toggleAll (checked) {
 			this.selected = checked ? this.options.map(item => item.value) : []
+		}
+	},
+	computed: {
+		options: function () {
+			var optionsCode = this.$store.state.locations.filterTypes
+			return this.$store.state.locations.allTypes.filter(t => optionsCode.includes((t.value)))
 		}
 	},
 	watch: {

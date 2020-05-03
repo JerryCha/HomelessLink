@@ -4,8 +4,10 @@ import queryHelper from '@/util/query'
 
 const state = {
 	resultsList: [],	// results list for showing
+	resultsType: [], // type of fetched location
 	resultsCount: 0,	// count of showing results list
 	filterTypes: [],	// Types of location to show on map
+	allTypes: [], // All types of location
 	fetchedLocations: [],	// list to store all the locations within a range
 	location: null,	// location for detailed view
 	locationPopup: null,
@@ -18,23 +20,7 @@ const state = {
 }
 
 const getters = {
-	// Get filtered locations list. (Not used)
-	getLocations (state, type) {
-		switch (type) {
-		// Return all results
-		case '0':
-			return state.resultsList.map(loc => {
-				return {
-					name: loc.name,
-					suburb: loc.suburb,
-					type: loc.type[loc.type.length - 2],
-					// sample: 'SRID=4824; POINT(lng lat)'
-					coord: loc.location.substring(loc.location.indexOf('('), loc.location.indexOf(')')).split(' ').map(p => Number(p)),
-					website: loc.website
-				}
-			})
-		}
-	}
+
 }
 
 const mutations = {
@@ -45,6 +31,9 @@ const mutations = {
 	 */
 	setResultsList (state, locations) {
 		state.resultsList = locations
+	},
+	setResultsType (state, types) {
+		state.resultsType = types
 	},
 	/**
 	 * resultsCount mutator.
@@ -61,6 +50,14 @@ const mutations = {
 	},
 	setFilterTypes (state, types) {
 		state.filterTypes = types
+	},
+	/**
+   * Set al the types of location
+   * @param state
+   * @param types
+   */
+	setAllTypes (state, types) {
+		state.allTypes = types
 	},
 	/**
 	 * fetchedLocations mutator.
@@ -126,23 +123,63 @@ const actions = {
 	searchLocations (context) {
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + queryHelper.locationQueryBuilder(context.state.queryParams))
 			.then(res => {
+				var results = res.data
+				var types = []
+				results.forEach(r => {
+					var temp = r.type.split('/')
+					var id = Number(temp[temp.length - 2])
+					if (!types.includes(id)) {
+						types.push(id)
+					}
+				})
+				window.console.log(`resultsType: ${types}`)
 				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
-				context.commit('setFetchedLocations', res.data)
-				context.commit('setResultsList', res.data)
+				context.commit('setFetchedLocations', results)
+				context.commit('setResultsList', results)
 				context.commit('setResultsCount')
+				context.commit('setResultsType', ['types'])
 			})
 			.catch(e => { window.console.error(e) })
 	},
 	getLocations (context, bounds) {
-		var query = 'ne='+ bounds.ne[0]+','+bounds.ne[1] + '&sw='+ bounds.sw[0]+','+bounds.sw[1]
+		var query = 'ne=' + bounds.ne[0] + ',' + bounds.ne[1] + '&sw=' + bounds.sw[0] + ',' + bounds.sw[1]
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + query)
 			.then(res => {
+				var results = res.data
+				var types = []
+				results.forEach(r => {
+					var temp = r.type.split('/')
+					var id = Number(temp[temp.length - 2])
+					if (!types.includes(id)) {
+						types.push(id)
+					}
+				})
+				window.console.log(`resultsType: ${types}`)
 				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
-				context.commit('setFetchedLocations', res.data)
-				context.commit('setResultsList', res.data)
+				context.commit('setFetchedLocations', results)
+				context.commit('setResultsList', results)
 				context.commit('setResultsCount')
+				context.commit('setResultsType', types)
 			})
 			.catch(e => { window.console.error(e) })
+	},
+	// TODO: Offload type fetching from View.
+	fetchAllTypes (context) {
+		// Get location type from backend
+		axios.get('/api/types/').then((response) => {
+			var tempArray = []
+			var valueArray = []
+			for (var key in response.data) {
+				var option = response.data[key]
+				var filter = {
+					value: option.id, text: option.name
+				}
+				tempArray.push(filter)
+				valueArray.push(filter.value)
+			}
+			context.commit('setFilterTypes', valueArray)
+			context.commit('setAllTypes', tempArray)
+		})
 	},
 	setFilterTypes (context, types) {
 		return new Promise((resolve, reject) => {
@@ -233,7 +270,7 @@ const actions = {
 	 * @param {Object} newBoxBound new mapview bound coordinates. (format: {ne: [lng, lat], sw: [lng, lat]})
 	 */
 	updateBoxBound (context, newBoxBound) {
-		context.commit('setBoxBound', newBoxBound);
+		context.commit('setBoxBound', newBoxBound)
 	},
 	/**
 	 * Update query parameters

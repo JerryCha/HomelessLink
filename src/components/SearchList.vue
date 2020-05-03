@@ -18,11 +18,11 @@
 		<div id="content-block">
 			<!-- Searching indication block -->
 			<div :class="isSearching()?'':'invisible'">
-				<p id="searching-text">Searching</p>
+				<p class="searching-text">Searching</p>
 			</div>
 			<!-- No result block -->
 			<div :class="hasNoResult()?'':'invisible'">
-				<p id="searching-text">No Result</p>
+				<p class="searching-text">No Result</p>
 			</div>
 			<!-- Result block -->
 			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
@@ -77,21 +77,25 @@ export default {
 		}
 	},
 	mounted () {
+		this.$store.dispatch('locations/fetchAllTypes')
+		var fetchedTypes = this.$store.state.locations.allTypes
+		window.console.debug((`SearchList.mounted(): ${JSON.stringify(fetchedTypes)}`))
+		this.filterOptionsList = this.$store.filterTypes
 		// Get location type from backend
-		axios.get('/api/types/').then((response) => {
-			var tempArray = []
-			var valueArray = []
-			for (var key in response.data) {
-				var option = response.data[key]
-				var filter = {
-					value: option.id, text: option.name
-				}
-				tempArray.push(filter)
-				valueArray.push(filter.value)
-			}
-			this.$store.dispatch('locations/setFilterTypes', valueArray)
-			this.filterOptionsList = tempArray
-		})
+		// axios.get('/api/types/').then((response) => {
+		// 	var tempArray = []
+		// 	var valueArray = []
+		// 	for (var key in response.data) {
+		// 		var option = response.data[key]
+		// 		var filter = {
+		// 			value: option.id, text: option.name
+		// 		}
+		// 		tempArray.push(filter)
+		// 		valueArray.push(filter.value)
+		// 	}
+		// 	this.$store.dispatch('locations/setFilterTypes', valueArray)
+		// 	this.filterOptionsList = tempArray
+		// })
 	},
 	watch: {
 		onHoverLocationId (newVal, oldVal) {
@@ -141,7 +145,7 @@ export default {
 .invisible {
 	display: none;
 }
-#searching-text {
+.searching-text {
 	font-size: 2em;
 }
 .b-toast {
