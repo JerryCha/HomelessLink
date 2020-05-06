@@ -38,7 +38,7 @@ export default {
 	},
 	computed: {
 		options: function () {
-			var optionsCode = this.$store.state.locations.filterTypes
+			var optionsCode = this.$store.state.locations.resultsType
 			return this.$store.state.locations.allTypes.filter(t => optionsCode.includes((t.value)))
 		}
 	},

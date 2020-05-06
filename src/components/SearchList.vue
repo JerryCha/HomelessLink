@@ -8,13 +8,13 @@
 			<div>
           Found {{this.$store.state.locations.resultsCount}} results
       </div>
-			<!-- Filter panel-->
-			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
-				<TypeFilter :options="filterOptionsList"/>
-			</b-toast>
 			<!-- Result count -->
 			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
 		</div>
+		<!-- Filter panel-->
+		<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
+			<TypeFilter :options="filterOptionsList"/>
+		</b-toast>
 		<div id="content-block">
 			<!-- Searching indication block -->
 			<div :class="isSearching()?'':'invisible'">
