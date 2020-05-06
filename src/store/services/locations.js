@@ -137,16 +137,18 @@ const actions = {
 				context.commit('setFetchedLocations', results)
 				context.commit('setResultsList', results)
 				context.commit('setResultsCount')
-				context.commit('setResultsType', ['types'])
+				context.commit('setResultsType', types)
 			})
 			.catch(e => { window.console.error(e) })
 	},
 	getLocations (context, bounds) {
+		// Build the search query
 		var query = 'ne=' + bounds.ne[0] + ',' + bounds.ne[1] + '&sw=' + bounds.sw[0] + ',' + bounds.sw[1]
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?' + query)
 			.then(res => {
 				var results = res.data
-				var types = []
+				var types = []	// Initialize an empty list to store the type id
+				//	Process the id field.
 				results.forEach(r => {
 					var temp = r.type.split('/')
 					var id = Number(temp[temp.length - 2])

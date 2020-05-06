@@ -31,6 +31,7 @@
 									:id = "'result-' + poi.id"
 									:key="poi.id"
 									:locId="poi.id"
+									:type="getType(poi.type)"
 									:name="poi.name"
 									:suburb="poi.suburb"
 									:website="poi.website"
@@ -74,6 +75,12 @@ export default {
 		},
 		shouldHover: function (id) {
 			return this.onHoverLocationId === id
+		},
+		getType: function (rawId) {
+			// TODO: Validation & Verification
+			var temp = rawId.split('/')
+			var id = Number(temp[temp.length - 2])
+			return this.$store.state.locations.allTypes.filter(t => t.value === id)[0]
 		}
 	},
 	mounted () {
