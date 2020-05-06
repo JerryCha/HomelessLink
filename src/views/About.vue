@@ -1,24 +1,27 @@
 <template>
-  <div class="about">
-    <h1>Homeless Link Test Page</h1>
-    <div>
-      <Detail :name="'11111'"
-					:desc="'111111111111111111111111111111111111111111111111'"
-					:street="'233 Funny road'"
-					:suburb="'Melbourne'"
-					:postcode="'VIC3000'"
-					:email="'mail@example.com'"
-					:phone="'+61233334444'"/>
-    </div>
+  <div class="container">
+		<div>
+			<h1>Open Source Licensing</h1>
+			<p>This website utilizes the following open-source libraries for building.</p>
+			<ul>
+				<li>Vue.js</li>
+				<li>Bootstrap-Vue</li>
+				<li>Bootstrap</li>
+				<li>mapbox-js-gl</li>
+				<li>mapbox-js-gl-geocoder</li>
+				<li>Django</li>
+			</ul>
+		</div>
+		<div>
+			<h1>Data Sourcing</h1>
+			<p>The locations information comes from publicly available data.
+				We do not scrape any website's information, do not steal data from any private API.</p>
+		</div>
   </div>
 </template>
 
 <script>
-import Detail from '@/views/Detail.vue'
 export default {
-	name: 'about',
-	components: {
-		Detail
-	}
+	name: 'about'
 }
 </script>

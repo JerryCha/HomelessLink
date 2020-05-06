@@ -2,7 +2,7 @@
   <b-card
     :title="name">
     <b-card-text>
-			<p>{{ type.text }}</p>
+			<p><strong>{{ type.text }}</strong></p>
       <p>Suburb: {{ suburb }}</p>
       <p :class="hasNoLink(website)?'is-invisible':''">Website: <a :href="website" target="_blank">{{ website }}</a></p>
 			<router-link :to="detailLink">Detail</router-link>
