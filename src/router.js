@@ -28,6 +28,11 @@ const routes = [
 		]
 	},
 	{
+		path: '/itr2',
+		name: 'suggestion',
+		component: () => import('./views/Suggestion.vue')
+	},
+	{
 		path: '/about',
 		name: 'About',
 		// route level code-splitting

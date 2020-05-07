@@ -3,7 +3,7 @@
 		<div id="geocoder"></div>
 		<b-button-group style="z-index: 102;">
 			<b-button @click="onLocate"
-								variant="outline-secondary">
+								variant="secondary">
 				<b-icon-cursor></b-icon-cursor>
 			</b-button>
 			<b-button
@@ -90,7 +90,8 @@ export default {
 			const accessToken = this.mapbox.accessToken
 			const geocoder = new MapboxGeocoder({
 				'accessToken': accessToken,
-				'types': 'country,region,place,postcode,locality,neighborhood',
+				'types': 'locality,postcode',
+				'placeholder': 'Suburb Name/Postcode',
 				'language': 'en-AU',	// Set language to Australian English
 				'countries': 'au',	// Restrict region to Australia
 				'bbox': [	// bbox for VIC, [sw, ne]. Retrived from mapbox geocoding
@@ -140,7 +141,7 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 div {
 	box-sizing: border-box;
 }

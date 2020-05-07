@@ -8,21 +8,21 @@
 			<div>
           Found {{this.$store.state.locations.resultsCount}} results
       </div>
-			<!-- Filter panel-->
-			<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
-				<TypeFilter :options="filterOptionsList"/>
-			</b-toast>
 			<!-- Result count -->
 			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
 		</div>
+		<!-- Filter panel-->
+		<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
+			<TypeFilter :options="filterOptionsList"/>
+		</b-toast>
 		<div id="content-block">
 			<!-- Searching indication block -->
 			<div :class="isSearching()?'':'invisible'">
-				<p id="searching-text">Searching</p>
+				<p class="searching-text">Searching</p>
 			</div>
 			<!-- No result block -->
 			<div :class="hasNoResult()?'':'invisible'">
-				<p id="searching-text">No Result</p>
+				<p class="searching-text">No Result</p>
 			</div>
 			<!-- Result block -->
 			<div :class="isSearching()||hasNoResult()?'invisible':''" id="result-list">
@@ -31,6 +31,7 @@
 									:id = "'result-' + poi.id"
 									:key="poi.id"
 									:locId="poi.id"
+									:type="getType(poi.type)"
 									:name="poi.name"
 									:suburb="poi.suburb"
 									:website="poi.website"
@@ -74,24 +75,34 @@ export default {
 		},
 		shouldHover: function (id) {
 			return this.onHoverLocationId === id
+		},
+		getType: function (rawId) {
+			// TODO: Validation & Verification
+			var temp = rawId.split('/')
+			var id = Number(temp[temp.length - 2])
+			return this.$store.state.locations.allTypes.filter(t => t.value === id)[0]
 		}
 	},
 	mounted () {
+		this.$store.dispatch('locations/fetchAllTypes')
+		var fetchedTypes = this.$store.state.locations.allTypes
+		window.console.debug((`SearchList.mounted(): ${JSON.stringify(fetchedTypes)}`))
+		this.filterOptionsList = this.$store.filterTypes
 		// Get location type from backend
-		axios.get('/api/types/').then((response) => {
-			var tempArray = []
-			var valueArray = []
-			for (var key in response.data) {
-				var option = response.data[key]
-				var filter = {
-					value: option.id, text: option.name
-				}
-				tempArray.push(filter)
-				valueArray.push(filter.value)
-			}
-			this.$store.dispatch('locations/setFilterTypes', valueArray)
-			this.filterOptionsList = tempArray
-		})
+		// axios.get('/api/types/').then((response) => {
+		// 	var tempArray = []
+		// 	var valueArray = []
+		// 	for (var key in response.data) {
+		// 		var option = response.data[key]
+		// 		var filter = {
+		// 			value: option.id, text: option.name
+		// 		}
+		// 		tempArray.push(filter)
+		// 		valueArray.push(filter.value)
+		// 	}
+		// 	this.$store.dispatch('locations/setFilterTypes', valueArray)
+		// 	this.filterOptionsList = tempArray
+		// })
 	},
 	watch: {
 		onHoverLocationId (newVal, oldVal) {
@@ -141,7 +152,7 @@ export default {
 .invisible {
 	display: none;
 }
-#searching-text {
+.searching-text {
 	font-size: 2em;
 }
 .b-toast {

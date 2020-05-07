@@ -15,7 +15,7 @@
 				<p>Website: {{ getWebsiteLink }}</p>
 			</div>
 		</b-overlay>
-    <b-button @click="goBack" id="back-button" block variant="outline-dark">Back</b-button>
+    <b-button @click="goBack" id="back-button" block variant="dark">Back</b-button>
   </div>
 </template>
 
@@ -143,5 +143,9 @@ export default {
 <style scoped>
 .invisible {
 	display: none;
+}
+#back-button {
+	position: sticky;
+	bottom: 0px;
 }
 </style>

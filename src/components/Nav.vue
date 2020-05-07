@@ -5,7 +5,10 @@
       <b-navbar-toggle target="nav-menu"></b-navbar-toggle>
       <b-collapse id="nav-menu" is-nav>
         <b-navbar-nav>
+          <b-nav-item :to="'/'">Home</b-nav-item>
           <b-nav-item :to="'/itr1'">Search Locations</b-nav-item>
+          <b-nav-item :to="'/itr2'">Untitled Page</b-nav-item>
+          <!-- <b-nav-item :to="'/about'">Acknowledgement</b-nav-item> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
