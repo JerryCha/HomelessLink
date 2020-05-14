@@ -4,7 +4,7 @@ module.exports = {
 	devServer: {
 		hot: true,
 		hotOnly: true,
-		https: true,
+		https: false,
 		proxy: 'https://mateshelp.herokuapp.com',
 		disableHostCheck: true,
 		historyApiFallback: true,

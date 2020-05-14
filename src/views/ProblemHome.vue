@@ -10,7 +10,7 @@
         <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
       </b-row>
     </b-container>
-		<MapListSection />
+		<!-- <MapListSection /> -->
   </div>
 </template>
 
@@ -19,6 +19,8 @@ import SubhomeBanner from '@/components/SubhomeBanner'
 import bnbg from '@/assets/ef_2_srgb.jpg'
 import PlaceHolder from '@/components/Placeholder'
 import MapListSection from '@/views/Home'
+import axios from 'axios'
+import API from '@/api/api'
 
 export default {
 	name: 'problem-home',
@@ -28,7 +30,7 @@ export default {
 		PlaceHolder
 	},
 	props: {
-
+    apiData: Object
 	},
 	data () {
 		return {
@@ -36,7 +38,12 @@ export default {
 		}
 	},
 	methods: {
-
+    updateapiData(){
+      const that = this;
+      axios.get(API.PAGE.PAGE_API() + this.$route.params.problem).then(function(response) {
+        console.log(response.data);
+      })
+    }
 	},
 	mounted () {
 		this.navbar.setToLightMode()
@@ -46,6 +53,7 @@ export default {
 			return this.$store.state.locations.navbar
 		},
 		topic () {
+      this.updateapiData();
 			return this.$route.params.problem
 		}
 	},
