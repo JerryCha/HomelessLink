@@ -1,15 +1,32 @@
 <template>
-  <div class="topic-tile"
-    :style="{
-      background: this.tileBackground === '' ?
-                      '' : 'url' + '(' + require('@/assets/' + this.tileBackground) + ')' + ' no-repeat center/cover'
-    }"
-  >
-    <div class="content-wrap flex-wrap flex-orientation-column topic-tile-center-align">
-      <img :src="require('@/assets/' + iconImage + '.png')"
-          :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
-          style="width: 48px;">
-      <h5 class="topic-tile-title">{{ title }}</h5>
+  <div>
+    <!-- Mobile style (horizontal) -->
+    <div v-if="mobile" class="topic-tile topic-tile-horizontal"
+      :style="{
+        background: this.tileBackground === '' ?
+                        '' : 'url' + '(' + require('@/assets/' + this.tileBackground + '_horizontal.jpg') + ')' + ' no-repeat center/cover'
+      }"
+    >
+      <div class="content-wrap content-wrap-horizontal flex-wrap topic-tile-center-align">
+        <img :src="require('@/assets/' + iconImage + '.png')"
+            :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
+            style="width: 36px;">
+        <h5 class="topic-tile-title">{{ title }}</h5>
+      </div>
+    </div>
+    <!-- Vertical -->
+    <div v-else class="topic-tile"
+      :style="{
+        background: this.tileBackground === '' ?
+                        '' : 'url' + '(' + require('@/assets/' + this.tileBackground + '_vertical.jpg') + ')' + ' no-repeat center/cover'
+      }"
+    >
+      <div class="content-wrap flex-wrap flex-orientation-column topic-tile-center-align">
+        <img :src="require('@/assets/' + iconImage + '.png')"
+            :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
+            style="width: 48px;">
+        <h5 class="topic-tile-title">{{ title }}</h5>
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +85,13 @@ export default {
 .topic-tile:hover {
   box-shadow: 0px 0px 0px 0px rgba(255,255,255,1);
 }
+.topic-tile-horizontal {
+  height: 11vh;
+  width: 90vw;
+}
+.topic-tile-horizontal > * {
+  margin-right: 2rem;
+}
 .content-wrap {
   height: 100%;
   width: 100%;
@@ -77,11 +101,22 @@ export default {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, 0) 60%);
   transition: background 0.5s;
 }
+.content-wrap-horizontal {
+  padding-left: 1rem;
+  padding-top: 0rem;
+  /* background: linear-gradient(to right, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, 0) 60%);; */
+  background:rgba(250, 250, 250, .65);
+}
 .topic-tile-title {
   color:rgba(243, 121, 30, 1);
 }
 .content-wrap:hover {
   background: linear-gradient(to bottom, rgba(243, 121, 30, 1) 40%,  rgba(243, 121, 30, .5) 50%,  rgba(243, 121, 30, 0) 60%);
+  cursor: pointer;
+}
+.content-wrap-horizontal:hover {
+  /* background: linear-gradient(to right, rgba(243, 121, 30, 1) 40%,  rgba(243, 121, 30, .5) 50%,  rgba(243, 121, 30, 0) 60%); */
+  background:rgba(243, 121, 30, .75);
   cursor: pointer;
 }
 .content-wrap:hover .topic-tile-title {

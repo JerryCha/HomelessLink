@@ -27,7 +27,6 @@
           </b-nav-item-dropdown>
           <b-nav-item :to="'/'">Contact us</b-nav-item>
           <b-nav-item :to="'/newhome'">New homepage</b-nav-item>
-          <!-- <b-nav-item :to="'/about'">Acknowledgement</b-nav-item> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -93,9 +92,9 @@ export default {
 <style>
 #navbar-wrap {
   padding: 2vh 2vw 0vh 2vw;
-  position: sticky;
+  /* position: sticky; */
   top: 0;
-  width: 100vw;
+  /* width: 100vw; */
   z-index: 99999;
   box-sizing: border-box;
   /* background-color: rgba(237,121,28,0.2); */
@@ -111,7 +110,7 @@ export default {
 .mateshelp-orange {
   background-color: rgba(243,121,30,1);
 }
-.mateshelp-transparent {
-  /* background-color: rgba(0,0,0,0); */
-}
+/* .mateshelp-transparent {
+  background-color: rgba(0,0,0,0);
+} */
 </style>
