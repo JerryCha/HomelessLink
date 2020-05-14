@@ -1,25 +1,17 @@
 <template>
-	<div>
-		<div v-if="loadingStatus === 1" id="loading-overlap">
-			<b-overlay :show="loadingStatus === 1"></b-overlay>
-		</div>
-		<div v-else-if="loadingStatus === 2" id="problem-subpage">
-			<b-container id="head-content">
-				<!-- <b-row class="mb-4">
-					<SubhomeBanner :title="topic" :subtitle="'some subtitle'" :bgImg="bannerImg"/>
-				</b-row> -->
-				<b-row class="mb-4">
-					<h1>{{ title }}</h1>
-				</b-row>
-				<b-row>
-					<div v-html="desc"></div>
-				</b-row>
-			</b-container>
-			<b-container fluid>
-				<MapListSection />
-			</b-container>
-		</div>
-	</div>
+  <div>
+    <b-container id="head-content">
+      <b-row class="mb-4">
+        <SubhomeBanner :title="topic" :subtitle="'some subtitle'" :bgImg="bg"/>
+      </b-row>
+      <b-row align-h="center" align-v="center">
+        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
+        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
+        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
+      </b-row>
+    </b-container>
+		<!-- <MapListSection /> -->
+  </div>
 </template>
 
 <script>
@@ -38,7 +30,7 @@ export default {
 		PlaceHolder
 	},
 	props: {
-
+    apiData: Object
 	},
 	data () {
 		return {
@@ -51,7 +43,12 @@ export default {
 		}
 	},
 	methods: {
-
+    updateapiData(){
+      const that = this;
+      axios.get(API.PAGE.PAGE_API() + this.$route.params.problem).then(function(response) {
+        console.log(response.data);
+      })
+    }
 	},
 	created () {
 		this.loadingStatus = 1
@@ -80,6 +77,7 @@ export default {
 			return this.$store.state.locations.navbar
 		},
 		topic () {
+      this.updateapiData();
 			return this.$route.params.problem
 		}
 	},

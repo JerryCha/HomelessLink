@@ -19,14 +19,11 @@
           <b-nav-item :to="'/'">Home</b-nav-item>
           <b-nav-item :to="'/'">Help Homeless</b-nav-item>
           <b-nav-item-dropdown text="Seek of Help">
-            <b-dropdown-item :to="'/itr2/essential'">Essential Services</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/eldercare'">Elder Care</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/healthy'">Get healthy</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/addiction'">Help from addiction</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/community'">Community Services</b-dropdown-item> -->
-						<b-dropdown-item v-for="item in seekOfHelp"
-										:key="item.id"
-										:to="'/itr2/' + item.urlName">{{ item.displayName }}</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/1'">Essential Services</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/2'">Elder Care</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/3'">Get healthy</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/4'">Help from addiction</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/5'">Community Services</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item :to="'/'">Contact us</b-nav-item>
         </b-navbar-nav>
