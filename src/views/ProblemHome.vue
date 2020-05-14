@@ -32,7 +32,6 @@ export default {
 	},
 	data () {
 		return {
-			topic: '',
 			bg: bnbg
 		}
 	},
@@ -40,8 +39,20 @@ export default {
 
 	},
 	mounted () {
-		this.topic = this.$route.params.problem
-		window.console.log(`Problem home: ${JSON.stringify(this.topic)}`)
+		this.navbar.setToLightMode()
+	},
+	computed: {
+		navbar () {
+			return this.$store.state.locations.navbar
+		},
+		topic () {
+			return this.$route.params.problem
+		}
+	},
+	watch: {
+		// topic: function (newVal, oldVal) {
+		// 	this.$route.go()
+		// }
 	}
 }
 </script>

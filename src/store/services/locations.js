@@ -3,6 +3,7 @@ import API from '@/api/api'
 import queryHelper from '@/util/query'
 
 const state = {
+	navbar: null,
 	resultsList: [],	// results list for showing
 	resultsType: [], // type of fetched location
 	resultsCount: 0,	// count of showing results list
@@ -24,6 +25,14 @@ const getters = {
 }
 
 const mutations = {
+	/**
+	 * Reference to navbar
+	 * @param {*} state
+	 * @param {*} navbar
+	 */
+	setNavbar (state, navbar) {
+		state.navbar = navbar
+	},
 	/**
 	 * resultsList mutator
 	 * @param {*} state state reference
@@ -116,6 +125,9 @@ const mutations = {
 }
 
 const actions = {
+	setNavbar (context, navbar) {
+		context.commit('setNavbar', navbar)
+	},
 	/**
 	 * Fetching locations as per query conditions.
 	 * @param {*} context context

@@ -1,7 +1,16 @@
 <template>
-  <div class="topic-tile flex-wrap flex-orientation-column topic-tile-center-align">
-    <img src="@/assets/tile-temp-icon.jpg" style="width: 80px;">
-    <h2>Tile Title</h2>
+  <div class="topic-tile"
+    :style="{
+      background: this.tileBackground === '' ?
+                      '' : 'url' + '(' + require('@/assets/' + this.tileBackground) + ')' + ' no-repeat center/cover'
+    }"
+  >
+    <div class="content-wrap flex-wrap flex-orientation-column topic-tile-center-align">
+      <img :src="require('@/assets/' + iconImage + '.png')"
+          :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
+          style="width: 48px;">
+      <h5 class="topic-tile-title">{{ title }}</h5>
+    </div>
   </div>
 </template>
 
@@ -12,6 +21,31 @@ export default {
 		mobile: {
 			type: Boolean,
 			default: false
+		},
+		iconImage: {
+			type: String,
+			default: ''
+		},
+		tileBackground: {
+			type: String,
+			default: ''
+		},
+		title: {
+			type: String,
+			default: ''
+		}
+	},
+	computed: {
+		iconPath: function () {
+			return '@/assets/' + this.iconImage + '.png'
+		},
+		iconPath2x: function () {
+			return '@/assets/' + this.iconImage + '@2x.png'
+		}
+	},
+	methods: {
+		gotoTopicPage: function () {
+			// TODO: implement go to topic page.
 		}
 	}
 }
@@ -22,17 +56,36 @@ export default {
   height: 40vh;
   width: 15vw;
   box-sizing: border-box;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 70%), #00ff00;  /* Experiment purpose */
   border-radius: 1rem;
   /* x offset | y offset | blur radius | spread radius | color */
   box-shadow: 0px 0px 16px 0px rgba(180, 180, 180, 0.25);
   /* TODO: Add transition */
-  transition: box-shadow 0.25s, background 0.25s;
-  padding-top: 1rem;
+  transition: box-shadow 0.25s;
+}
+.topic-tile > * {
+  margin-bottom: 2rem;
 }
 .topic-tile:hover {
-  background: linear-gradient(to bottom, rgba(243, 121, 30, 1) 30%, rgba(243, 121, 30, 0) 70%), #ff0000;  /* Experiment purpose */
   box-shadow: 0px 0px 0px 0px rgba(255,255,255,1);
+}
+.content-wrap {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, 0) 60%);
+  transition: background 0.5s;
+}
+.topic-tile-title {
+  color:rgba(243, 121, 30, 1);
+}
+.content-wrap:hover {
+  background: linear-gradient(to bottom, rgba(243, 121, 30, 1) 40%,  rgba(243, 121, 30, .5) 50%,  rgba(243, 121, 30, 0) 60%);
+  cursor: pointer;
+}
+.content-wrap:hover .topic-tile-title {
+  color: white;
 }
 .flex-wrap {
   display: flex;
@@ -45,5 +98,6 @@ export default {
 }
 .topic-tile-center-align {
   align-items: center;
+  /* justify-content: space-between; */
 }
 </style>

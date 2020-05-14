@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <Nav />
+    <Nav ref="navbar"/>
     <div id="content" :style="containerStyle">
       <router-view :mobile="mobile"/>
-      <b-row>
+      <!-- <b-row>
         <b-col>
           <b-container class="mx-auto" style="width: 200px;">
             &copy; Prophetics 2020
           </b-container>
         </b-col>
-      </b-row>
+      </b-row> -->
     </div>
   </div>
 </template>
@@ -22,6 +22,8 @@ export default {
 		Nav
 	},
 	mounted () {
+		// window.console.log(this.$refs.navbar)
+		this.$store.dispatch('locations/setNavbar', this.$refs.navbar)
 	},
 	data () {
 		return {
@@ -32,14 +34,14 @@ export default {
 			})(document.body.clientWidth),
 			// style object for container
 			containerStyle: {
-				'width': '100%',
-				'height': ((width) => {
-					if (width < 576) {
-						return '80vh'
-					} else {
-						return '80vh'
-					}
-				})(document.body.clientWidth)
+				// 'width': '100%',
+				// 'height': ((width) => {
+				// 	if (width < 576) {
+				// 		return '80vh'
+				// 	} else {
+				// 		return '80vh'
+				// 	}
+				// })(document.body.clientWidth)
 			}
 		}
 	},
@@ -54,14 +56,14 @@ body {
   margin: 0px;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #101010;
 }
 #content {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  /* margin-top: 1rem;
+  margin-bottom: 1rem; */
 }
 @media screen and (max-width: 575px) {}
 </style>

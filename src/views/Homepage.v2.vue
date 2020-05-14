@@ -50,7 +50,10 @@
               <p>Here is the distribution of homelessness per suburb, by 2015.</p>
             </b-row>
             <b-row align-h="center">
-              <b-button variant="outline-info">Read more</b-button>
+              <img :src="require('@/assets/temmmppp.jpg')">
+            </b-row>
+            <b-row align-h="center">
+              <b-button variant="outline-info" style="color:rgba(243,121,30,1);border-color:rgba(243,121,30,1)">Read more</b-button>
             </b-row>
           </b-container>
         </div>
@@ -67,11 +70,11 @@
             </b-row>
             <b-row align-h="center">
               <div class="flex-wrap">
-                <TopicTile class="mx-3" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'"/>
-                <TopicTile class="mx-3" :title="'Get On Your Feet'" :iconImage="'seekhelp_feet_icon'"/>
-                <TopicTile class="mx-3" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'"/>
-                <TopicTile class="mx-3" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'"/>
-                <TopicTile class="mx-3" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'"/>
+                <TopicTile class="mx-3" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg_vertical.jpg'"/>
+                <TopicTile class="mx-3" :title="'Get On Your Feet'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg_vertical.jpg'"/>
+                <TopicTile class="mx-3" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg_vertical.jpg'"/>
+                <TopicTile class="mx-3" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg_vertical.jpg'"/>
+                <TopicTile class="mx-3" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg_vertical.jpg'"/>
               </div>
             </b-row>
           </b-container>
@@ -99,8 +102,6 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import TopicTile from '@/components/TopicTile'
 
-// import topSlideBg from '@/assets/top_slide_bg.png'
-
 export default {
 	name: 'homepage-v2',
 	components: {
@@ -118,13 +119,12 @@ export default {
 				overflow: 'auto'
 			},
 			topSlide: {
-				// 'background-image': '@/assets/top_slide_bg.png'
 			}
 		}
 	},
 	mounted () {
 		this.swiper.on('slideChange', this.toggleNavbarStyle)
-		this.navbar.setToTransparentMode()
+		this.navbar.setToOrangeMode()
 	},
 	computed: {
 		swiper () {
@@ -139,8 +139,8 @@ export default {
 			var navbar = this.navbar
 			var realIndex = this.swiper.realIndex
 			if (realIndex === 0 || realIndex === 3) {
-				// Change navbar to transparent
-				navbar.setToTransparentMode()
+				// Change navbar to orange
+				navbar.setToOrangeMode()
 			} else {
 				// Change navbar to light
 				navbar.setToLightMode()
@@ -188,6 +188,9 @@ export default {
 }
 #swiper-wrap {
   padding: 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .slide-wrap {
   height: 100%;
