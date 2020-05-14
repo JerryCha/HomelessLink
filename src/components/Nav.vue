@@ -20,7 +20,7 @@
           <b-nav-item :to="'/'">Help Homeless</b-nav-item>
           <b-nav-item-dropdown text="Seek of Help">
             <b-dropdown-item :to="'/itr2/essential'">Essential Services</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/on-your-feet'">Get on your feet</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/eldercare'">Elder Care</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/healthy'">Get healthy</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/addiction'">Help from addiction</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/community'">Community Services</b-dropdown-item>
