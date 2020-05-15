@@ -20,18 +20,18 @@
                     Anyone who is experiencing homeless can search these location surround themselves.
                   </p>
                   <div class="flex-wrap flex-center-align">
-                    <b-button class="flex-wrap-item clear-style icon-button">
+                    <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_helphls_button.png')" width="64px">
                       <p>Help Homeless</p>
-                    </b-button>
-                    <b-button class="flex-wrap-item clear-style icon-button">
+                    </button>
+                    <button @click="gotoSlide(2)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_seekhelp_button.png')" width="64px">
                       <p>Seek of Help</p>
-                    </b-button>
-                    <b-button class="flex-wrap-item clear-style icon-button">
+                    </button>
+                    <button @click="gotoSlide(3)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_contact_button.png')" width="64px">
                       <p>Contact us</p>
-                    </b-button>
+                    </button>
                   </div>
                 </b-col>
               </b-row>
@@ -121,16 +121,14 @@ export default {
 				direction: 'vertical',
 				slidesPerView: 1,
 				spaceBetween: 0,
-				overflow: 'auto'
-			},
-			pageWidth: 1024
+				overflow: 'auto',
+				sliderDrag: false
+			}
 		}
 	},
 	mounted () {
 		this.swiper.on('slideChange', this.toggleNavbarStyle)
-		this.navbar.setToOrangeMode()
-		this.pageWidth = document.body.clientWidth
-		setInterval(() => { this.pageWidth = document.body.clientWidth }, 1000)
+		setTimeout(() => this.navbar.setToOrangeMode(), 250)
 	},
 	computed: {
 		swiper () {
@@ -147,9 +145,6 @@ export default {
 		}
 	},
 	watch: {
-		pageWidth (newVal, oldVal) {
-			window.console.log(`pageWidth watcher: ${newVal}, ${oldVal}`)
-		}
 	},
 	methods: {
 		toggleNavbarStyle: function () {
@@ -167,6 +162,12 @@ export default {
 			var containerDom = document.getElementById('tiles-container')
 			var containerWidth = window.getComputedStyle(containerDom).width
 			return containerWidth
+		},
+		gotoSlide: function (n) {
+			if (n < 0 || n > 3) {
+				window.console.error('index cannot smaller than 0 or greater than 3')
+			}
+			this.swiper.slideTo(n)
 		}
 	}
 }
@@ -182,8 +183,12 @@ export default {
   border: unset;
 }
 .icon-button {
+  padding: 1rem 0.5rem 1rem 0.5rem;
   background: transparent;
   color: white;
+  border: 0 solid white;
+  border-radius: 8px;
+  transition: color 0.25s, background-color 0.25s;
 }
 .icon-button:hover {
   background: white;
@@ -227,6 +232,9 @@ export default {
 }
 #top-section {
   background-image: url('~@/assets/top_bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 #help-homeless-section {
   background: rgba(245,246,249,1);

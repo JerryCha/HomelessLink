@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import SearchList from '@/components/SearchList.vue'
 import Detail from '@/views/Detail.vue'
-import Homepage from '@/views/HomePage.vue'
+// import Homepage from '@/views/HomePage.vue'
+import Homepage from '@/views/Homepage.v2.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
 		]
 	},
 	{
+		path: '/itr2',
+		name: 'homepage',
+		component: Homepage
+	},
+	{
 		path: '/itr2/:problem',
 		name: 'problem-home',
 		component: () => import('./views/ProblemHome.vue')
@@ -43,7 +49,7 @@ const routes = [
 	{
 		path: '/newhome',
 		name: 'new-home',
-		component: () => import('./views/Homepage.v2.vue')
+		component: Homepage
 	}
 ]
 

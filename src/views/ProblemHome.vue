@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="problem-subpage">
     <b-container id="head-content">
       <b-row class="mb-4">
         <SubhomeBanner :title="topic" :subtitle="'some subtitle'" :bgImg="bg"/>
@@ -39,7 +39,7 @@ export default {
 
 	},
 	mounted () {
-		this.navbar.setToLightMode()
+		setTimeout(() => this.navbar.setToLightMode(), 250)
 	},
 	computed: {
 		navbar () {
@@ -58,6 +58,9 @@ export default {
 </script>
 
 <style>
+#problem-subpage {
+	margin-top: 1rem;
+}
 #head-content {
   height: calc(100vh - 56px);
 }

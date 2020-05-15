@@ -15,9 +15,7 @@ export default {
 		Nav
 	},
 	mounted () {
-		// window.console.log(this.$refs.navbar)
 		this.$store.dispatch('locations/setNavbar', this.$refs.navbar)
-		// window.addEventListener('resize', function (e) { this.pageWidth = e.target.innerWidth })
 	},
 	data () {
 		return {

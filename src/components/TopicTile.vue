@@ -50,13 +50,16 @@ export default {
 	},
 	data () {
 		return {
-			wrapWidth: 1024
+			wrapWidth: 1024,
+			wrapHeight: 576
 		}
 	},
 	mounted () {
 		this.wrapWidth = this.$parent.$el.clientWidth
+		this.wrapHeight = this.$parent.$el.clientHeight
 		window.addEventListener('resize', () => {
 			this.wrapWidth = this.$parent.$el.clientWidth
+			this.wrapHeight = this.$parent.$el.clientHeight
 		})
 	},
 	computed: {
@@ -67,7 +70,7 @@ export default {
 			return '@/assets/' + this.iconImage + '@2x.png'
 		},
 		mobile: function () {
-			return this.wrapWidth < 576
+			return this.wrapWidth < this.wrapHeight
 		}
 	},
 	methods: {
