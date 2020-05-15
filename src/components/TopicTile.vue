@@ -35,10 +35,6 @@
 export default {
 	name: 'topic-tile',
 	props: {
-		mobile: {
-			type: Boolean,
-			default: false
-		},
 		iconImage: {
 			type: String,
 			default: ''
@@ -52,12 +48,26 @@ export default {
 			default: ''
 		}
 	},
+	data () {
+		return {
+			wrapWidth: 1024
+		}
+	},
+	mounted () {
+		this.wrapWidth = this.$parent.$el.clientWidth
+		window.addEventListener('resize', () => {
+			this.wrapWidth = this.$parent.$el.clientWidth
+		})
+	},
 	computed: {
 		iconPath: function () {
 			return '@/assets/' + this.iconImage + '.png'
 		},
 		iconPath2x: function () {
 			return '@/assets/' + this.iconImage + '@2x.png'
+		},
+		mobile: function () {
+			return this.wrapWidth < 576
 		}
 	},
 	methods: {

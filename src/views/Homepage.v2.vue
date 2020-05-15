@@ -69,13 +69,13 @@
               <p>Select the options below that you need help with</p>
             </b-row>
             <b-row align-h="center">
-              <div class="flex-wrap" style="justify-content:center;">
-                <TopicTile class="mx-3 my-3" :mobile="true" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
+              <div class="flex-wrap" style="justify-content:center;" id="tiles-container">
+                <TopicTile class="mx-3 my-1" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
                 <!-- Get on your feet change to Aged care -->
-                <TopicTile class="mx-3 my-1" :mobile="true" :title="'Get On Your Feet'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
-                <TopicTile class="mx-3 my-1" :mobile="true" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
-                <TopicTile class="mx-3 my-1" :mobile="true" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
-                <TopicTile class="mx-3 my-1" :mobile="true" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
+                <TopicTile class="mx-3 my-1" :title="'Get On Your Feet'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
+                <TopicTile class="mx-3 my-1" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
+                <TopicTile class="mx-3 my-1" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
+                <TopicTile class="mx-3 my-1" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
               </div>
             </b-row>
           </b-container>
@@ -141,6 +141,9 @@ export default {
 		},
 		portraitShouldHidden () {
 			return this.pageWidth < 575
+		},
+		tilesContainerWidth () {
+			return this.getTilesConteinerWidth()
 		}
 	},
 	watch: {
@@ -159,6 +162,11 @@ export default {
 				// Change navbar to light
 				navbar.setToLightMode()
 			}
+		},
+		getTilesConteinerWidth: function () {
+			var containerDom = document.getElementById('tiles-container')
+			var containerWidth = window.getComputedStyle(containerDom).width
+			return containerWidth
 		}
 	}
 }
