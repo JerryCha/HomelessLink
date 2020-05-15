@@ -1,8 +1,8 @@
 <template>
-  <div id="navbar-wrap" :class="themeStyle">
-    <b-navbar toggleable="lg" :type="navTextColor">
+  <div id="navbar-wrap" :class="[navbar.themeStyle, 'background-transition']">
+    <b-navbar toggleable="lg" :type="navbar.navTextColor">
       <b-navbar-brand :to="'/'">
-        <img v-if="themeStatus==='transparent'||themeStatus==='orange'"
+        <img v-if="navbar.themeStatus==='transparent'||navbar.themeStatus==='orange'"
               src="@/assets/logo_white@2x.png"
               srcset="@/assets/logo_white@1x.png,
                       @/assets/logo_white@2x.png 2x"
@@ -19,11 +19,14 @@
           <b-nav-item :to="'/'">Home</b-nav-item>
           <b-nav-item :to="'/'">Help Homeless</b-nav-item>
           <b-nav-item-dropdown text="Seek of Help">
-            <b-dropdown-item :to="'/itr2/essential'">Essential Services</b-dropdown-item>
+            <!-- <b-dropdown-item :to="'/itr2/essential'">Essential Services</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/on-your-feet'">Get on your feet</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/healthy'">Get healthy</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/addiction'">Help from addiction</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/community'">Community Services</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/community'">Community Services</b-dropdown-item> -->
+						<b-dropdown-item v-for="item in seekOfHelp"
+										:key="item.id"
+										:to="'/itr2/' + item.urlName">{{ item.displayName }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item :to="'/'">Contact us</b-nav-item>
         </b-navbar-nav>
@@ -34,6 +37,9 @@
 
 <script>
 import logoWhite from '@/assets/logo_white.png'
+import axios from 'axios'
+import API from '@/api/api'
+
 export default {
 	components: {
 	},
@@ -42,28 +48,44 @@ export default {
 			images: {
 				'logoWhite': logoWhite
 			},
-			themeStatus: 'light',
-			themeStyle: 'mateshelp-light',
-			navTextColor: 'light'
+			navbar: {
+				themeStatus: 'light',
+				themeStyle: 'mateshelp-light',
+				navTextColor: 'light'
+			},
+			seekOfHelp: []	// {id: '', displayName: '', urlName: ''}
 		}
+	},
+	created () {
+		axios.get(API.PAGE.GET_PAGE_LIST())
+			.then(res => {
+				window.console.log('nav pages category request')
+				this.seekOfHelp = res.data.map(e => {
+					return {
+						id: e.id,
+						displayName: e.name,
+						urlName: e.slug
+					}
+				})
+			})
 	},
 	mounted () {
 	},
 	methods: {
 		setToTransparentMode () {
-			this.themeStatus = 'transparent'
-			this.themeStyle = 'mateshelp-transparent'
-			this.navTextColor = 'dark'
+			this.navbar.themeStatus = 'transparent'
+			this.navbar.themeStyle = 'mateshelp-transparent'
+			this.navbar.navTextColor = 'dark'
 		},
 		setToLightMode () {
-			this.themeStatus = 'light'
-			this.themeStyle = 'mateshelp-light'
-			this.navTextColor = 'light'
+			this.navbar.themeStatus = 'light'
+			this.navbar.themeStyle = 'mateshelp-light'
+			this.navbar.navTextColor = 'light'
 		},
 		setToOrangeMode () {
-			this.themeStatus = 'orange'
-			this.themeStyle = 'mateshelp-orange'
-			this.navTextColor = 'dark'
+			this.navbar.themeStatus = 'orange'
+			this.navbar.themeStyle = 'mateshelp-orange'
+			this.navbar.navTextColor = 'dark'
 		}
 	},
 	computed: {
@@ -97,6 +119,9 @@ export default {
   z-index: 99999;
   box-sizing: border-box;
   font-size: 1.15rem;
+}
+.background-transition {
+	transition: background-color 0.25s;
 }
 .mateshelp-light {
   background-color: rgba(255,255,255,1);
