@@ -123,12 +123,22 @@ export default {
 				spaceBetween: 0,
 				overflow: 'auto',
 				sliderDrag: false
+			},
+			pageSize: {
+				width: 1024,
+				height: 576
 			}
 		}
 	},
 	mounted () {
 		this.swiper.on('slideChange', this.toggleNavbarStyle)
-		setTimeout(() => this.navbar.setToOrangeMode(), 250)
+		setTimeout(() => this.navbar.setToOrangeMode(), 10)
+		this.pageSize.width = window.innerWidth
+		this.pageSize.height = window.innerHeight
+		window.addEventListener('resize', () => {
+			this.pageSize.width = window.innerWidth
+			this.pageSize.height = window.innerHeight
+		})
 	},
 	computed: {
 		swiper () {
@@ -138,7 +148,7 @@ export default {
 			return this.$store.state.locations.navbar
 		},
 		portraitShouldHidden () {
-			return this.pageWidth < 575
+			return this.pageSize.width < 575
 		},
 		tilesContainerWidth () {
 			return this.getTilesConteinerWidth()

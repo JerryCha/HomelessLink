@@ -1,28 +1,38 @@
 <template>
   <div>
     <!-- Mobile style (horizontal) -->
-    <div v-if="mobile" class="topic-tile topic-tile-horizontal"
+    <div v-if="mobile" class="topic-tile topic-tile-horizontal" @mouseenter="mouseenterHanlder" @mouseleave="mouseleaveHandler"
       :style="{
         background: this.tileBackground === '' ?
                         '' : 'url' + '(' + require('@/assets/' + this.tileBackground + '_horizontal.jpg') + ')' + ' no-repeat center/cover'
       }"
     >
       <div class="content-wrap content-wrap-horizontal flex-wrap topic-tile-center-align">
-        <img :src="require('@/assets/' + iconImage + '.png')"
+        <!-- Hovering status -->
+        <img v-if="pointerEnter" :src="require('@/assets/' + iconImage + '.png')"
+            :srcset="`${require('@/assets/' + iconImage + '_hover.png')}, ${require('@/assets/' + iconImage + '_hover@2x.png')} 2x`"
+            style="width: 36px;">
+        <!-- Common stauts -->
+        <img v-else :src="require('@/assets/' + iconImage + '.png')"
             :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
             style="width: 36px;">
         <h5 class="topic-tile-title">{{ title }}</h5>
       </div>
     </div>
     <!-- Vertical -->
-    <div v-else class="topic-tile"
+    <div v-else class="topic-tile" @mouseenter="mouseenterHanlder" @mouseleave="mouseleaveHandler"
       :style="{
         background: this.tileBackground === '' ?
                         '' : 'url' + '(' + require('@/assets/' + this.tileBackground + '_vertical.jpg') + ')' + ' no-repeat center/cover'
       }"
     >
       <div class="content-wrap flex-wrap flex-orientation-column topic-tile-center-align">
-        <img :src="require('@/assets/' + iconImage + '.png')"
+        <!-- Hovering status -->
+        <img v-if="pointerEnter" :src="require('@/assets/' + iconImage + '.png')"
+            :srcset="`${require('@/assets/' + iconImage + '_hover.png')}, ${require('@/assets/' + iconImage + '_hover@2x.png')} 2x`"
+            style="width: 48px;">
+        <!-- Common stauts -->
+        <img v-else :src="require('@/assets/' + iconImage + '.png')"
             :srcset="`${require('@/assets/' + iconImage + '.png')}, ${require('@/assets/' + iconImage + '@2x.png')} 2x`"
             style="width: 48px;">
         <h5 class="topic-tile-title">{{ title }}</h5>
@@ -51,7 +61,8 @@ export default {
 	data () {
 		return {
 			wrapWidth: 1024,
-			wrapHeight: 576
+			wrapHeight: 576,
+			pointerEnter: false
 		}
 	},
 	mounted () {
@@ -76,6 +87,12 @@ export default {
 	methods: {
 		gotoTopicPage: function () {
 			// TODO: implement go to topic page.
+		},
+		mouseenterHanlder: function () {
+			this.pointerEnter = true
+		},
+		mouseleaveHandler: function () {
+			this.pointerEnter = false
 		}
 	}
 }
