@@ -59,7 +59,7 @@ export default {
 	created () {
 		axios.get(API.PAGE.GET_PAGE_LIST())
 			.then(res => {
-				window.console.log('nav pages category request')
+				this.$store.dispatch('pages/setPageList', res.data)
 				this.seekOfHelp = res.data.map(e => {
 					return {
 						id: e.id,
@@ -67,6 +67,8 @@ export default {
 						urlName: e.slug
 					}
 				})
+				window.console.log(`this.seekOfHelp: ${JSON.stringify(this.seekOfHelp)}`)
+				this.$store.dispatch('pages/setNavPageList', this.seekOfHelp)
 			})
 	},
 	mounted () {

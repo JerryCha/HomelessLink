@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="clickHandler">
     <!-- Mobile style (horizontal) -->
     <div v-if="mobile" class="topic-tile topic-tile-horizontal" @mouseenter="mouseenterHanlder" @mouseleave="mouseleaveHandler"
       :style="{
@@ -54,9 +54,11 @@ export default {
 			default: ''
 		},
 		title: {
-			type: String,
-			default: ''
-		}
+			type: String
+    },
+    slug: {
+      type: String
+    }
 	},
 	data () {
 		return {
@@ -93,6 +95,9 @@ export default {
 		},
 		mouseleaveHandler: function () {
 			this.pointerEnter = false
+		},
+		clickHandler: function () {
+			this.$router.push('/itr2/' + this.slug)
 		}
 	}
 }

@@ -73,6 +73,7 @@ export default {
 	mounted () {
 		setTimeout(() => this.navbar.setToLightMode(), 10)
 		window.scrollTo(0, 0)	// (x, y)
+		window.console.log('mounted again')
 	},
 	computed: {
 		navbar () {
