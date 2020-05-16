@@ -1,76 +1,44 @@
 <template>
   <div>
-    <b-container id="head-content">
-      <b-row class="mb-4">
-        <SubhomeBanner :title="topic" :subtitle="'some subtitle'" :bgImg="bg"/>
-      </b-row>
-      <b-row align-h="center" align-v="center">
-        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
-        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
-        <b-col xs="12" sm="4"><PlaceHolder boxWidth="300px" boxHeight="300px" /></b-col>
-      </b-row>
-    </b-container>
-		<!-- <MapListSection /> -->
+    <ProblemHomeTemplate v-if="$store.state.pageData !== null"/>
   </div>
 </template>
 
 <script>
-import SubhomeBanner from '@/components/SubhomeBanner'
-import bnbg from '@/assets/ef_2_srgb.jpg'
-import PlaceHolder from '@/components/Placeholder'
-import MapListSection from '@/views/Home'
+import ProblemHomeTemplate from '@/components/ProblemHomeTemplate'
 import axios from 'axios'
 import API from '@/api/api'
 
 export default {
 	name: 'problem-home',
 	components: {
-		SubhomeBanner,
-		MapListSection,
-		PlaceHolder
+    ProblemHomeTemplate
 	},
-	props: {
-    apiData: Object
-	},
-	data () {
-		return {
-			loadingStatus: 0,	// 0: Not request, 1: requesting, 2: finished, 3: error
-			problemId: -1,
-			bannerImg: bnbg,
-			title: '',
-			desc: ''
-			// Category to write in store
-		}
-	},
+	props:{
+    'problem': {
+      type: String
+    },
+  },
+  data() {
+    return {
+      currentID: null
+    }
+  },
 	methods: {
     updateapiData(){
       const that = this;
       axios.get(API.PAGE.PAGE_API() + this.$route.params.problem).then(function(response) {
-        console.log(response.data);
+        that.$store.commit("addPageData",response.data);
       })
+      this.currentID = this.$route.params.problem;
     }
 	},
-	created () {
-		this.loadingStatus = 1
-		axios.get(API.PAGE.GET_PAGE(1))
-			.then((res) => {
-				window.console.log(res.data)
-				this.problemId = res.data.id
-				this.bannerImg = res.data.banner_image
-				this.title = res.data.name
-				this.desc = res.data.description
-				this.loadingStatus = 2
-				// TODO: Push categories to store
-			})
-			.catch((r) => {
-				window.console.error(r)
-				this.loadingStatus = 3
-			})
-	},
+  updated(){
+      this.updateapiData();
+  },
 	mounted () {
-		setTimeout(() => this.navbar.setToLightMode(), 10)
-		window.scrollTo(0, 0)	// (x, y)
-		window.console.log('mounted again')
+		this.navbar.setToLightMode();
+    this.updateapiData();
 	},
 	computed: {
 		navbar () {
@@ -78,7 +46,7 @@ export default {
 		},
 		topic () {
       this.updateapiData();
-			return this.$route.params.problem
+			return null;
 		}
 	},
 	watch: {
