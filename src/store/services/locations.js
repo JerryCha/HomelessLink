@@ -177,6 +177,28 @@ const actions = {
 			})
 			.catch(e => { window.console.error(e) })
 	},
+	// Temp function for debugging
+	getAllLocations (context) {
+		return axios.get(API.LOCATION.SEARCH_LOCATIONS())
+			.then(res => {
+				var results = res.data
+				var types = []	// Initialize an empty list to store the type id
+				//	Process the id field.
+				results.forEach(r => {
+					var temp = r.type.split('/')
+					var id = Number(temp[temp.length - 2])
+					if (!types.includes(id)) {
+						types.push(id)
+					}
+				})
+				// window.console.log(`resultsType: ${types}`)
+				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
+				context.commit('setFetchedLocations', results)
+				context.commit('setResultsList', results)
+				context.commit('setResultsCount')
+				context.commit('setResultsType', types)
+			})
+	},
 	// TODO: Offload type fetching from View.
 	fetchAllTypes (context) {
 		// Get location type from backend

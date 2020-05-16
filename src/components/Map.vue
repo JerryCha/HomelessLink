@@ -101,7 +101,6 @@ export default {
 					})
 				}
 				this.updateBoxBound()
-
 			})
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
@@ -113,8 +112,6 @@ export default {
 			this.map.on('zoomstart', () => {
 				this.prevZoomLevel = this.map.getZoom()
 			})
-			// Mounting the map instance to the component variable.
-
 		},
 		zoomTo (newZoomLevel) {
 			this.map.zoomTo(newZoomLevel, {
@@ -167,8 +164,9 @@ export default {
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
 			this.$store.dispatch('locations/updateBoxBound', newBound)
-			this.$store.dispatch('locations/getLocations',newBound)
-			this.setPoiOnMap()
+			// this.$store.dispatch('locations/getLocations',newBound)
+			// this.$store.dispatch('locations/getAllLocations')
+			// this.setPoiOnMap()
 		},
 		removeMarker: function (name) {
 			return new Promise((resolve, reject) => {
@@ -253,6 +251,7 @@ export default {
 		this.initMapBox()
 		// update center location after mounted
 		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
+		this.$store.dispatch('locations/getAllLocations')
 	}
 }
 </script>

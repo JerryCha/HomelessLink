@@ -22,7 +22,7 @@ export default {
 	},
 	computed: {
 		detailLink: function () {
-			return '/itr1/detail/' + String(this.locId)
+			return this.$route.params['problem'] + '/detail/' + String(this.locId)
 		}
 	},
 	methods: {
