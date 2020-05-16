@@ -31,20 +31,15 @@ export default {
     MapListSection,
     PlaceHolder
   },
-	data () {
-		return {
-			bg: bnbg
-		}
-	},
   mounted() {
-    console.log(this.$store.state.pageData.categories);
+    // console.log(this.$store.state.pageData.categories);
   },
   computed: {
-    // bg() {
-    //
-    // }
+    bg() {
+      return this.$store.state.pageData.banner_image;
+    },
 		navbar () {
-			return this.$store.state.locations.navbar
+			return this.$store.state.locations.navbar;
 		},
 		topic () {
         return this.$store.state.pageData.name;

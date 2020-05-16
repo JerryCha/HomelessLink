@@ -1,5 +1,5 @@
 <template>
-  <div id="banner">
+  <div id="banner" v-bind:style="{ backgroundImage: 'url(' + bgImg + ')' }">
 		<h1>{{ title }}</h1>
 		<h2>{{ subtitle }}</h2>
 		<!-- <b-img :src="bgImg"></b-img> -->
@@ -44,7 +44,7 @@ export default {
 	width: 100%;
 	/* style */
 	color: white;
-	background-image: url('../assets/ef_2_srgb.jpg');
+	/* background-image: url('../assets/ef_2_srgb.jpg'); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	box-sizing: border-box;
