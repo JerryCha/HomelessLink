@@ -30,6 +30,7 @@ const routes = [
 	{
 		path: '/itr2/:problem',
 		name: 'problem-home',
+		props: true,
 		component: () => import('./views/ProblemHome.vue')
 	},
 	{
