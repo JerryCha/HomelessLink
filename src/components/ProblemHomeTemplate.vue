@@ -7,8 +7,7 @@
           <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bg"/>
         </b-row>
         <b-row align-h="center" align-v="center">
-          <b-col>
-            <div v-html="$store.state.pageData.description"/>
+          <b-col v-html="$store.state.pageData.description">
           </b-col>
         </b-row>
       </b-tab>
