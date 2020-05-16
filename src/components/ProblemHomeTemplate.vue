@@ -1,14 +1,22 @@
 <template>
   <b-container id="head-content">
-    <b-row class="mb-4">
-      <SubhomeBanner :title="topic" :bgImg="bg"/>
-    </b-row>
-    <b-row align-h="center" align-v="center">
-      <b-col>
-        <PlaceHolder v-html="$store.state.pageData.description"/>
-      </b-col>
-    </b-row>
-    <MapListSection />
+    <div>
+      <b-tabs content-class="mt-10 px-2">
+        <b-tab title="Resource List" active>
+          <b-row class="mb-4">
+          <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bg"/>
+        </b-row>
+        <b-row align-h="center" align-v="center">
+          <b-col>
+            <div v-html="$store.state.pageData.description"/>
+          </b-col>
+        </b-row>
+      </b-tab>
+        <b-tab title="Map">
+          <MapListSection />
+        </b-tab>
+      </b-tabs>
+    </div>
   </b-container>
 </template>
 
@@ -29,7 +37,13 @@ export default {
 			bg: bnbg
 		}
 	},
+  mounted() {
+    console.log(this.$store.state.pageData.categories);
+  },
   computed: {
+    // bg() {
+    //
+    // }
 		navbar () {
 			return this.$store.state.locations.navbar
 		},

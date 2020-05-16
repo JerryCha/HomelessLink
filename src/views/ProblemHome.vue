@@ -42,7 +42,7 @@ export default {
 	},
 	computed: {
 		navbar () {
-			return this.$store.state.locations.navbar
+			return this.$store.state.locations.navbar;
 		},
 		topic () {
       this.updateapiData();
