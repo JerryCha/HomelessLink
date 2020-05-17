@@ -6,9 +6,9 @@
 								variant="secondary">
 				<b-icon-cursor></b-icon-cursor>
 			</b-button>
-			<b-button
+			<!-- <b-button
 					@click="onSubmit"
-					variant="primary"><b-icon-search></b-icon-search></b-button>
+					variant="primary"><b-icon-search></b-icon-search></b-button> -->
 		</b-button-group>
 	</div>
 </template>

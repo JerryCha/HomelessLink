@@ -22,8 +22,8 @@
                   <div class="flex-wrap flex-center-align">
                     <!-- <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_helphls_button.png')" width="64px">
-                      <p>Help Homeless</p>
-                    </button> -->
+                      <p>Help Homeless</p> -->
+                    <!-- </button> -->
                     <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_seekhelp_button.png')" width="64px">
                       <p>Seek Help</p>
@@ -58,7 +58,7 @@
           </b-container>
         </div>
       </swiper-slide> -->
-      <!-- Seek Help slide -->
+      <!-- Seek of Help slide -->
       <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="seek-help-section">
           <b-container fluid>
@@ -128,7 +128,8 @@ export default {
 				slidesPerView: 1,
 				spaceBetween: 0,
 				overflow: 'auto',
-				sliderDrag: false
+				sliderDrag: false,
+				simulateTouch: false
 			},
 			pageSize: {
 				width: 1024,
@@ -166,7 +167,7 @@ export default {
 		toggleNavbarStyle: function () {
 			var navbar = this.navbar
 			var realIndex = this.swiper.realIndex
-			if (realIndex === 0 || realIndex === 3) {
+			if (realIndex === 0 || realIndex === 2) {
 				// Change navbar to orange
 				navbar.setToOrangeMode()
 			} else {
@@ -180,7 +181,7 @@ export default {
 			return containerWidth
 		},
 		gotoSlide: function (n) {
-			if (n < 0 || n > 3) {
+			if (n < 0 || n > 2) {
 				window.console.error('index cannot smaller than 0 or greater than 3')
 			}
 			this.swiper.slideTo(n)
