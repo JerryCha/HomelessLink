@@ -18,7 +18,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item :to="'/'">Home</b-nav-item>
           <!-- <b-nav-item :to="'/'">Help Homeless</b-nav-item> -->
-          <b-nav-item-dropdown text="Seek of Help">
+          <b-nav-item-dropdown text="Seek Help">
             <b-dropdown-item :to="'/itr2/1'">Essential Services</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/2'">Elder Care</b-dropdown-item>
             <b-dropdown-item :to="'/itr2/3'">Get healthy</b-dropdown-item>

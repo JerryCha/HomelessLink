@@ -20,17 +20,17 @@
                     Anyone who is experiencing homeless can search these location surround themselves.
                   </p>
                   <div class="flex-wrap flex-center-align">
-                    <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
+                    <!-- <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_helphls_button.png')" width="64px">
                       <p>Help Homeless</p>
+                    </button> -->
+                    <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
+                      <img :src="require('@/assets/top_seekhelp_button.png')" width="64px">
+                      <p>Seek Help</p>
                     </button>
                     <button @click="gotoSlide(2)" class="flex-wrap-item icon-button">
-                      <img :src="require('@/assets/top_seekhelp_button.png')" width="64px">
-                      <p>Seek of Help</p>
-                    </button>
-                    <button @click="gotoSlide(3)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_contact_button.png')" width="64px">
-                      <p>Contact us</p>
+                      <p>About us</p>
                     </button>
                   </div>
                 </b-col>
@@ -40,7 +40,7 @@
         </div>
       </swiper-slide>
       <!-- Help Homeless slide -->
-      <swiper-slide>
+      <!-- <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="help-homeless-section">
           <b-container>
             <b-row align-h="center">
@@ -57,24 +57,24 @@
             </b-row>
           </b-container>
         </div>
-      </swiper-slide>
-      <!-- Seek of Help slide -->
+      </swiper-slide> -->
+      <!-- Seek Help slide -->
       <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="seek-help-section">
           <b-container fluid>
             <b-row align-h="center">
-              <h1>Seek of Help</h1>
+              <h1>Seek Help</h1>
             </b-row>
             <b-row align-h="center">
               <p>Select the options below that you need help with</p>
             </b-row>
             <b-row align-h="center">
               <div class="flex-wrap" style="justify-content:center;" id="tiles-container">
-                <TopicTile class="mx-3 my-1" :slug="'essential'" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'eldercare'" :title="'Elder Care'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'healthy'" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'addiction'" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'community'" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'1'" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'2'" :title="'Elder Care'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'3'" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'4'" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'5'" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
               </div>
             </b-row>
           </b-container>
@@ -84,10 +84,17 @@
       <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="contact-section">
           <b-container>
-            <h1>CONTACT US</h1>
-            <p>Our websites is dedicated to providing services for homeless people and relief
-              organizations. If you have any questions, we don't have the communication channel for the public.
-            </p>
+            <h1>About Us</h1>
+            <p>
+              MatesHelp is a website that presents users with a map of services
+              near their current location, including relief centres and other organizations.
+               Many target audiences who are experiencing homelessness can get help
+                by searching for information about a nearby relief centre, libraries
+                 and other different types of organizations.
+               </p><p>
+                 Made By: Propetics B9
+               </p>
+
           </b-container>
         </div>
       </swiper-slide>
