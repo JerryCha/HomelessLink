@@ -29,12 +29,12 @@ const routes = [
 		]
 	},
 	{
-		path: '/itr2',
+		path: '/seek-help',
 		name: 'homepage',
 		component: Homepage
 	},
 	{
-		path: '/itr2/:problem',
+		path: '/seek-help/:problem',
 		name: 'problem-home',
 		props: true,
 		component: () => import('./views/ProblemHome.vue'),
