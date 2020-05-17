@@ -20,15 +20,15 @@
                     Anyone who is experiencing homeless can search these location surround themselves.
                   </p>
                   <div class="flex-wrap flex-center-align">
-                    <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
+                    <!-- <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_helphls_button.png')" width="64px">
-                      <p>Help Homeless</p>
-                    </button>
-                    <button @click="gotoSlide(2)" class="flex-wrap-item icon-button">
+                      <p>Help Homeless</p> -->
+                    <!-- </button> -->
+                    <button @click="gotoSlide(1)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_seekhelp_button.png')" width="64px">
                       <p>Seek of Help</p>
                     </button>
-                    <button @click="gotoSlide(3)" class="flex-wrap-item icon-button">
+                    <button @click="gotoSlide(2)" class="flex-wrap-item icon-button">
                       <img :src="require('@/assets/top_contact_button.png')" width="64px">
                       <p>Contact us</p>
                     </button>
@@ -40,7 +40,7 @@
         </div>
       </swiper-slide>
       <!-- Help Homeless slide -->
-      <swiper-slide>
+      <!-- <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="help-homeless-section">
           <b-container>
             <b-row align-h="center">
@@ -57,7 +57,7 @@
             </b-row>
           </b-container>
         </div>
-      </swiper-slide>
+      </swiper-slide> -->
       <!-- Seek of Help slide -->
       <swiper-slide>
         <div class="slide-wrap flex-wrap flex-center-align" id="seek-help-section">
@@ -121,7 +121,8 @@ export default {
 				slidesPerView: 1,
 				spaceBetween: 0,
 				overflow: 'auto',
-				sliderDrag: false
+				sliderDrag: false,
+				simulateTouch: false
 			},
 			pageSize: {
 				width: 1024,
@@ -159,7 +160,7 @@ export default {
 		toggleNavbarStyle: function () {
 			var navbar = this.navbar
 			var realIndex = this.swiper.realIndex
-			if (realIndex === 0 || realIndex === 3) {
+			if (realIndex === 0 || realIndex === 2) {
 				// Change navbar to orange
 				navbar.setToOrangeMode()
 			} else {
@@ -173,7 +174,7 @@ export default {
 			return containerWidth
 		},
 		gotoSlide: function (n) {
-			if (n < 0 || n > 3) {
+			if (n < 0 || n > 2) {
 				window.console.error('index cannot smaller than 0 or greater than 3')
 			}
 			this.swiper.slideTo(n)

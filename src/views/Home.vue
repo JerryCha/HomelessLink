@@ -58,8 +58,6 @@
 	}
 }
 @media screen and ( min-width: 576px ) {
-	#view-container {
-	}
 	#mapbox {
 		height: 100%;
 		width: calc(100% - 360px);
