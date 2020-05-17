@@ -18,12 +18,12 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item :to="'/'">Home</b-nav-item>
           <!-- <b-nav-item :to="'/'">Help Homeless</b-nav-item> -->
-          <b-nav-item-dropdown text="Seek of Help">
-            <b-dropdown-item :to="'/itr2/1'">Essential Services</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/2'">Elder Care</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/3'">Get healthy</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/4'">Help from addiction</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/5'">Community Services</b-dropdown-item>
+          <b-nav-item-dropdown text="Seek Help">
+            <b-dropdown-item :to="'/seek-help/essential'">Essential Services</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/eldercare'">Elder Care</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/healthy'">Get healthy</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/addiction'">Help from addiction</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/community'">Community Services</b-dropdown-item>
           </b-nav-item-dropdown>
           <!-- <b-nav-item :to="'/'">Contact us</b-nav-item> -->
         </b-navbar-nav>

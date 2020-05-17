@@ -143,7 +143,7 @@ const actions = {
 	setAllTypes (context, types) {
 		var tempArray = []
 		var valueArray = []
-		axios.get('/api/types/')
+		axios.get(API.TYPES.TYPE_API())
 			.then((response) => {
 				for (var key in response.data) {
 					var option = response.data[key]
@@ -239,7 +239,7 @@ const actions = {
 	// TODO: Offload type fetching from View.
 	fetchAllTypes (context) {
 		// Get location type from backend
-		axios.get('/api/types/').then((response) => {
+		axios.get(API.TYPES.TYPE_API()).then((response) => {
 			var tempArray = []
 			var valueArray = []
 			for (var key in response.data) {

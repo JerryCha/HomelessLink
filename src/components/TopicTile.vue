@@ -94,7 +94,7 @@ export default {
 			this.pointerEnter = false
 		},
 		clickHandler: function () {
-			this.$router.push('/itr2/' + this.slug)
+			this.$router.push('/seek-help/' + this.slug)
 		}
 	}
 }
