@@ -128,7 +128,37 @@ const actions = {
 	setNavbar (context, navbar) {
 		context.commit('setNavbar', navbar)
 	},
+	setFetchedLocations (context, locations) {
+		context.commit('setFetchedLocations', locations)
+		context.commit('setResultsList', locations)
+		context.commit('setResultsCount')
+	},
+	setAllTypes (context, types) {
+		var tempArray = []
+		var valueArray = []
+		axios.get('/api/types/')
+			.then((response) => {
+				for (var key in response.data) {
+					var option = response.data[key]
+					if (types.includes(option.id)) {
+						var filter = {
+							value: option.id, text: option.name
+						}
+						tempArray.push(filter)
+						valueArray.push(filter.value)
+					}
+				}
+				context.commit('setAllTypes', tempArray)
+			})
+	},
+	setResultsType (context, types) {
+		context.commit('setResultsType', types)
+	},
+	setFilterTypes (context, types) {
+		context.commit('setFilterTypes', types)
+	},
 	/**
+	 * TODO: Deprecate
 	 * Fetching locations as per query conditions.
 	 * @param {*} context context
 	 */

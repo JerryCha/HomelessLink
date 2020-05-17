@@ -45,7 +45,6 @@
 
 <script>
 import PoiCard from '@/components/PoiCard.vue'
-import axios from 'axios'
 import TypeFilter from '@/components/TypeSelectPanel.vue'
 
 export default {
@@ -80,29 +79,15 @@ export default {
 			// TODO: Validation & Verification
 			var temp = rawId.split('/')
 			var id = Number(temp[temp.length - 2])
-			return this.$store.state.locations.allTypes.filter(t => t.value === id)[0]
+			return this.allTypes.filter(t => t.value === id)[0]
 		}
 	},
 	mounted () {
-		this.$store.dispatch('locations/fetchAllTypes')
-		var fetchedTypes = this.$store.state.locations.allTypes
+		// this.$store.dispatch('locations/fetchAllTypes')
+		// var fetchedTypes = this.$store.state.locations.allTypes
+		var fetchedTypes = this.allTypes
 		window.console.debug((`SearchList.mounted(): ${JSON.stringify(fetchedTypes)}`))
 		this.filterOptionsList = this.$store.filterTypes
-		// Get location type from backend
-		// axios.get('/api/types/').then((response) => {
-		// 	var tempArray = []
-		// 	var valueArray = []
-		// 	for (var key in response.data) {
-		// 		var option = response.data[key]
-		// 		var filter = {
-		// 			value: option.id, text: option.name
-		// 		}
-		// 		tempArray.push(filter)
-		// 		valueArray.push(filter.value)
-		// 	}
-		// 	this.$store.dispatch('locations/setFilterTypes', valueArray)
-		// 	this.filterOptionsList = tempArray
-		// })
 	},
 	watch: {
 		onHoverLocationId (newVal, oldVal) {
@@ -120,6 +105,9 @@ export default {
 		},
 		onHoverLocationId: function () {
 			return this.$store.state.locations.onHoverLocationId
+		},
+		allTypes: function () {
+			return this.$store.state.locations.allTypes
 		}
 	}
 }

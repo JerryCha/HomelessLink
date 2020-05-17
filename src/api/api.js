@@ -7,7 +7,7 @@ const LOCATION = {
 }
 
 const PAGE = {
-	'PAGE_API' : () => HOST + '/api/pages/'
+	'PAGE_API': () => HOST + '/api/pages/'
 }
 
 export default {

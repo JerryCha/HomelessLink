@@ -1,5 +1,7 @@
 <template>
-  <div id="map-container">
+	<div>
+		<div id="map-container">
+		</div>
 	</div>
 </template>
 
@@ -83,7 +85,8 @@ export default {
 		initMapBox: function () {
 			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const map = new MapBox.Map({
-				container: 'mapbox',
+				container: 'map-container',
+				trackResize: true,
 				style: 'mapbox://styles/jerrycha/ck9i9jbdg02sq1io1c01t4f73',
 				center: this.initCenter,
 				zoom: 13,
@@ -119,6 +122,7 @@ export default {
 			})
 		},
 		resizeMap: function () {
+			window.console.log('resizing map')
 			this.map.resize()
 		},
 		flyToCenter: function (destCoord) {
@@ -251,12 +255,15 @@ export default {
 		this.initMapBox()
 		// update center location after mounted
 		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
-		this.$store.dispatch('locations/getAllLocations')
+		// this.$store.dispatch('locations/getAllLocations')
+	},
+	destroyed () {
+		window.console.log('map destroyed')
 	}
 }
 </script>
 
-<style>
+<style scoped>
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
 
 #map-container {
