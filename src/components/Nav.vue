@@ -19,11 +19,11 @@
           <b-nav-item :to="'/'">Home</b-nav-item>
           <!-- <b-nav-item :to="'/'">Help Homeless</b-nav-item> -->
           <b-nav-item-dropdown text="Seek Help">
-            <b-dropdown-item :to="'/seek-help/1'">Essential Services</b-dropdown-item>
-            <b-dropdown-item :to="'/seek-help/2'">Elder Care</b-dropdown-item>
-            <b-dropdown-item :to="'/seek-help/3'">Get healthy</b-dropdown-item>
-            <b-dropdown-item :to="'/seek-help/4'">Help from addiction</b-dropdown-item>
-            <b-dropdown-item :to="'/seek-help/5'">Community Services</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/essential'">Essential Services</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/eldercare'">Elder Care</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/healthy'">Get healthy</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/addiction'">Help from addiction</b-dropdown-item>
+            <b-dropdown-item :to="'/seek-help/community'">Community Services</b-dropdown-item>
           </b-nav-item-dropdown>
           <!-- <b-nav-item :to="'/'">Contact us</b-nav-item> -->
         </b-navbar-nav>

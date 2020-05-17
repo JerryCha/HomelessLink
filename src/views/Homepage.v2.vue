@@ -70,11 +70,11 @@
             </b-row>
             <b-row align-h="center">
               <div class="flex-wrap" style="justify-content:center;" id="tiles-container">
-                <TopicTile class="mx-3 my-1" :slug="'1'" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'2'" :title="'Elder Care'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'3'" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'4'" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
-                <TopicTile class="mx-3 my-1" :slug="'5'" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'essential'" :title="'Essential Services'" :iconImage="'seekhelp_essential_icon'" :tileBackground="'seekhelp_essential_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'eldercare'" :title="'Elder Care'" :iconImage="'seekhelp_feet_icon'" :tileBackground="'seekhelp_feet_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'healthy'" :title="'Get Healthy'" :iconImage="'seekhelp_health_icon'" :tileBackground="'seekhelp_health_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'addiction'" :title="'Help from Addiction'" :iconImage="'seekhelp_addiction_icon'" :tileBackground="'seekhelp_addiction_bg'"/>
+                <TopicTile class="mx-3 my-1" :slug="'community'" :title="'Comminity Services'" :iconImage="'seekhelp_community_icon'" :tileBackground="'seekhelp_community_bg'"/>
               </div>
             </b-row>
           </b-container>
