@@ -1,4 +1,5 @@
-const HOST = 'https://mateshelp.herokuapp.com'
+const HOST = 'https://mateshelp.tech'
+// const HOST = 'localhost:8000'
 
 const LOCATION = {
 	'GET_LOCATION': (id) => HOST + '/api/locations/' + id,
@@ -6,8 +7,7 @@ const LOCATION = {
 }
 
 const PAGE = {
-	'GET_PAGE_LIST': () => HOST + '/api/pages',
-	'GET_PAGE': (id) => HOST + '/api/pages/' + id
+	'PAGE_API': () => HOST + '/api/pages/'
 }
 
 export default {

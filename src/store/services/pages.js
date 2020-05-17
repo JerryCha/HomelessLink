@@ -1,6 +1,7 @@
 const state = {
 	pageList: [],
-	navPageList: []
+	navPageList: [],
+	pageData: null
 }
 
 const mutations = {
@@ -9,10 +10,16 @@ const mutations = {
 	},
 	setNavPageList (state, pageList) {
 		state.navPageList = pageList
+	},
+	addPageData (state, data) {
+		state.pageData = data
 	}
 }
 
 const getters = {
+	pageValues: (state) => {
+		return state.pageData
+	}
 }
 
 const actions = {
@@ -21,6 +28,9 @@ const actions = {
 	},
 	setNavPageList (context, navPageList) {
 		context.commit('setNavPageList', navPageList)
+	},
+	addPageData (context, pageData) {
+		context.commit('addPageData', pageData)
 	}
 }
 

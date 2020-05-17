@@ -128,7 +128,37 @@ const actions = {
 	setNavbar (context, navbar) {
 		context.commit('setNavbar', navbar)
 	},
+	setFetchedLocations (context, locations) {
+		context.commit('setFetchedLocations', locations)
+		context.commit('setResultsList', locations)
+		context.commit('setResultsCount')
+	},
+	setAllTypes (context, types) {
+		var tempArray = []
+		var valueArray = []
+		axios.get('/api/types/')
+			.then((response) => {
+				for (var key in response.data) {
+					var option = response.data[key]
+					if (types.includes(option.id)) {
+						var filter = {
+							value: option.id, text: option.name
+						}
+						tempArray.push(filter)
+						valueArray.push(filter.value)
+					}
+				}
+				context.commit('setAllTypes', tempArray)
+			})
+	},
+	setResultsType (context, types) {
+		context.commit('setResultsType', types)
+	},
+	setFilterTypes (context, types) {
+		context.commit('setFilterTypes', types)
+	},
 	/**
+	 * TODO: Deprecate
 	 * Fetching locations as per query conditions.
 	 * @param {*} context context
 	 */
@@ -177,6 +207,28 @@ const actions = {
 			})
 			.catch(e => { window.console.error(e) })
 	},
+	// Temp function for debugging
+	getAllLocations (context) {
+		return axios.get(API.LOCATION.SEARCH_LOCATIONS())
+			.then(res => {
+				var results = res.data
+				var types = []	// Initialize an empty list to store the type id
+				//	Process the id field.
+				results.forEach(r => {
+					var temp = r.type.split('/')
+					var id = Number(temp[temp.length - 2])
+					if (!types.includes(id)) {
+						types.push(id)
+					}
+				})
+				// window.console.log(`resultsType: ${types}`)
+				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
+				context.commit('setFetchedLocations', results)
+				context.commit('setResultsList', results)
+				context.commit('setResultsCount')
+				context.commit('setResultsType', types)
+			})
+	},
 	// TODO: Offload type fetching from View.
 	fetchAllTypes (context) {
 		// Get location type from backend
@@ -195,12 +247,12 @@ const actions = {
 			context.commit('setAllTypes', tempArray)
 		})
 	},
-	setFilterTypes (context, types) {
-		return new Promise((resolve, reject) => {
-			context.commit('setFilterTypes', types)
-			resolve()
-		})
-	},
+	// setFilterTypes (context, types) {
+	// 	return new Promise((resolve, reject) => {
+	// 		context.commit('setFilterTypes', types)
+	// 		resolve()
+	// 	})
+	// },
 	/**
 	 * Filtering display results by updating resultsList.
 	 * @param {*} context context

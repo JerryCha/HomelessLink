@@ -6,6 +6,7 @@
 				:jump="false"
 				@on-locate-pressed="handleOnLocatePressed"
         @on-submit-fired="handleOnSubmit"
+				@map-activated="updateMapSize"
 			/>
 			<router-view id="subview" />
     </div>
@@ -28,35 +29,43 @@
 	padding-bottom: 1rem;
 	/* overflow-y: scroll; */
 }
+#view-container {
+	display: flex;
+	height: inherit;
+	width: inherit;
+}
+#mapbox {
+	height: 85vh;
+	box-sizing: border-box;
+	width: calc(100% - 360px);
+}
+#side-panel {
+	height: 85vh;
+	width: 360px;
+	box-sizing: border-box;
+}
 @media screen and ( max-width: 575px ) {
 	#view-container {
-		display: flex;
 		flex-direction: column;
-		margin-left: 1rem;
-		margin-right: 2rem;
 	}
 	#mapbox {
-		height: 30vh;
+		height: 30%;
 		width: 100%;
 	}
 	#side-panel {
-		height: 60vh;
+		height: 70%;
 		width: 100%;
 	}
 }
 @media screen and ( min-width: 576px ) {
 	#view-container {
-		display: flex;
-		/* flex-wrap: wrap; */
-		margin-left: 1rem;
-		margin-right: 2rem;
 	}
 	#mapbox {
-		height: 85vh;
+		height: 100%;
 		width: calc(100% - 360px);
 	}
 	#side-panel {
-		height: 85vh;
+		height: 100%;
 		width: 360px;
 	}
 }
@@ -87,12 +96,13 @@ export default {
 		// Accepting onSubmit emitted from SearchForm, informing map to update the center coordinate.
 		handleOnSubmit: function () {
 			this.$refs.mapbox.updateCenterCoord()
+		},
+		updateMapSize: function () {
+			this.$refs.mapbox.resizeMap()
 		}
 	},
 	mounted () {
-		window.onresize = () => {
-			// this.$refs.mapbox.resizeMap()
-		}
+		this.updateMapSize()
 	}
 }
 </script>

@@ -6,7 +6,8 @@
 				<p>{{ poi.desc === null ? '': poi.desc }}</p>
 				<p>Suburb: {{ poi.suburb }}</p>
 				<p>Address: {{ address }}</p>
-				<div :class="poi.openingDays === null || poi.openingDays.length === 0 ? 'invisible':''">
+				<!-- <div :class="poi.openingDays === null || poi.openingDays.length === 0 ? 'invisible':''"> -->
+				<div :class="poi.openingDays === null ? 'invisible':''">
 				<p>Trading hours</p>
 					<ul>
 						<li v-for="(day, idx) in poi.openingDays " :key="idx">{{day.day}}: {{day.hours}}</li>

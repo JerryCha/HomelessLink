@@ -17,18 +17,15 @@
       <b-collapse ref="toggle-nav" id="nav-menu-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item :to="'/'">Home</b-nav-item>
-          <b-nav-item :to="'/'">Help Homeless</b-nav-item>
+          <!-- <b-nav-item :to="'/'">Help Homeless</b-nav-item> -->
           <b-nav-item-dropdown text="Seek of Help">
-            <!-- <b-dropdown-item :to="'/itr2/essential'">Essential Services</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/on-your-feet'">Get on your feet</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/healthy'">Get healthy</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/addiction'">Help from addiction</b-dropdown-item>
-            <b-dropdown-item :to="'/itr2/community'">Community Services</b-dropdown-item> -->
-						<b-dropdown-item v-for="item in seekOfHelp"
-										:key="item.id"
-										:to="'/itr2/' + item.urlName">{{ item.displayName }}</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/1'">Essential Services</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/2'">Elder Care</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/3'">Get healthy</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/4'">Help from addiction</b-dropdown-item>
+            <b-dropdown-item :to="'/itr2/5'">Community Services</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item :to="'/'">Contact us</b-nav-item>
+          <!-- <b-nav-item :to="'/'">Contact us</b-nav-item> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -57,7 +54,7 @@ export default {
 		}
 	},
 	created () {
-		axios.get(API.PAGE.GET_PAGE_LIST())
+		axios.get(API.PAGE.PAGE_API())
 			.then(res => {
 				this.$store.dispatch('pages/setPageList', res.data)
 				this.seekOfHelp = res.data.map(e => {
@@ -127,7 +124,7 @@ export default {
 }
 .mateshelp-light {
   background-color: rgba(255,255,255,1);
-  box-shadow: 0px 8px 16px 0px rgba(180, 180, 180, 0.5);
+  box-shadow: 0px 8px 8px 0px rgba(192, 192, 192, 0.5);
 }
 .mateshelp-orange {
   background-color: rgba(243,121,30,1);

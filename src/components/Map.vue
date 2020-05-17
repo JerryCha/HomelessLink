@@ -1,5 +1,7 @@
 <template>
-  <div id="map-container">
+	<div>
+		<div id="map-container">
+		</div>
 	</div>
 </template>
 
@@ -83,7 +85,8 @@ export default {
 		initMapBox: function () {
 			MapBox.accessToken = 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
 			const map = new MapBox.Map({
-				container: 'mapbox',
+				container: 'map-container',
+				trackResize: true,
 				style: 'mapbox://styles/jerrycha/ck9i9jbdg02sq1io1c01t4f73',
 				center: this.initCenter,
 				zoom: 13,
@@ -101,7 +104,6 @@ export default {
 					})
 				}
 				this.updateBoxBound()
-
 			})
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
@@ -113,8 +115,6 @@ export default {
 			this.map.on('zoomstart', () => {
 				this.prevZoomLevel = this.map.getZoom()
 			})
-			// Mounting the map instance to the component variable.
-
 		},
 		zoomTo (newZoomLevel) {
 			this.map.zoomTo(newZoomLevel, {
@@ -122,6 +122,7 @@ export default {
 			})
 		},
 		resizeMap: function () {
+			window.console.log('resizing map')
 			this.map.resize()
 		},
 		flyToCenter: function (destCoord) {
@@ -167,8 +168,9 @@ export default {
 				'sw': this.map.getBounds().getSouthWest().toArray()
 			}
 			this.$store.dispatch('locations/updateBoxBound', newBound)
-			this.$store.dispatch('locations/getLocations',newBound)
-			this.setPoiOnMap()
+			// this.$store.dispatch('locations/getLocations',newBound)
+			// this.$store.dispatch('locations/getAllLocations')
+			// this.setPoiOnMap()
 		},
 		removeMarker: function (name) {
 			return new Promise((resolve, reject) => {
@@ -233,7 +235,7 @@ export default {
 						var coordinate = e.features[0].geometry.coordinates.slice()
 						var description = e.features[0].properties.description
 						var id = String(e.features[0].properties.id)
-						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
+						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr2/${this.$store.state.pages.pageData.id}/detail/${id}'>Detail</a>`).addTo(this.map)
 					});
 					// Change the cursor to a pointer when the mouse is over the place layer.
 					this.map.on('mouseenter', 'poiLocations', (e) => {
@@ -253,11 +255,15 @@ export default {
 		this.initMapBox()
 		// update center location after mounted
 		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
+		// this.$store.dispatch('locations/getAllLocations')
+	},
+	destroyed () {
+		window.console.log('map destroyed')
 	}
 }
 </script>
 
-<style>
+<style scoped>
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
 
 #map-container {

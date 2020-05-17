@@ -36,7 +36,19 @@ const routes = [
 	{
 		path: '/itr2/:problem',
 		name: 'problem-home',
-		component: () => import('./views/ProblemHome.vue')
+		props: true,
+		component: () => import('./views/ProblemHome.vue'),
+		children: [
+			{
+				path: '',
+				component: SearchList
+			},
+			{
+				path: 'detail/:id',
+				component: Detail,
+				props: true
+			}
+		]
 	},
 	{
 		path: '/about',
