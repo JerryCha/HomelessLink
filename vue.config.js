@@ -19,9 +19,5 @@ module.exports = {
 			ignored: '/app/node_modules/'
 		}
 	},
-	css: {
-		loaderOptions: {
-
-		}
-	}
+	assetsDir: 'static'
 }

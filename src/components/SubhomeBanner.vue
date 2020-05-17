@@ -44,7 +44,6 @@ export default {
 	width: 100%;
 	/* style */
 	color: white;
-	/* background-image: url('../assets/ef_2_srgb.jpg'); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	box-sizing: border-box;
