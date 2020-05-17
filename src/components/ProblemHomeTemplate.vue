@@ -53,10 +53,7 @@ export default {
 	},
 	watch: {
 		tabIndex (newVal, oldVal) {
-			if (newVal === 1) {
-				// window.console.log(this)
-				this.$emit('on-map-activated')
-			}
+			this.$store.dispatch('pages/setCurrentTab', this.tabIndex)
 		}
 	}
 }

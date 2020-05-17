@@ -45,6 +45,9 @@ export default {
 		// Number of points of interests
 		poiLocationsCount () {
 			return this.$store.state.locations.resultsCount
+		},
+		isVisible () {
+			return this.$store.state.pages.currentTab === 1
 		}
 	},
 	watch: {
@@ -62,14 +65,6 @@ export default {
 		poiLocation (newState, oldState) {
 			if (newState === null) {
 				this.zoomTo(this.prevZoomLevel)
-			} else {
-				// var coordinate = newState.location
-				// 	.substring(newState.location.indexOf('(') + 1, newState.location.indexOf(')'))
-				// 	.split(' ')
-				// 	.map(p => Number(p))
-				// var description = newState.name
-				// var popup = new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p>`).addTo(this.map)
-				// this.$store.dispatch('locations/addPopup', popup)
 			}
 		},
 		// Count of POI change watcher. Once updated, remove the marker and set the new ones
@@ -77,6 +72,11 @@ export default {
 			this.removeMarker('poiLocations')
 			if (newState !== 0) {
 				this.setPoiOnMap()
+			}
+		},
+		isVisible (newVal, oldVal) {
+			if (newVal) {
+				this.resizeMap()
 			}
 		}
 	},
@@ -92,7 +92,8 @@ export default {
 				zoom: 13,
 				pitch: 45
 			})
-			this.map = map;
+			this.map = map
+			this.$store.dispatch('locations/setMapRef', map)
 			this.map.on('load', () => {
 				// In case where the center location is null, updating with initial center.
 				if (this.$store.state.locations.centerLocation === null) {
@@ -257,8 +258,8 @@ export default {
 		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
 		// this.$store.dispatch('locations/getAllLocations')
 	},
-	destroyed () {
-		window.console.log('map destroyed')
+	updated () {
+		window.console.log('updated')
 	}
 }
 </script>

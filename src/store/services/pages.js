@@ -1,7 +1,8 @@
 const state = {
 	pageList: [],
 	navPageList: [],
-	pageData: null
+	pageData: null,
+	currentTab: 0
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
 	},
 	addPageData (state, data) {
 		state.pageData = data
+	},
+	setCurrentTab (state, data) {
+		state.currentTab = data
 	}
 }
 
@@ -31,6 +35,9 @@ const actions = {
 	},
 	addPageData (context, pageData) {
 		context.commit('addPageData', pageData)
+	},
+	setCurrentTab (context, data) {
+		context.commit('setCurrentTab', data)
 	}
 }
 

@@ -4,6 +4,7 @@ import queryHelper from '@/util/query'
 
 const state = {
 	navbar: null,
+	mapRef: null,
 	resultsList: [],	// results list for showing
 	resultsType: [], // type of fetched location
 	resultsCount: 0,	// count of showing results list
@@ -32,6 +33,9 @@ const mutations = {
 	 */
 	setNavbar (state, navbar) {
 		state.navbar = navbar
+	},
+	setMapRef (state, mapbox) {
+		state.mapRef = mapbox
 	},
 	/**
 	 * resultsList mutator
@@ -127,6 +131,9 @@ const mutations = {
 const actions = {
 	setNavbar (context, navbar) {
 		context.commit('setNavbar', navbar)
+	},
+	setMapRef (context, mapbox) {
+		context.commit('setMapRef', mapbox)
 	},
 	setFetchedLocations (context, locations) {
 		context.commit('setFetchedLocations', locations)
