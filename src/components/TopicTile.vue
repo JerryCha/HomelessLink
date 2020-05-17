@@ -87,9 +87,6 @@ export default {
 		}
 	},
 	methods: {
-		gotoTopicPage: function () {
-			// TODO: implement go to topic page.
-		},
 		mouseenterHanlder: function () {
 			this.pointerEnter = true
 		},
