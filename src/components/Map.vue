@@ -7,6 +7,8 @@
 
 <script>
 import MapBox from 'mapbox-gl'
+import Directions from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+// import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
 import geobox from '@/util/geobox'
 import locationIcon from '@/assets/location_user.png'
 import poiIcon from '@/assets/location_poi.png'
@@ -106,6 +108,13 @@ export default {
 				}
 				this.updateBoxBound()
 			})
+
+			this.map.addControl(
+				new Directions({
+					accessToken: MapBox.accessToken
+				}),
+				'top-left'
+			);
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
 			// Once the viewing area changed, updating the bounding box.
@@ -266,7 +275,7 @@ export default {
 
 <style scoped>
 @import url(https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css);
-
+@import url(https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css);
 #map-container {
 	height: 100%;
 	width: 100%;

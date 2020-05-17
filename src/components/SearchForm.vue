@@ -15,7 +15,7 @@
 
 <script>
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+// import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import axios from 'axios'
 
 export default {
@@ -91,7 +91,7 @@ export default {
 			const geocoder = new MapboxGeocoder({
 				'accessToken': accessToken,
 				'types': 'locality,postcode',
-				'placeholder': 'Suburb Name/Postcode',
+				'placeholder': '     Suburb Name/Postcode',
 				'language': 'en-AU',	// Set language to Australian English
 				'countries': 'au',	// Restrict region to Australia
 				'bbox': [	// bbox for VIC, [sw, ne]. Retrived from mapbox geocoding
@@ -141,24 +141,31 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
+@import url(https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css);
+
 div {
 	box-sizing: border-box;
 }
 #search-form {
 	display: flex;
 }
+.mapboxgl-ctrl-geocoder--icon{
+	 left: -35px !important;
+}
 #geocoder {
-	width: 100%;
+	    box-shadow: 2px 2px 2px 2px;
+	width: 100% !important;
 }
 .mapboxgl-ctrl-geocoder {
-	min-width: 100%;
-	min-height: 38px;
-	box-shadow: 0 0 0 0;
+	margin: 0px;
+	min-width: 100% !important;
+	min-height: 38px !important;
+	box-shadow: 5px 10px #888888;
 }
 .mapboxgl-ctrl-geocoder--input {
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	min-height: 38px;
+	font-size:15px;
+	margin-left: 20px !important;
 }
+
 </style>
