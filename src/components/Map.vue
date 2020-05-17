@@ -235,7 +235,7 @@ export default {
 						var coordinate = e.features[0].geometry.coordinates.slice()
 						var description = e.features[0].properties.description
 						var id = String(e.features[0].properties.id)
-						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr1/detail/${id}'>Detail</a>`).addTo(this.map)
+						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/itr2/${this.$store.state.pages.pageData.id}/detail/${id}'>Detail</a>`).addTo(this.map)
 					});
 					// Change the cursor to a pointer when the mouse is over the place layer.
 					this.map.on('mouseenter', 'poiLocations', (e) => {

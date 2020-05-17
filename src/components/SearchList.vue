@@ -6,7 +6,7 @@
 			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
 			<!-- Results count -->
 			<div>
-          Found {{this.$store.state.locations.resultsCount}} results
+          <span :class="{'invisible': resultsCount === -1}">Found {{resultsCount}} results</span>
       </div>
 			<!-- Result count -->
 			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
@@ -77,6 +77,7 @@ export default {
 		},
 		getType: function (rawId) {
 			// TODO: Validation & Verification
+			// window.console.log(`raw id: ${rawId}`)
 			var temp = rawId.split('/')
 			var id = Number(temp[temp.length - 2])
 			return this.allTypes.filter(t => t.value === id)[0]
@@ -85,9 +86,8 @@ export default {
 	mounted () {
 		// this.$store.dispatch('locations/fetchAllTypes')
 		// var fetchedTypes = this.$store.state.locations.allTypes
-		var fetchedTypes = this.allTypes
-		window.console.debug((`SearchList.mounted(): ${JSON.stringify(fetchedTypes)}`))
-		this.filterOptionsList = this.$store.filterTypes
+		// var fetchedTypes = this.allTypes
+		this.filterOptionsList = this.allTypes
 	},
 	watch: {
 		onHoverLocationId (newVal, oldVal) {

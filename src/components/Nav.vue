@@ -124,7 +124,7 @@ export default {
 }
 .mateshelp-light {
   background-color: rgba(255,255,255,1);
-  box-shadow: 0px 8px 16px 0px rgba(180, 180, 180, 0.5);
+  box-shadow: 0px 8px 8px 0px rgba(192, 192, 192, 0.5);
 }
 .mateshelp-orange {
   background-color: rgba(243,121,30,1);

@@ -247,12 +247,12 @@ const actions = {
 			context.commit('setAllTypes', tempArray)
 		})
 	},
-	setFilterTypes (context, types) {
-		return new Promise((resolve, reject) => {
-			context.commit('setFilterTypes', types)
-			resolve()
-		})
-	},
+	// setFilterTypes (context, types) {
+	// 	return new Promise((resolve, reject) => {
+	// 		context.commit('setFilterTypes', types)
+	// 		resolve()
+	// 	})
+	// },
 	/**
 	 * Filtering display results by updating resultsList.
 	 * @param {*} context context

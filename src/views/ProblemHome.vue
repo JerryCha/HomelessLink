@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <ProblemHomeTemplate v-if="$store.state.pages.pageData !== null"/>
+  <div id="problem-home-container">
+		<b-overlay id="loading-overlay" :show="loadingStatus === 1">
+			<ProblemHomeTemplate v-if="$store.state.pages.pageData !== null"/>
+		</b-overlay>
   </div>
 </template>
 
@@ -32,10 +34,15 @@ export default {
 			axios.get(API.PAGE.PAGE_API() + this.currentId)
 				.then(function (response) {
 					that.$store.dispatch('pages/addPageData', response.data)
-					that.loadingStatus = 2
 				})
 				.then(() => {
+					this.$store.dispatch('locations/setAllTypes', this.topicCategoryCode)
+					this.$store.dispatch('locations/setResultsType', this.topicCategoryCode)
+					this.$store.dispatch('locations/setFilterTypes', this.topicCategoryCode)
 					this.updateLocationData()
+				})
+				.then(() => {
+					that.loadingStatus = 2
 				})
 				.catch((err) => {
 					that.loadingStatus = 3
@@ -44,12 +51,9 @@ export default {
 			// this.currentID = this.$route.params.problem
 		},
 		updateLocationData () {
-			this.$store.dispatch('locations/setAllTypes', this.topicCategoryCode)
-			this.$store.dispatch('locations/setResultsType', this.topicCategoryCode)
-			this.$store.dispatch('locations/setFilterTypes', this.topicCategoryCode)
+			this.$store.dispatch('locations/setResultsCountToSearching')
 			axios.get(API.LOCATION.SEARCH_LOCATIONS() + '?types=' + this.topicCategoryCode)
 				.then(res => {
-					window.console.log('fetched locations data')
 					this.$store.dispatch('locations/setFetchedLocations', res.data)
 				})
 		}
@@ -82,6 +86,7 @@ export default {
 		loadingStatus (newVal, oldVal) {
 		},
 		currentId (newVal, oldVal) {
+			window.console.log(`id changed: ${oldVal} -> ${newVal}`)
 			this.updateapiData()
 		}
 	}
@@ -97,8 +102,7 @@ export default {
 	align-items: center;
 	background-color: rgba(244,245,246,1);
 }
-#problem-subpage {
+#problem-home-container {
 	padding: 1rem 0.5rem;
-	background-color: rgba(244,245,246,1);
 }
 </style>

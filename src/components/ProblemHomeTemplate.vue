@@ -1,8 +1,8 @@
 <template>
-  <b-container id="head-content">
     <div>
-      <b-tabs content-class="mt-10 px-2" v-model="tabIndex">
+      <b-tabs content-class="my-2" v-model="tabIndex">
         <b-tab title="Resource List" active>
+          <b-container id="head-content">
           <b-row class="mb-4">
             <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bg"/>
           </b-row>
@@ -10,13 +10,15 @@
             <b-col v-html="$store.state.pages.pageData.description">
             </b-col>
           </b-row>
+          </b-container>
         </b-tab>
         <b-tab title="Map">
-          <MapListSection/>
+          <b-container class="no-padding fulfill-vertical-space" fluid>
+            <MapListSection/>
+          </b-container>
         </b-tab>
       </b-tabs>
     </div>
-  </b-container>
 </template>
 
 <script>
@@ -59,3 +61,12 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.no-padding {
+  padding: 0px 0px;
+}
+.fulfill-vertical-space {
+  height: calc(100vh - 98.53px - 42px - 6px);
+}
+</style>

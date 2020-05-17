@@ -2,7 +2,7 @@
   <b-card
     :title="name">
     <b-card-text>
-			<p><strong>{{ type.text }}</strong></p>
+			<p><strong>{{ typeName }}</strong></p>
       <p>Suburb: {{ suburb }}</p>
       <p :class="hasNoLink(website)?'is-invisible':''">Website: <a :href="website" target="_blank">{{ website }}</a></p>
 			<router-link :to="detailLink">Detail</router-link>
@@ -23,6 +23,9 @@ export default {
 	computed: {
 		detailLink: function () {
 			return this.$route.params['problem'] + '/detail/' + String(this.locId)
+		},
+		typeName: function () {
+			return typeof this.type === 'undefined' ? '' : this.type.text
 		}
 	},
 	methods: {
