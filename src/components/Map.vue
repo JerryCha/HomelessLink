@@ -28,7 +28,8 @@ export default {
 	},
 	data () {
 		return {
-			prevZoomLevel: 13
+			prevZoomLevel: 13,
+			directionControlRef: null
 		}
 	},
 	computed: {
@@ -109,14 +110,12 @@ export default {
 				this.updateBoxBound()
 			})
 
-			this.map.addControl(
-				new Directions({
-					accessToken: MapBox.accessToken
-				}),
-				'top-left'
-			);
+			var directionControl = new Directions({ accessToken: MapBox.accessToken })
+			this.map.addControl(directionControl, 'top-left')
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
+			window.console.log(directionControl)
+			this.directionControlRef = directionControl
 			// Once the viewing area changed, updating the bounding box.
 			this.map.on('moveend', () => {
 				this.updateBoxBound()
@@ -132,7 +131,6 @@ export default {
 			})
 		},
 		resizeMap: function () {
-			window.console.log('resizing map')
 			this.map.resize()
 		},
 		flyToCenter: function (destCoord) {
@@ -268,7 +266,6 @@ export default {
 		// this.$store.dispatch('locations/getAllLocations')
 	},
 	updated () {
-		window.console.log('updated')
 	}
 }
 </script>
@@ -279,5 +276,16 @@ export default {
 #map-container {
 	height: 100%;
 	width: 100%;
+}
+#mapboxgl-directions-origin-input,#mapbox-directions-destination-input input {
+	width: auto;
+}
+.mapboxgl-ctrl-top-left {
+	visibility: visible !important;
+}
+@media only screen and (max-width: 575px) {
+	.mapboxgl-ctrl-top-left {
+		visibility: hidden !important;
+	}
 }
 </style>

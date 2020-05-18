@@ -141,7 +141,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @import url(https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css);
 
 div {
@@ -150,22 +150,19 @@ div {
 #search-form {
 	display: flex;
 }
-.mapboxgl-ctrl-geocoder--icon{
-	 left: -35px !important;
-}
 #geocoder {
-	    box-shadow: 2px 2px 2px 2px;
-	width: 100% !important;
+	width: 100%;
 }
-.mapboxgl-ctrl-geocoder {
-	margin: 0px;
-	min-width: 100% !important;
-	min-height: 38px !important;
-	box-shadow: 5px 10px #888888;
+#geocoder .mapboxgl-ctrl-geocoder {
+	min-width: 100%;
+	min-height: 38px;
+	box-shadow: 0px 0px 0px 0px;
+	margin-left: 0px !important;
 }
-.mapboxgl-ctrl-geocoder--input {
-	font-size:15px;
-	margin-left: 20px !important;
+#geocoder .mapboxgl-ctrl-geocoder--input {
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	min-height: 38px;
 }
 
 </style>
