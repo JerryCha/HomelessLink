@@ -2,22 +2,27 @@
   <div id="navbar-wrap" :class="[navbar.themeStyle, 'background-transition']">
     <b-navbar toggleable="lg" :type="navbar.navTextColor">
       <b-navbar-brand :to="'/'">
+				<!-- White Logo -->
         <img v-if="navbar.themeStatus==='transparent'||navbar.themeStatus==='orange'"
               src="@/assets/logo_white@2x.png"
               srcset="@/assets/logo_white@1x.png,
                       @/assets/logo_white@2x.png 2x"
         >
+				<!-- Black logo -->
         <img v-else
               src="@/assets/logo_dark@2x.png"
               srcset="@/assets/logo_dark.png,
                       @/assets/logo_dark@2x.png 2x"
         >
       </b-navbar-brand>
+			<!-- Toggle button -->
       <b-navbar-toggle target="nav-menu-collapse"></b-navbar-toggle>
+			<!-- Navigation -->
       <b-collapse ref="toggle-nav" id="nav-menu-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
+					<!-- Home -->
           <b-nav-item :to="'/'">Home</b-nav-item>
-          <!-- <b-nav-item :to="'/'">Help Homeless</b-nav-item> -->
+					<!-- Seek of help (Containing secondary navigation) -->
           <b-nav-item-dropdown text="Seek Help">
             <b-dropdown-item :to="'/seek-help/essential'">Essential Services</b-dropdown-item>
             <b-dropdown-item :to="'/seek-help/eldercare'">Elder Care</b-dropdown-item>
@@ -25,7 +30,6 @@
             <b-dropdown-item :to="'/seek-help/addiction'">Help from addiction</b-dropdown-item>
             <b-dropdown-item :to="'/seek-help/community'">Community Services</b-dropdown-item>
           </b-nav-item-dropdown>
-          <!-- <b-nav-item :to="'/'">Contact us</b-nav-item> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -33,7 +37,6 @@
 </template>
 
 <script>
-import logoWhite from '@/assets/logo_white.png'
 import axios from 'axios'
 import API from '@/api/api'
 
@@ -42,9 +45,6 @@ export default {
 	},
 	data () {
 		return {
-			images: {
-				'logoWhite': logoWhite
-			},
 			navbar: {
 				themeStatus: 'light',
 				themeStyle: 'mateshelp-light',
@@ -54,6 +54,7 @@ export default {
 		}
 	},
 	created () {
+		// Fetch secondary pages' information.
 		axios.get(API.PAGE.PAGE_API())
 			.then(res => {
 				this.$store.dispatch('pages/setPageList', res.data)
@@ -64,8 +65,7 @@ export default {
 						urlName: e.slug
 					}
 				})
-				window.console.log(`this.seekOfHelp: ${JSON.stringify(this.seekOfHelp)}`)
-				this.$store.dispatch('pages/setNavPageList', this.seekOfHelp)
+				// this.$store.dispatch('pages/setNavPageList', this.seekOfHelp)
 			})
 	},
 	mounted () {
@@ -88,23 +88,6 @@ export default {
 		}
 	},
 	computed: {
-		navToggled () {
-			return this.$refs['toggle-nav'].show
-		},
-		themeClass () {
-			switch (this.themeStyle) {
-			case 'light':
-				return { colorClass: 'mateshelp-light', fontColor: 'light' }
-			case 'orange':
-				if (this.navToggled === true) {
-					return { colorClass: 'mateshelp-orange', fontColor: 'dark' }
-				} else {
-					return { colorClass: 'mateshelp-transparent', fontColor: 'dark' }
-				}
-			case 'transparent':
-				return { colorClass: 'mateshelp-transparent', fontColor: 'dark' }
-			}
-		}
 	}
 }
 </script>

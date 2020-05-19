@@ -23,9 +23,9 @@ export default {
 	name: 'type-select-panel',
 	data () {
 		return {
-			selected: [],
-			allSelected: true,
-			indeterminate: false
+			selected: [],	// selected options array containing option id
+			allSelected: true,	// all selected indicator
+			indeterminate: false	// particially selected indicator
 		}
 	},
 	mounted () {
@@ -45,26 +45,35 @@ export default {
 	watch: {
 		selected (newVal, oldVal) {
 			if (newVal.length === 0) {
+				// No options selected
 				this.indeterminate = false
 				this.allSelected = false
+				// Update new selected options to vuex, afterwards updating the results to show
 				this.$store.dispatch('locations/setFilterTypes', newVal)
 					.then(() => {
-						this.$store.dispatch('locations/filterResultsList', null)
+						// None selected, result to show is null
+						this.$store.dispatch('locations/filterResultsList')
 					}).catch((reason) => { window.console.error(reason) })
 			} else if (newVal.length === this.options.length) {
+				// all options selected
 				this.allSelected = true
 				this.indeterminate = false
+				// Update new selected options to vuex, afterwards updating the results to show
 				this.$store.dispatch('locations/setFilterTypes', newVal)
 					.then(() => {
 						this.$store.dispatch('locations/resumeResultsList')
-					}).catch((reason) => { window.console.error(reason) })
+					})
+					.catch((reason) => { window.console.error(reason) })
 			} else {
+				// particial options selected
 				this.indeterminate = true
 				this.allSelected = false
+				// Update new selected options to vuex, afterwards updating the results to show
 				this.$store.dispatch('locations/setFilterTypes', newVal)
 					.then(() => {
-						this.$store.dispatch('locations/filterResultsList', null)
-					}).catch((reason) => { window.console.error(reason) })
+						this.$store.dispatch('locations/filterResultsList')
+					})
+					.catch((reason) => { window.console.error(reason) })
 			}
 		}
 	}

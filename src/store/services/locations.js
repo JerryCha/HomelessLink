@@ -34,6 +34,11 @@ const mutations = {
 	setNavbar (state, navbar) {
 		state.navbar = navbar
 	},
+	/**
+	 * Referencce to mapbox instance
+	 * @param {*} state state
+	 * @param {*} mapbox mapbox instance
+	 */
 	setMapRef (state, mapbox) {
 		state.mapRef = mapbox
 	},
@@ -45,6 +50,11 @@ const mutations = {
 	setResultsList (state, locations) {
 		state.resultsList = locations
 	},
+	/**
+	 * Set resultsType
+	 * @param {*} state state
+	 * @param {*} types types
+	 */
 	setResultsType (state, types) {
 		state.resultsType = types
 	},
@@ -61,6 +71,11 @@ const mutations = {
 			state.resultsCount = state.resultsList !== null ? state.resultsList.length : 0
 		}
 	},
+	/**
+	 * Set filterTypes
+	 * @param {*} state state
+	 * @param {*} types types
+	 */
 	setFilterTypes (state, types) {
 		state.filterTypes = types
 	},
@@ -89,6 +104,11 @@ const mutations = {
 	setLocation (state, location) {
 		state.location = location
 	},
+	/**
+	 * Set current location marker popup
+	 * @param {*} state state
+	 * @param {*} popup popup marker
+	 */
 	setLocationPopup (state, popup) {
 		state.popup = popup
 	},
@@ -116,30 +136,65 @@ const mutations = {
 	setCurrentLocation (state, coord) {
 		state.currentLocation = coord
 	},
+	/**
+	 * Set bound of viewing area
+	 * @param {*} state state
+	 * @param {*} bound bound coordinates
+	 */
 	setBoxBound (state, bound) {
 		state.boxBound = bound
 	},
+	/**
+	 * Set search text
+	 * @param {*} state state
+	 * @param {*} text text
+	 */
 	setSearchText (state, text) {
 		state.searchText = text
 		console.log(state.searchText)
 	},
+	/**
+	 * Set onHoverLocationId. The ID of location of which marker is hovering
+	 * @param {*} state state
+	 * @param {*} id id
+	 */
 	setOnHoverLocationId (state, id) {
 		state.onHoverLocationId = id
 	}
 }
 
 const actions = {
+	/**
+	 * Set navbar reference
+	 * @param {*} context context
+	 * @param {*} navbar narbar reference
+	 */
 	setNavbar (context, navbar) {
 		context.commit('setNavbar', navbar)
 	},
+	/**
+	 * Set mapbox instance reference
+	 * @param {*} context context
+	 * @param {*} mapbox mapbox instance reference
+	 */
 	setMapRef (context, mapbox) {
 		context.commit('setMapRef', mapbox)
 	},
+	/**
+	 * Set result of locations from external sources
+	 * @param {*} context context
+	 * @param {*} locations locations list
+	 */
 	setFetchedLocations (context, locations) {
 		context.commit('setFetchedLocations', locations)
 		context.commit('setResultsList', locations)
 		context.commit('setResultsCount')
 	},
+	/**
+	 * Set allTypes with external source
+	 * @param {*} context context
+	 * @param {*} types types
+	 */
 	setAllTypes (context, types) {
 		var tempArray = []
 		var valueArray = []
@@ -158,14 +213,23 @@ const actions = {
 				context.commit('setAllTypes', tempArray)
 			})
 	},
+	/**
+	 * Set types of result of locations
+	 * @param {*} context context
+	 * @param {*} types types
+	 */
 	setResultsType (context, types) {
 		context.commit('setResultsType', types)
 	},
+	/**
+	 * Set filter type
+	 * @param {*} context context
+	 * @param {*} types types
+	 */
 	setFilterTypes (context, types) {
 		context.commit('setFilterTypes', types)
 	},
 	/**
-	 * TODO: Deprecate
 	 * Fetching locations as per query conditions.
 	 * @param {*} context context
 	 */
@@ -181,7 +245,6 @@ const actions = {
 						types.push(id)
 					}
 				})
-				window.console.log(`resultsType: ${types}`)
 				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
 				context.commit('setFetchedLocations', results)
 				context.commit('setResultsList', results)
@@ -190,6 +253,11 @@ const actions = {
 			})
 			.catch(e => { window.console.error(e) })
 	},
+	/**
+	 * Fetching locations within a specific area
+	 * @param {*} context context
+	 * @param {*} bounds bounds' coordinate
+	 */
 	getLocations (context, bounds) {
 		// Build the search query
 		var query = 'ne=' + bounds.ne[0] + ',' + bounds.ne[1] + '&sw=' + bounds.sw[0] + ',' + bounds.sw[1]
@@ -205,7 +273,6 @@ const actions = {
 						types.push(id)
 					}
 				})
-				window.console.log(`resultsType: ${types}`)
 				// Once data fetched successfully, setting to both fetchedLocations & resultsList.
 				context.commit('setFetchedLocations', results)
 				context.commit('setResultsList', results)
@@ -214,7 +281,10 @@ const actions = {
 			})
 			.catch(e => { window.console.error(e) })
 	},
-	// Temp function for debugging
+	/**
+	 * Fetching all locations
+	 * @param {*} context context
+	 */
 	getAllLocations (context) {
 		return axios.get(API.LOCATION.SEARCH_LOCATIONS())
 			.then(res => {
@@ -236,7 +306,10 @@ const actions = {
 				context.commit('setResultsType', types)
 			})
 	},
-	// TODO: Offload type fetching from View.
+	/**
+	 * fetching all types from server
+	 * @param {*} context context
+	 */
 	fetchAllTypes (context) {
 		// Get location type from backend
 		axios.get(API.TYPES.TYPE_API()).then((response) => {
@@ -254,18 +327,12 @@ const actions = {
 			context.commit('setAllTypes', tempArray)
 		})
 	},
-	// setFilterTypes (context, types) {
-	// 	return new Promise((resolve, reject) => {
-	// 		context.commit('setFilterTypes', types)
-	// 		resolve()
-	// 	})
-	// },
 	/**
 	 * Filtering display results by updating resultsList.
 	 * @param {*} context context
 	 * @param {*} type type of location
 	 */
-	filterResultsList (context, type) {
+	filterResultsList (context) {
 		var shownLocations = state.fetchedLocations.filter(loc => {
 			var typeId = (() => {
 				var tempSplitArr = loc.type.split('/')
@@ -360,9 +427,18 @@ const actions = {
 	setSearchText (context, text) {
 		context.commit('setSearchText', text)
 	},
+	/**
+	 * Set resultCount to searching status
+	 * @param {*} context context
+	 */
 	setResultsCountToSearching (context) {
 		context.commit('setResultsCount', true)
 	},
+	/**
+	 * Set id of hovered location marker
+	 * @param {*} context context
+	 * @param {*} id marker of location id being hovered
+	 */
 	updateOnHoverLocationId (context, id) {
 		context.commit('setOnHoverLocationId', id)
 	}

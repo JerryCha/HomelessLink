@@ -15,7 +15,6 @@
 
 <script>
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
-// import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import axios from 'axios'
 
 export default {
@@ -26,8 +25,7 @@ export default {
 	data () {
 		return {
 			form: {
-				location: '',
-				interest: '0'
+				location: ''
 			},
 			mapbox: {
 				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
@@ -59,11 +57,9 @@ export default {
 			// Set status to searching
 			this.$store.dispatch('locations/setResultsCountToSearching')
 			// Making query with backend
-			// this.$store.dispatch('locations/searchLocations')
-			this.$store.dispatch('locations/setSearchText',submitJson.queryForm.location)
+			this.$store.dispatch('locations/setSearchText', submitJson.queryForm.location)
 			if (this.jump) {
 				// Go to searching page.
-				this.$router.push('/itr1')
 			}
 		},
 		// Set current location to user location
@@ -107,8 +103,8 @@ export default {
 					// TODO: edge cases handling
 					return placeName.split(',')[0]
 				})(e.result.place_name)
-				if(e.result.place_name){
-					this.$store.dispatch('locations/setSearchText',e.result.place_name.split(",")[0])
+				if (e.result.place_name) {
+					this.$store.dispatch('locations/setSearchText', e.result.place_name.split(',')[0])
 				}
 				// Update current location
 				this.$store.dispatch('locations/setCenterLocation', e.result.center)

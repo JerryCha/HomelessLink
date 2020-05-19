@@ -8,8 +8,6 @@
 			<div>
           <span :class="{'invisible': resultsCount === -1}">Found {{resultsCount}} results</span>
       </div>
-			<!-- Result count -->
-			<!-- <p :class="isSearching()||hasNoResult()?'invisible':''">{{ resultsCount }} results found for <strong>{{ targetLocation }}</strong>.</p> -->
 		</div>
 		<!-- Filter panel-->
 		<b-toast id="filter-panel" title="Type Select" static no-auto-hide solid>
@@ -56,56 +54,92 @@ export default {
 	data () {
 		return {
 			// filterOptions is dynamically loaded from backend
-			filterOptionsList: [
-
-			]
+			filterOptionsList: []
 		}
 	},
 	methods: {
+		/** Go back to previous page.
+			* Not in use
+		*/
 		goBack: function () {
+			// clear result repository
 			this.$store.dispatch('locations/flushResultsList')
+			// Go back
 			this.$router.go(-1)
 		},
+		/**
+		 * Is searching indicator.
+		 * Return true when result count is -1.
+		 */
 		isSearching: function () {
 			return this.$store.state.locations.resultsCount === -1
 		},
+		/**
+		 * Not found result indicator.
+		 * Return true when result count is 0.
+		 */
 		hasNoResult: function () {
 			return this.$store.state.locations.resultsCount === 0
 		},
+		/**
+		 * Card should hover indicator.
+		 * Return true when the card id equals to the hovered marker id.
+		 */
 		shouldHover: function (id) {
 			return this.onHoverLocationId === id
 		},
+		/**
+		 * Parse type id from given type api address.
+		 */
 		getType: function (rawId) {
-			// TODO: Validation & Verification
-			// window.console.log(`raw id: ${rawId}`)
+			if (rawId === undefined || rawId === null) {
+				throw new Error('rawId is undefined or null')
+			}
 			var temp = rawId.split('/')
+			if (!Array.isArray(temp) || temp.length === 1) {
+				return -1
+			}
 			var id = Number(temp[temp.length - 2])
 			return this.allTypes.filter(t => t.value === id)[0]
 		}
 	},
 	mounted () {
-		// this.$store.dispatch('locations/fetchAllTypes')
-		// var fetchedTypes = this.$store.state.locations.allTypes
-		// var fetchedTypes = this.allTypes
 		this.filterOptionsList = this.allTypes
 	},
 	watch: {
+		/**
+		 * Watching hovered marker, scrolling the result list
+		 * to the position of corresponding card.
+		 */
 		onHoverLocationId (newVal, oldVal) {
+			// -1 means no marker being hovered
 			if (newVal !== -1) {
 				document.getElementById('result-' + newVal).scrollIntoView()
 			}
 		}
 	},
 	computed: {
+		/**
+		 * Reference of result of locations in vuex
+		 */
 		results: function () {
 			return this.$store.state.locations.resultsList
 		},
+		/**
+		 * Reference of result of locations count in vuex
+		 */
 		resultsCount: function () {
 			return this.$store.state.locations.resultsCount
 		},
+		/**
+		 * Reference of id of location marker being hovered in vuex
+		 */
 		onHoverLocationId: function () {
 			return this.$store.state.locations.onHoverLocationId
 		},
+		/**
+		 * Reference of all types under a topic
+		 */
 		allTypes: function () {
 			return this.$store.state.locations.allTypes
 		}

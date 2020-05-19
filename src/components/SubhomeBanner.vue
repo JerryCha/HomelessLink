@@ -2,7 +2,6 @@
   <div id="banner" v-bind:style="{ backgroundImage: 'url(' + bgImg + ')' }">
 		<h1>{{ title }}</h1>
 		<h2>{{ subtitle }}</h2>
-		<!-- <b-img :src="bgImg"></b-img> -->
   </div>
 </template>
 

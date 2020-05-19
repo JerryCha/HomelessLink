@@ -34,19 +34,20 @@ export default {
 	},
 	data () {
 		return {
-			tabIndex: null
+			tabIndex: null	// Current activated tab index
 		}
 	},
 	mounted () {
-		// console.log(this.$store.state.pageData.categories);
 	},
 	computed: {
+		// Background image url of banner.
 		bg () {
 			return this.$store.state.pages.pageData.banner_image
 		},
-		navbar () {
-			return this.$store.state.locations.navbar
-		},
+		// Navbar reference
+		// navbar () {
+		// 	return this.$store.state.locations.navbar
+		// },
 		topic () {
 			return this.$store.state.pages.pageData.name
 		}

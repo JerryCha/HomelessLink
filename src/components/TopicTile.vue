@@ -55,10 +55,10 @@ export default {
 		},
 		title: {
 			type: String
-    },
-    slug: {
-      type: String
-    }
+		},
+		slug: {
+			type: String
+		}
 	},
 	data () {
 		return {
@@ -68,31 +68,40 @@ export default {
 		}
 	},
 	mounted () {
+		// Initialize height and width of parent container
 		this.wrapWidth = this.$parent.$el.clientWidth
 		this.wrapHeight = this.$parent.$el.clientHeight
+		// Add listener to respond to the window resize
 		window.addEventListener('resize', () => {
 			this.wrapWidth = this.$parent.$el.clientWidth
 			this.wrapHeight = this.$parent.$el.clientHeight
 		})
 	},
 	computed: {
-		iconPath: function () {
-			return '@/assets/' + this.iconImage + '.png'
-		},
-		iconPath2x: function () {
-			return '@/assets/' + this.iconImage + '@2x.png'
-		},
+		/**
+     * Portrait mode indicator
+     */
 		mobile: function () {
 			return this.wrapWidth < this.wrapHeight
 		}
 	},
 	methods: {
+		/**
+     * Set cursor in flag to true
+     */
 		mouseenterHanlder: function () {
 			this.pointerEnter = true
 		},
+		/**
+     * Set cursor in flag to false
+     */
 		mouseleaveHandler: function () {
 			this.pointerEnter = false
 		},
+		/**
+     * Click handler.
+     * Go to topic page while clicking on the tile.
+     */
 		clickHandler: function () {
 			this.$router.push('/seek-help/' + this.slug)
 		}
