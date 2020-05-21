@@ -28,19 +28,20 @@ export default {
 		id: String
 	},
 	mounted () {
-		window.console.log(this.$store.state.locations.mapRef)
 		this.$store.dispatch('locations/getLocation', this.id)
 		this.directionControl.show()
 	},
 	destroyed () {
 		// Setting location to null once the view is destroyed
 		this.$store.dispatch('locations/flushLocation')
+		this.directionControl.removeRoutes()
 		this.directionControl.hide()
 	},
 	data () {
 		return {
 			address: '',
 			loaded: false,
+			testLocation: null,
 			mapbox: {
 				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA',
 				directionControl: null
@@ -65,7 +66,6 @@ export default {
 				website: loc.website,
 				desc: loc.desc,
 				openingDays: (() => {
-					window.console.debug('opening days: ' + JSON.stringify(loc.opening_days))
 					return loc.opening_days === null ? null : this.parseOpeningDays(loc.opening_days)
 				})()
 			}
@@ -78,6 +78,9 @@ export default {
 				.split(' ')
 				.map(p => Number(p))
 			return coord
+		},
+		userLocation: function () {
+			return this.$store.state.locations.currentLocation
 		},
 		// website link. 'N/A' if null.
 		getWebsiteLink: function () {
@@ -129,10 +132,19 @@ export default {
 		coord: {
 			handler: function (newVal, oldVal) {
 				this.$store.dispatch('locations/setCenterLocation', newVal)
+				// this.directionControl.setDestination(newVal)
 				this.reverseGeocoding(newVal)
-					.then(addr => { this.address = addr })
+					.then(addr => {
+						this.address = addr
+						this.directionControl.setDestination(addr)
+					})
 			},
 			deep: false
+		},
+		userLocation: function (newVal) {
+			if (newVal !== null) {
+				this.directionControl.setOrigin(newVal)
+			}
 		},
 		poi: {
 			handler: function (newVal, oldVal) {

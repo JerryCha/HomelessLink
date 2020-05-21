@@ -8,6 +8,7 @@
 <script>
 import MapBox from 'mapbox-gl'
 import Directions from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
+import axios from 'axios'
 // import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
 import geobox from '@/util/geobox'
 import locationIcon from '@/assets/location_user.png'
@@ -29,7 +30,15 @@ export default {
 	data () {
 		return {
 			prevZoomLevel: 13,
-			directionControlRef: null
+			directionControlRef: null,
+			mapContainer: {
+				width: 0,
+				height: 0
+			},
+			directionVisibility: {
+				controlVisibility: true,
+				responsiveVisibility: true
+			}
 		}
 	},
 	computed: {
@@ -110,7 +119,11 @@ export default {
 				this.updateBoxBound()
 			})
 
-			var directionControl = new Directions({ accessToken: MapBox.accessToken })
+			var directionControl = new Directions({
+				accessToken: MapBox.accessToken,
+				interactive: false,
+				unit: 'metric'
+			})
 			this.map.addControl(directionControl, 'top-left')
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
@@ -120,7 +133,7 @@ export default {
 			}
 			directionControl.show = function () {
 				var mapboxWidth = this._map.boxZoom._container.clientWidth
-				if (mapboxWidth > 575) {
+				if (mapboxWidth > 375) {
 					// this refers to direction control
 					this.container.hidden = false
 				}
@@ -128,9 +141,18 @@ export default {
 			directionControl.hide = function () {
 				this.container.hidden = true
 			}
+			directionControl.on('origin', (e) => {
+				window.console.log(e)
+			})
+			directionControl.on('destination', (e) => {
+				// window.console.log(e)
+				// this.reverseGeocoding(this.accessToken, e.geometry.coordinates)
+				// 	.then(addr => {
+				// 		window.console.log(addr)
+				// 	})
+			})
 			// Hide the direction control on load.
-			directionControl.toggleVisibility()
-			window.console.log(directionControl)
+			directionControl.hide()
 			this.directionControlRef = directionControl
 			// Push direction control to the map instance.
 			this.map.controlWidgets = { topLeft: directionControl }
@@ -142,6 +164,18 @@ export default {
 			this.map.on('zoomstart', () => {
 				this.prevZoomLevel = this.map.getZoom()
 			})
+		},
+		reverseGeocoding: async function (coord) {
+			const api = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+			const type = 'locality'
+			var query = api + `${coord[0]},${coord[1]}.json/?` + `type=${type}&access_token=${this.mapbox.accessToken}`
+			var addr = null
+			await axios.get(query)
+				.then(res => {
+					addr = res.data.features[0].place_name
+				})
+				.catch(e => { window.console.error(e) })
+			return addr
 		},
 		zoomTo (newZoomLevel) {
 			this.map.zoomTo(newZoomLevel, {
@@ -279,9 +313,18 @@ export default {
 	},
 	mounted () {
 		this.initMapBox()
-		// update center location after mounted
-		// this.$store.dispatch('locations/setCenterLocation', this.initCenter)
-		// this.$store.dispatch('locations/getAllLocations')
+		this.mapContainer.width = this.$el.clientWidth
+		this.mapContainer.height = this.$el.clientHeight
+		window.addEventListener('rezie', () => {
+			this.mapContainer.width = this.$parent.$el.clientWidth
+			this.mapContainer.height = this.$parent.$el.clientHeight
+			if (this.mapContainer.width < 375 ||
+						(this.mapContainerWidth >= 375 && this.mapContainerWidth < this.mapContainerHeight)) {
+				this.responsiveVisibility = false
+			} else {
+				this.responsiveVisibility = true
+			}
+		})
 	},
 	updated () {
 	}

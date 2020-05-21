@@ -22,7 +22,9 @@ const state = {
 }
 
 const getters = {
-
+	getLocationFromRepo (state, id) {
+		return state.locations.filter(loc => loc.id === id)
+	}
 }
 
 const mutations = {
