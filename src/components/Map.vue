@@ -36,7 +36,6 @@ export default {
 				height: 0
 			},
 			directionVisibility: {
-				controlVisibility: true,
 				responsiveVisibility: true
 			}
 		}
@@ -60,6 +59,17 @@ export default {
 		},
 		isVisible () {
 			return this.$store.state.pages.currentTab === 1
+		},
+		controlVisibility () {
+			return this.$store.state.locations.directionVisibility
+		},
+		responsiveVisibility: function () {
+			if (this.mapContainer.width <= 375 ||
+						(this.mapContainerWidth < 576 && this.mapContainerWidth < this.mapContainerHeight)) {
+				return false
+			} else {
+				return true
+			}
 		}
 	},
 	watch: {
@@ -89,7 +99,15 @@ export default {
 		isVisible (newVal, oldVal) {
 			if (newVal) {
 				this.resizeMap()
+				this.mapContainer.width = this.$el.clientWidth
+				this.mapContainer.height = this.$el.clientHeight
 			}
+		},
+		controlVisibility (newVal, oldVal) {
+			this.setDirectionControlVisibility()
+		},
+		responsiveVisibility (newVal, oldVal) {
+			this.setDirectionControlVisibility()
 		}
 	},
 	methods: {
@@ -141,16 +159,9 @@ export default {
 			directionControl.hide = function () {
 				this.container.hidden = true
 			}
-			directionControl.on('origin', (e) => {
-				window.console.log(e)
-			})
-			directionControl.on('destination', (e) => {
-				// window.console.log(e)
-				// this.reverseGeocoding(this.accessToken, e.geometry.coordinates)
-				// 	.then(addr => {
-				// 		window.console.log(addr)
-				// 	})
-			})
+			directionControl.setVisibility = function (v) {
+				this.container.hidden = !v
+			}
 			// Hide the direction control on load.
 			directionControl.hide()
 			this.directionControlRef = directionControl
@@ -296,34 +307,31 @@ export default {
 						var description = e.features[0].properties.description
 						var id = String(e.features[0].properties.id)
 						new MapBox.Popup().setLngLat(coordinate).setHTML(`<p>${description}</p><br><a href='#/seek-help/${this.$store.state.pages.pageData.slug}/detail/${id}'>Detail</a>`).addTo(this.map)
-					});
+					})
 					// Change the cursor to a pointer when the mouse is over the place layer.
 					this.map.on('mouseenter', 'poiLocations', (e) => {
 						var id = e.features[0].properties.id
 						this.$store.dispatch('locations/updateOnHoverLocationId', id)
 						this.map.getCanvas().style.cursor = 'pointer'
-					});
+					})
 					// Change the cursor back to normal style while it leaves
 					this.map.on('mouseleave', 'poiLocations', () => {
 						this.$store.dispatch('locations/updateOnHoverLocationId', -1)
 						this.map.getCanvas().style.cursor = ''
-					});
+					})
 				})
+		},
+		setDirectionControlVisibility: function () {
+			this.directionControlRef.setVisibility(this.controlVisibility && this.responsiveVisibility)
 		}
 	},
 	mounted () {
 		this.initMapBox()
 		this.mapContainer.width = this.$el.clientWidth
 		this.mapContainer.height = this.$el.clientHeight
-		window.addEventListener('rezie', () => {
-			this.mapContainer.width = this.$parent.$el.clientWidth
-			this.mapContainer.height = this.$parent.$el.clientHeight
-			if (this.mapContainer.width < 375 ||
-						(this.mapContainerWidth >= 375 && this.mapContainerWidth < this.mapContainerHeight)) {
-				this.responsiveVisibility = false
-			} else {
-				this.responsiveVisibility = true
-			}
+		window.addEventListener('resize', () => {
+			this.mapContainer.width = this.$el.clientWidth
+			this.mapContainer.height = this.$el.clientHeight
 		})
 	},
 	updated () {

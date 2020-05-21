@@ -29,13 +29,13 @@ export default {
 	},
 	mounted () {
 		this.$store.dispatch('locations/getLocation', this.id)
-		this.directionControl.show()
+		this.$store.dispatch('locations/setDirectionVisibility', true)
 	},
 	destroyed () {
 		// Setting location to null once the view is destroyed
 		this.$store.dispatch('locations/flushLocation')
 		this.directionControl.removeRoutes()
-		this.directionControl.hide()
+		this.$store.dispatch('locations/setDirectionVisibility', false)
 	},
 	data () {
 		return {

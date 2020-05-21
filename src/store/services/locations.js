@@ -5,6 +5,7 @@ import queryHelper from '@/util/query'
 const state = {
 	navbar: null,
 	mapRef: null,
+	directionVisibility: false,
 	resultsList: [],	// results list for showing
 	resultsType: [], // type of fetched location
 	resultsCount: 0,	// count of showing results list
@@ -43,6 +44,9 @@ const mutations = {
 	 */
 	setMapRef (state, mapbox) {
 		state.mapRef = mapbox
+	},
+	setDirectionVisibility (state, v) {
+		state.directionVisibility = v
 	},
 	/**
 	 * resultsList mutator
@@ -181,6 +185,9 @@ const actions = {
 	 */
 	setMapRef (context, mapbox) {
 		context.commit('setMapRef', mapbox)
+	},
+	setDirectionVisibility (context, v) {
+		context.commit('setDirectionVisibility', v)
 	},
 	/**
 	 * Set result of locations from external sources
