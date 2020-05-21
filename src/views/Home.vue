@@ -27,7 +27,7 @@
 	height: calc(100% - 38px);
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-	/* overflow-y: scroll; */
+	overflow-y: scroll;
 }
 #view-container {
 	display: flex;

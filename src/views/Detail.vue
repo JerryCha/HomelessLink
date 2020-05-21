@@ -28,18 +28,22 @@ export default {
 		id: String
 	},
 	mounted () {
+		window.console.log(this.$store.state.locations.mapRef)
 		this.$store.dispatch('locations/getLocation', this.id)
+		this.directionControl.show()
 	},
 	destroyed () {
 		// Setting location to null once the view is destroyed
 		this.$store.dispatch('locations/flushLocation')
+		this.directionControl.hide()
 	},
 	data () {
 		return {
 			address: '',
 			loaded: false,
 			mapbox: {
-				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA'
+				accessToken: 'pk.eyJ1IjoiamVycnljaGEiLCJhIjoiY2sxNXNldmdmMHlibjNjdGM4MnAyZHR4aCJ9.OjElwhEEogXkUfGOgpX3mA',
+				directionControl: null
 			}
 		}
 	},
@@ -78,6 +82,9 @@ export default {
 		// website link. 'N/A' if null.
 		getWebsiteLink: function () {
 			return this.poi.website === null ? 'N/A' : this.poi.website
+		},
+		directionControl: function () {
+			return this.$store.state.locations.mapRef.controlWidgets.topLeft
 		}
 	},
 	methods: {
@@ -148,5 +155,9 @@ export default {
 #back-button {
 	position: sticky;
 	bottom: 0px;
+}
+#detail-container {
+	height: 100%;
+	/* overflow-y: scroll; */
 }
 </style>

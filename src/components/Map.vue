@@ -7,7 +7,7 @@
 
 <script>
 import MapBox from 'mapbox-gl'
-import Directions from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import Directions from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
 // import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
 import geobox from '@/util/geobox'
 import locationIcon from '@/assets/location_user.png'
@@ -114,8 +114,26 @@ export default {
 			this.map.addControl(directionControl, 'top-left')
 			// Adding zoom control
 			this.map.addControl(new MapBox.NavigationControl())
+			// Add method to hide and show the widget
+			directionControl.toggleVisibility = function () {
+				this.container.hidden = !this.container.hidden
+			}
+			directionControl.show = function () {
+				var mapboxWidth = this._map.boxZoom._container.clientWidth
+				if (mapboxWidth > 575) {
+					// this refers to direction control
+					this.container.hidden = false
+				}
+			}
+			directionControl.hide = function () {
+				this.container.hidden = true
+			}
+			// Hide the direction control on load.
+			directionControl.toggleVisibility()
 			window.console.log(directionControl)
 			this.directionControlRef = directionControl
+			// Push direction control to the map instance.
+			this.map.controlWidgets = { topLeft: directionControl }
 			// Once the viewing area changed, updating the bounding box.
 			this.map.on('moveend', () => {
 				this.updateBoxBound()
