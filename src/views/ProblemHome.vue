@@ -1,7 +1,10 @@
 <template>
   <div id="problem-home-container">
 		<b-overlay id="loading-overlay" :show="loadingStatus === 1">
-			<ProblemHomeTemplate v-if="$store.state.pages.pageData !== null"/>
+			<ProblemHomeTemplate
+				v-if="$store.state.pages.pageData !== null"
+				:bannerImg="bannerImgSrc[problem]"
+			/>
 		</b-overlay>
   </div>
 </template>
@@ -48,7 +51,6 @@ export default {
 					that.loadingStatus = 3
 					window.console.error(err)
 				})
-			// this.currentID = this.$route.params.problem
 		},
 		updateLocationData () {
 			this.$store.dispatch('locations/setResultsCountToSearching')
@@ -58,9 +60,6 @@ export default {
 				})
 		}
 	},
-	// updated () {
-	// 	this.updateapiData()
-	// },
 	created () {
 		this.updateapiData()
 	},
@@ -76,17 +75,21 @@ export default {
 		},
 		topicCategoryCode () {
 			return this.$store.state.pages.pageData.categories
+		},
+		bannerImgSrc () {
+			return {
+				essential: 'seekhelp_essential_bg_horizontal.jpg',
+				eldercare: 'seekhelp_feet_bg_horizontal.jpg',
+				healthy: 'seekhelp_health_bg_horizontal.jpg',
+				addiction: 'seekhelp_addiction_bg_horizontal.jpg',
+				community: 'seekhelp_community_bg_horizontal.jpg'
+			}
 		}
-		// topic () {
-		// 	this.updateapiData()
-		// 	return null
-		// }
 	},
 	watch: {
 		loadingStatus (newVal, oldVal) {
 		},
 		currentId (newVal, oldVal) {
-			window.console.log(`id changed: ${oldVal} -> ${newVal}`)
 			this.updateapiData()
 		}
 	}

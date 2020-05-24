@@ -4,7 +4,7 @@
         <b-tab title="Resource List" active>
           <b-container id="head-content">
           <b-row class="mb-4">
-            <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bg"/>
+            <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bannerImg"/>
           </b-row>
           <b-row align-h="center" align-v="center">
             <b-col v-html="$store.state.pages.pageData.description">
@@ -23,14 +23,18 @@
 
 <script>
 import SubhomeBanner from '@/components/SubhomeBanner'
-import PlaceHolder from '@/components/Placeholder'
 import MapListSection from '@/views/Home'
 
 export default {
 	components: {
 		SubhomeBanner,
-		MapListSection,
-		PlaceHolder
+		MapListSection
+	},
+	props: {
+		bannerImg: {
+			type: String,
+			default: ''
+		}
 	},
 	data () {
 		return {

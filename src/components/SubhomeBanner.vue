@@ -1,5 +1,5 @@
 <template>
-  <div id="banner" v-bind:style="{ backgroundImage: 'url(' + bgImg + ')' }">
+  <div id="banner" :style="{ background: 'url(' + require('@/assets/'+this.bgImg) + ')' + ' no-repeat center/cover' }">
 		<h1>{{ title }}</h1>
 		<h2>{{ subtitle }}</h2>
   </div>
