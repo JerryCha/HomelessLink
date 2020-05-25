@@ -159,6 +159,7 @@ div {
 	border: 1px solid #ced4da;
 	border-radius: 0.25rem;
 	min-height: 38px;
+	padding-left: 32px;
 }
 
 </style>

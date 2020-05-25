@@ -3,7 +3,7 @@
 		<!-- Filter -->
 		<div id="filter-panel" style="display: flex; align-items: center; justify-content: space-between;">
 			<!-- Type filter button -->
-			<b-button variant="light" @click="$bvToast.show('filter-panel')">Filter</b-button>
+			<b-button variant="secondary" @click="$bvToast.show('filter-panel')">Filter</b-button>
 			<!-- Results count -->
 			<div>
           <span :class="{'invisible': resultsCount === -1}">Found {{resultsCount}} results</span>

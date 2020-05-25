@@ -1,7 +1,7 @@
 <template>
     <div>
       <b-tabs content-class="my-2" v-model="tabIndex">
-        <b-tab title="Resource List" active>
+        <b-tab title="Resource List">
           <b-container id="head-content">
           <b-row class="mb-4">
             <SubhomeBanner :title="topic" :subtitle="'Resource List'" :bgImg="bannerImg"/>
@@ -12,7 +12,7 @@
           </b-row>
           </b-container>
         </b-tab>
-        <b-tab title="Map">
+        <b-tab title="Map" active>
           <b-container class="no-padding fulfill-vertical-space" fluid>
             <MapListSection/>
           </b-container>
