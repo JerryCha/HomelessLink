@@ -79,7 +79,7 @@ export default {
 		bannerImgSrc () {
 			return {
 				essential: 'seekhelp_essential_bg_horizontal.jpg',
-				eldercare: 'seekhelp_feet_bg_horizontal.jpg',
+				eldercare: 'seekhelp_elder_bg_horizontal.jpg',
 				healthy: 'seekhelp_health_bg_horizontal.jpg',
 				addiction: 'seekhelp_addiction_bg_horizontal.jpg',
 				community: 'seekhelp_community_bg_horizontal.jpg'
